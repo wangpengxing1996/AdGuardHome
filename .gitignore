@@ -9,6 +9,8 @@
 /build/
 /dist/
 /client/node_modules/
+/client2/node_modules/
+/client2/yarn-error.log
 /querylog.json
 /querylog.json.1
 coverage.txt

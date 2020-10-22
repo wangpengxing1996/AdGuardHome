@@ -1,0 +1,37 @@
+{
+    "back": "Back",
+    "ethernet": "Ethernet",
+    "localhost": "lockalhost",
+    "login": "Login",
+    "password": "Password",
+    "next": "Next",
+    "port": "Port",
+
+
+    "install_admin_interface_port_desc": "Now it is working at 3000 port, just in case, but we recomended to use 80 port. Using this ports allow to access to Web interface like to common site",
+    "install_admin_interface_port": "Which port will be used",
+    "install_admin_interface_title_decs": "Admin web interface is used to control AdGuard Home. You can open it in your browser and it does not require using a client-side program",
+    "install_admin_interface_title": "Admin interface settings",
+    "install_admin_interface_where_interface_desc": "Set what kind of networks will be able to access to Admin interface. For example: if you choose a local   interface only, then Admin inteface will be accessed by this local device only",
+    "install_admin_interface_where_interface": "Where can I open Admin interface",
+
+    "install_all_networks_description": "All available web interfaces",
+    "install_all_networks": "All networks",
+    "install_choose_networks_desc": "For advanced users",
+    "install_choose_networks": "Choose manually",
+
+    "install_wellcome_button": "Let's go",
+    "install_wellcome_desc": "You have installed AdGuard Home on your device. It is a network-wide ad-and-tracker blocking DNS server with Admin Web interface. Let’s set some settings to correct DNS working",
+    "install_wellcome_title": "Welcome to AdGuard Home",
+
+    "install_auth_title": "Login and password",
+    "install_auth_description": "Set login and password for accessing to Web interface",
+
+    "install_dns_server_title": "DNS server settings",
+    "install_dns_server_desc": "AdGuard DNS server works like common DNS server but also blocks ads and tracking domains",
+    "install_dns_server_network_interfaces": "Network interfaces",
+    "install_dns_server_network_interfaces_desc": "You should set for what kind of networks will be use AdGuard Home DNS server. Most often you need to have available all interfaces",
+    "install_dns_server_port": "Which port will be used",
+    "install_dns_server_port_desc": "You have to use port 53 for correct internet working. Change this value only if you have reason",
+    "install_dns_server_non_static_ip": "How to use non-static IP adresses?"
+}
