@@ -97,6 +97,8 @@ paths:
                         server works, any other text means an error.
                     content:
                         application/json:
+                            schema:
+                                $ref: '#/components/schemas/UpstreamsConfigResponse'
                             examples:
                                 response:
                                     value:
@@ -564,6 +566,11 @@ paths:
                     description: OK
                     content:
                         application/json:
+                            schema:
+                                type: object
+                                parameters:
+                                    enabled:
+                                        type: boolean
                             examples:
                                 response:
                                     value:
@@ -615,6 +622,13 @@ paths:
                     description: OK
                     content:
                         application/json:
+                            schema:
+                                type: object
+                                parameters:
+                                    enable:
+                                        type: boolean
+                                    sensitivity:
+                                        type: integer
                             examples:
                                 response:
                                     value:
@@ -649,6 +663,11 @@ paths:
                     description: OK
                     content:
                         application/json:
+                            schema:
+                                type: object
+                                parameters:
+                                    enabled:
+                                        type: boolean
                             examples:
                                 response:
                                     value:
@@ -1080,6 +1099,11 @@ components:
                     example:
                         - tls://1.1.1.1
                         - tls://1.0.0.1
+        UpstreamsConfigResponse:
+            type: object
+            description: Upstreams configuration response
+            additionalProperties: 
+                type: string
         Filter:
             type: object
             description: Filter subscription info
@@ -1785,10 +1809,10 @@ components:
                 $ref: "#/components/schemas/ClientsFindEntry"
         ClientsFindEntry:
             type: object
-            properties:
-                1.2.3.4:
-                    items:
-                        $ref: "#/components/schemas/ClientFindSubEntry"
+            additionalProperties: 
+                $ref: "#/components/schemas/ClientFindSubEntry"
+            example:
+                '1.2.3.4': "test"
 
         ClientFindSubEntry:
             type: object
