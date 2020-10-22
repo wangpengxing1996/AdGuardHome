@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "target": "es6",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "noResolve": false,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "baseUrl": "src",
+    "paths": {
+      "Actions/*": ["store/actions/*"],
+      "Apis/*": ["lib/apis/*"],
+      "Common": ["components/common/index"],
+      "Common/*": ["components/common/*"],
+      "Consts": ["lib/consts"],
+      "Components/*": ["components/*"],
+      "Entities/*": ["lib/entities/*"],
+      "Hooks": ["lib/hooks"],
+      "Routes": ["lib/routes"],
+      "Lib/*": ["lib/*"],
+      "Reducers/*": ["store/reducers/*"],
+      "Store": ["store/store"]
+    },
+    "types": [
+      "react",
+      "react-dom",
+      "node"
+    ]
+  },
+}
