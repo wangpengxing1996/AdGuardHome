@@ -1,5 +1,5 @@
 const path = require('path');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.config.base');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -13,7 +13,7 @@ module.exports = merge(baseConfig, {
     devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, '../../build/static'),
-        filename: 'app.bundle.[hash:5].js',
+        filename: '[name].bundle.[hash:5].js',
         publicPath: '/static/'
     },
     optimization: {

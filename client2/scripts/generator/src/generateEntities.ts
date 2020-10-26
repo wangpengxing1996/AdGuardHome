@@ -139,6 +139,14 @@ class EntitiesGenerator {
                 pType, isArray, isClass, isImport,
             ] = schemaParamParser(sProps[sPropName], this.openapi);
 
+            if (sPropName === 'auto_clients') {
+                console.log(pType, isArray, isClass, isImport)
+            }
+
+            if (pType === 'ClientsAutoArray') {
+                console.log(sPropName);
+            }
+
             if (isImport) {
                 importEntities.push({ type: pType, isClass });
             }

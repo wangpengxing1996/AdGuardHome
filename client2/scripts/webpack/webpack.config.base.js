@@ -2,9 +2,11 @@ const path = require('path');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 const tsconfig = require('../../tsconfig.json');
 
-
 module.exports = {
-    entry: './src/index.tsx',
+    entry: {
+        install: './src/Install.tsx',
+        main: './src/App.tsx'
+    },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.pcss'],
         alias: Object.keys(tsconfig.compilerOptions.paths).reduce((aliases, key) => {
@@ -49,6 +51,6 @@ module.exports = {
     },
 
     plugins: [
-        new AntdDayjsWebpackPlugin()
+        // new AntdDayjsWebpackPlugin()
     ],
 };

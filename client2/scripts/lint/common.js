@@ -3,11 +3,11 @@ module.exports = {
     parserOptions: {
         project: './tsconfig.json',
         ecmaFeatures: {
-            jsx: true,
+            jsx: true
         },
         extraFileExtensions: ['mjs', 'tsx', 'ts'],
         ecmaVersion: 2018,
-        sourceType: 'module',
+        sourceType: 'module'
     },
     plugins: ['react', '@typescript-eslint', 'import'],
     env: {
@@ -22,20 +22,33 @@ module.exports = {
             pragma: 'React',
             version: 'detect',
         },
+        'import/resolver': {
+            typescript: {
+                alwaysTryTypes: true
+            }
+        },
+        'import/parsers': {
+            '@typescript-eslint/parser': ['.ts', '.tsx'],
+        },
     },
     rules: {
+        '@typescript-eslint/explicit-module-boundary-types': 0,
         '@typescript-eslint/explicit-function-return-type': [0, { allowExpressions: true }],
         '@typescript-eslint/indent': ['error', 4],
         '@typescript-eslint/interface-name-prefix': [0, { prefixWithI: 'never' }],
         '@typescript-eslint/no-explicit-any': [0],
+        '@typescript-eslint/naming-convention': [2, {
+            selector: 'enum', format: ['UPPER_CASE', 'PascalCase'],
+        }],
         '@typescript-eslint/no-non-null-assertion': 0,
         'arrow-body-style': 'off',
         'consistent-return': 0,
-        'curly': [2, 'all'],
+        curly: [2, 'all'],
         'default-case': 0,
         'import/no-cycle': 0,
         'import/prefer-default-export': 'off',
-        'indent': [0, 4],
+        'import/no-named-as-default': 0,
+        indent: [0, 4],
         'no-alert': 2,
         'no-console': 2,
         'no-debugger': 2,
@@ -60,7 +73,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:import/errors',
         'plugin:import/warnings',
-        'plugin:import/typescript ',
+        'plugin:import/typescript',
     ],
     globals: {},
 };

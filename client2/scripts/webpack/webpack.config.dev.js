@@ -1,17 +1,22 @@
-const path = require('path');
-const merge = require('webpack-merge');
-const baseConfig = require('./webpack.config.base');
 const history = require('connect-history-api-fallback');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { merge } = require('webpack-merge');
+const path = require('path');
 const proxy = require('http-proxy-middleware');
 const Webpack = require('webpack');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { mainUrl } = require('../urls');
 
-const analyze = process.argv.indexOf('--analyze') !== -1;
+const { getDevServerConfig } = require('./helpers');
+const baseConfig = require('./webpack.config.base');
+
+const target = getDevServerConfig();
+
+const RESOURCES_PATH = path.resolve(__dirname, '../../');
+const HTML_PATH = path.resolve(RESOURCES_PATH, 'public/index.html');
+const HTML_INSTALL_PATH = path.resolve(RESOURCES_PATH, 'public/install.html');
+
 
 const options = {
-    target: mainUrl, // target host
+    target: `${target.host}:${target.port}`, // target host
     changeOrigin: true, // needed for virtual hosted sites
   };
 const apiProxy = proxy.createProxyMiddleware(options);
@@ -20,18 +25,17 @@ module.exports = merge(baseConfig, {
     mode: 'development',
     output: {
         path: path.resolve(__dirname, '../../build'),
-        filename: 'app.bundle.js',
+        filename: '[name].bundle.js',
     },
     optimization: {
         noEmitOnErrors: true,
     },
     devServer: {
-        host: "local.serveroid.com",
+        hot: true,
         port: 3000,
         historyApiFallback: true,
         before: (app) => {
-            app.use('/api/v1', apiProxy);
-            app.use('/auth', apiProxy);
+            app.use('/control', apiProxy);
             app.use(history({
                 rewrites: [
                     {
@@ -109,16 +113,20 @@ module.exports = merge(baseConfig, {
         new Webpack.DefinePlugin({
             DEV: true,
         }),
-        new BundleAnalyzerPlugin({
-          analyzerHost: '127.0.0.1',
-          analyzerMode: analyze ? 'server' : 'disabled',
-          analyzerPort: 8888,
-        }),
         new Webpack.HotModuleReplacementPlugin(),
         new Webpack.ProgressPlugin(),
         new HtmlWebpackPlugin({
-            template: './src/index.html',
             inject: true,
+            cache: false,
+            chunks: ['main'],
+            template: HTML_PATH,
+        }),
+        new HtmlWebpackPlugin({
+            inject: true,
+            cache: false,
+            chunks: ['install'],
+            filename: 'install.html',
+            template: HTML_INSTALL_PATH,
         }),
     ],
 });

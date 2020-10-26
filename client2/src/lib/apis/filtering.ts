@@ -115,6 +115,7 @@ export default class FilteringApi {
     }
 
     static async filteringSetRules(data: string): Promise<number | Error> {
+        const params =  String(data);
         return await fetch(`/filtering/set_rules`, {
             method: 'POST',
             headers: {

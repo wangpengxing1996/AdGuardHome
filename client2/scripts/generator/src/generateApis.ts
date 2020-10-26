@@ -214,13 +214,9 @@ class ApiGenerator {
 
             fetcher.setBodyText((w) => {
                 // Add data to URLSearchParams
-                if (contentType === 'application/x-www-form-urlencoded') {
-                    apiFile.addImportDeclaration({
-                        defaultImport: 'qs',
-                        moduleSpecifier: 'qs',
-                    });
+                if (contentType === 'text/plain') {
                     bodyParam.forEach((b) => {
-                        w.writeLine(`const params =  qs.stringify(${b.name});`);
+                        w.writeLine(`const params =  String(${b.name});`);
                     });
                 } else {
                     if (shouldValidate.length > 0) {

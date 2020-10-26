@@ -2,6 +2,7 @@
 // All changes will be overwrited on commit.
 export default class I18nApi {
     static async changeLanguage(data: string): Promise<number | Error> {
+        const params =  String(data);
         return await fetch(`/i18n/change_language`, {
             method: 'POST',
             headers: {

@@ -17,7 +17,7 @@ const TYPES = {
 };
 
 /**
- * @param schemaProp: string value - valueof shema.properties[key]
+ * @param schemaProp: valueof shema.properties[key]
  * @param openApi: openapi object
  * @returns [propType - basicType or import one, isArray, isClass, isImport]
  */
@@ -36,10 +36,22 @@ const schemaParamParser = (schemaProp: any, openApi: any): [string, boolean, boo
         const cl = openApi ? openApi.components.schemas[temp[temp.length - 1]] : {};
         if (cl.type === 'object' && !cl.oneOf) {
             isClass = true;
+        } else if (cl.type === 'array') {
+            const temp: any = schemaParamParser(cl.items, openApi);
+            type = `${temp[0]}`;
+            if (schemaProp === 'clients') {
+                console.log(temp);
+            }
+            isArray = true;
+            isClass = isClass || temp[2];
+            isImport = isImport || temp[3];
         }
     } else if (schemaProp.type === 'array') {
         const temp: any = schemaParamParser(schemaProp.items, openApi);
         type = `${temp[0]}`;
+        if (schemaProp === 'clients') {
+            console.log(temp);
+        }
         isArray = true;
         isClass = isClass || temp[2];
         isImport = isImport || temp[3];

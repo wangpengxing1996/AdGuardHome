@@ -4,7 +4,7 @@ import { getForm, GenericLocales, AvailableLocales } from './lib/plural';
 
 type ExternalFormater = (data: any) => any;
 
-class Translator<Locale extends GenericLocales[keyof GenericLocales], Formater = any, > {
+class Translator<Locale extends GenericLocales[keyof GenericLocales], Formater = any> {
     private _currentLocale: Locale;
 
     private _formatter: ExternalFormater = (data: string[]) => data.join('');
