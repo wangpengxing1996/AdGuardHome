@@ -22,7 +22,7 @@ export const messages: Record<Locale, Record<string, string>> = {
     [Locale.en]: enLang,
 };
 
-export const DEFAULT_LOCALE = Locale.ru;
+export const DEFAULT_LOCALE = Locale.en;
 
 export const reactFormater = (data: (JSX.Element | string)[]) => {
     if (data.every((d) => typeof d === 'string')) {

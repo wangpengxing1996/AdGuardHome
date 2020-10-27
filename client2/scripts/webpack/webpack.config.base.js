@@ -1,6 +1,11 @@
 const path = require('path');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const tsconfig = require('../../tsconfig.json');
+
+const RESOURCES_PATH = path.resolve(__dirname, '../../');
+const HTML_PATH = path.resolve(RESOURCES_PATH, 'public/index.html');
+const HTML_INSTALL_PATH = path.resolve(RESOURCES_PATH, 'public/install.html');
 
 module.exports = {
     entry: {
@@ -52,5 +57,18 @@ module.exports = {
 
     plugins: [
         // new AntdDayjsWebpackPlugin()
+        new HtmlWebpackPlugin({
+            inject: true,
+            cache: false,
+            chunks: ['main'],
+            template: HTML_PATH,
+        }),
+        new HtmlWebpackPlugin({
+            inject: true,
+            cache: false,
+            chunks: ['install'],
+            filename: 'install.html',
+            template: HTML_INSTALL_PATH,
+        }),
     ],
 };

@@ -19,7 +19,7 @@
       "Common": ["components/common/index"],
       "Common/*": ["components/common/*"],
       "Components/*": ["components/*"],
-      "Consts": ["lib/consts"],
+      "Consts/*": ["lib/consts/*"],
       "Entities/*": ["lib/entities/*"],
       "Hooks": ["lib/hooks"],
       "Lib/*": ["lib/*"],
@@ -33,5 +33,7 @@
       "react-dom",
       "node"
     ]
-  }
+  },
+  "include": ["src/**/*", "./declaration.d.ts"],
+  "exclude": ["./node_modules/**/*"]
 }

@@ -1,6 +1,9 @@
+import './main.pcss';
+import './lib/ant/ant.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Store, { storeValue } from 'Store';
+import './lib/ant';
 
 import App from './components/App';
 

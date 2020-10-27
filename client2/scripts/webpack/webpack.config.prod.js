@@ -5,14 +5,15 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
 const Webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+
+console.log(path.resolve(__dirname, '../../../build/static'))
 
 module.exports = merge(baseConfig, {
     mode: 'production',
     devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, '../../build/static'),
+        path: path.resolve(__dirname, '../../../build/static'),
         filename: '[name].bundle.[hash:5].js',
         publicPath: '/static/'
     },
@@ -88,15 +89,5 @@ module.exports = merge(baseConfig, {
         new MiniCssExtractPlugin({
             filename: 'bundle.[hash:5].css',
         }),
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: '../index.html',
-            inject: true,
-        }),
-        new CopyPlugin({
-            patterns: [
-              { from: 'favicons/*', flatten: true },
-            ],
-          }),
     ]
 });

@@ -1,5 +1,4 @@
 const history = require('connect-history-api-fallback');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { merge } = require('webpack-merge');
 const path = require('path');
 const proxy = require('http-proxy-middleware');
@@ -9,11 +8,6 @@ const { getDevServerConfig } = require('./helpers');
 const baseConfig = require('./webpack.config.base');
 
 const target = getDevServerConfig();
-
-const RESOURCES_PATH = path.resolve(__dirname, '../../');
-const HTML_PATH = path.resolve(RESOURCES_PATH, 'public/index.html');
-const HTML_INSTALL_PATH = path.resolve(RESOURCES_PATH, 'public/install.html');
-
 
 const options = {
     target: `${target.host}:${target.port}`, // target host
@@ -31,7 +25,6 @@ module.exports = merge(baseConfig, {
         noEmitOnErrors: true,
     },
     devServer: {
-        hot: true,
         port: 3000,
         historyApiFallback: true,
         before: (app) => {
@@ -115,18 +108,5 @@ module.exports = merge(baseConfig, {
         }),
         new Webpack.HotModuleReplacementPlugin(),
         new Webpack.ProgressPlugin(),
-        new HtmlWebpackPlugin({
-            inject: true,
-            cache: false,
-            chunks: ['main'],
-            template: HTML_PATH,
-        }),
-        new HtmlWebpackPlugin({
-            inject: true,
-            cache: false,
-            chunks: ['install'],
-            filename: 'install.html',
-            template: HTML_INSTALL_PATH,
-        }),
     ],
 });

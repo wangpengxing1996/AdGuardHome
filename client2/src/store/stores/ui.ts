@@ -18,7 +18,7 @@ export class UI {
         });
     }
 
-    unpdateLang(lang: Locale) {
+    updateLang(lang: Locale) {
         this.currentLang = lang;
         this.intl = this.intl.updateTranslator(lang);
     }
