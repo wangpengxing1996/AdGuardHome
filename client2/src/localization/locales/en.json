@@ -1,4 +1,15 @@
 {
+    "back": "Back",
+    "next": "Next",
+
     "install_wellcome_title": "Welcome to AdGuard Home",
-    "install_wellcome_desc": "You have installed AdGuard Home on your device. It is a network-wide ad-and-tracker blocking DNS server with Admin Web interface. Let’s set some settings to correct DNS working"
+    "install_wellcome_desc": "You have installed AdGuard Home on your device. It is a network-wide ad-and-tracker blocking DNS server with Admin Web interface. Let’s set some settings to correct DNS working",
+    "install_wellcome_button": "Let's go",
+
+    "admin_interface_title": "Admin interface settings",
+    "admin_interface_title_decs": "Admin web interface is used to control AdGuard Home. You can open it in your browser and it does not require using a client-side program",
+    "admin_interface_where_interface": "Where can I open Admin interface",
+    "admin_interface_where_interface_desc": "Set what kind of networks will be able to access to Admin interface. For example: if you choose a local   interface only, then Admin inteface will be accessed by this local device only ",
+    "admin_interface_port": "Where can I open Admin interface",
+    "admin_interface_port_desc": "Set what kind of networks will be able to access to Admin interface. For example: if you choose a local   interface only, then Admin inteface will be accessed by this local device only "
 }

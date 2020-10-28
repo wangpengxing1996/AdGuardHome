@@ -18,8 +18,8 @@ export class UI {
         });
     }
 
-    updateLang(lang: Locale) {
+    updateLang = (lang: Locale) => {
         this.currentLang = lang;
         this.intl = this.intl.updateTranslator(lang);
-    }
+    };
 }
