@@ -28,7 +28,7 @@ const Welcome: FC<WelcomeProps> = observer(({ onNext }) => {
             <Button
                 size="large"
                 type="primary"
-                className={s.button}
+                className={theme.button.button}
                 onClick={onNext}
             >
                 {intl.getMessage('install_wellcome_button')}

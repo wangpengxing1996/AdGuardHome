@@ -1,5 +1,5 @@
 import React, { FC, useContext } from 'react';
-import { Button } from 'antd';
+import { Radio } from 'antd';
 import cn from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { FormikHelpers } from 'formik';
@@ -9,6 +9,9 @@ import theme from 'Lib/theme';
 
 import s from './AdminInterface.module.pcss';
 import { FormValues } from '../Install';
+import StepButtons from './StepButtons';
+
+const { Group } = Radio;
 
 interface AdminInterfaceProps {
     values: FormValues;
@@ -35,23 +38,14 @@ const AdminInterface: FC<AdminInterfaceProps> = observer(({
                 {intl.getMessage('admin_interface_where_interface_desc')}
             </div>
             <div>
-                <Button
-                    size="large"
-                    type="ghost"
-                    className={s.button}
-                    onClick={() => setFieldValue('step', 0)}
-                >
-                    {intl.getMessage('back')}
-                </Button>
-                <Button
-                    size="large"
-                    type="primary"
-                    className={s.button}
-                    onClick={() => setFieldValue('step', 2)}
-                >
-                    {intl.getMessage('next')}
-                </Button>
+                <Group>
+                    <Radio>
+                        
+                    </Radio>
+                </Group>
+
             </div>
+            <StepButtons setFieldValue={setFieldValue} currentStep={1} />
         </div>
     );
 });
