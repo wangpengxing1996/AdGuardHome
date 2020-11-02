@@ -1695,16 +1695,12 @@ components:
                 name:
                     type: string
                     example: eth0
-                ipv4_addresses:
+                ip_addresses:
                     type: array
                     items:
                         type: string
-                ipv6_addresses:
-                    type: array
-                    items:
-                        type: string
-                gateway_ip:
-                    type: string
+                mtu:
+                    type: number
         AddressInfo:
             type: object
             description: Port information
