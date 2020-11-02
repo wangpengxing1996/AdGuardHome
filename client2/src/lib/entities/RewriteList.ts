@@ -14,11 +14,11 @@ export default class RewriteList {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -27,22 +27,5 @@ export default class RewriteList {
 
     update(props: IRewriteList): RewriteList {
         return new RewriteList(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        }
-;
-
-    mergeDeepWith(props: Partial<RewriteList>): RewriteList {
-        const updateData: Partial<IRewriteList> = {};
-        Object.keys(props).forEach((key: keyof RewriteList) => {
-            const updateKey = this.keys[key] as keyof IRewriteList;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IRewriteList, keyof IRewriteList>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new RewriteList({ ...this.serialize(), ...updateData });
     }
 }

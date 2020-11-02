@@ -11,7 +11,7 @@ import VersionInfo, { IVersionInfo } from 'Entities/VersionInfo';
 // All changes will be overwrited on commit.
 export default class GlobalApi {
     static async beginUpdate(): Promise<number | Error> {
-        return await fetch(`/update`, {
+        return await fetch(`/control/update`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -29,7 +29,7 @@ export default class GlobalApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/dns_config`, {
+        return await fetch(`/control/dns_config`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export default class GlobalApi {
     }
 
     static async dnsInfo(): Promise<IDNSConfig | Error> {
-        return await fetch(`/dns_info`, {
+        return await fetch(`/control/dns_info`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -57,7 +57,7 @@ export default class GlobalApi {
     }
 
     static async getProfile(): Promise<IProfileInfo | Error> {
-        return await fetch(`/profile`, {
+        return await fetch(`/control/profile`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -75,7 +75,7 @@ export default class GlobalApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/version.json`, {
+        return await fetch(`/control/version.json`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ export default class GlobalApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/login`, {
+        return await fetch(`/control/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export default class GlobalApi {
     }
 
     static async logout(): Promise<number | Error> {
-        return await fetch(`/logout`, {
+        return await fetch(`/control/logout`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -125,7 +125,7 @@ export default class GlobalApi {
     }
 
     static async status(): Promise<IServerStatus | Error> {
-        return await fetch(`/status`, {
+        return await fetch(`/control/status`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -143,7 +143,7 @@ export default class GlobalApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/test_upstream_dns`, {
+        return await fetch(`/control/test_upstream_dns`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

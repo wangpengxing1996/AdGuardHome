@@ -13,7 +13,7 @@ export default class LogApi {
             search: search,
             response_status: response_status,
         }
-        return await fetch(`/querylog?${qs.stringify(queryParams, { arrayFormat: 'comma' })}`, {
+        return await fetch(`/control/querylog?${qs.stringify(queryParams, { arrayFormat: 'comma' })}`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -31,7 +31,7 @@ export default class LogApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/querylog_config`, {
+        return await fetch(`/control/querylog_config`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export default class LogApi {
     }
 
     static async queryLogInfo(): Promise<IQueryLogConfig | Error> {
-        return await fetch(`/querylog_info`, {
+        return await fetch(`/control/querylog_info`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -59,7 +59,7 @@ export default class LogApi {
     }
 
     static async querylogClear(): Promise<number | Error> {
-        return await fetch(`/querylog_clear`, {
+        return await fetch(`/control/querylog_clear`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {

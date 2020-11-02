@@ -48,13 +48,13 @@ export default class RewriteEntry {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             domain: !this._domain ? true : typeof this._domain === 'string' && !this._domain ? true : this._domain,
             answer: !this._answer ? true : typeof this._answer === 'string' && !this._answer ? true : this._answer,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -63,24 +63,5 @@ export default class RewriteEntry {
 
     update(props: IRewriteEntry): RewriteEntry {
         return new RewriteEntry(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        answer: 'answer',
-        domain: 'domain',
-        }
-;
-
-    mergeDeepWith(props: Partial<RewriteEntry>): RewriteEntry {
-        const updateData: Partial<IRewriteEntry> = {};
-        Object.keys(props).forEach((key: keyof RewriteEntry) => {
-            const updateKey = this.keys[key] as keyof IRewriteEntry;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IRewriteEntry, keyof IRewriteEntry>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new RewriteEntry({ ...this.serialize(), ...updateData });
     }
 }

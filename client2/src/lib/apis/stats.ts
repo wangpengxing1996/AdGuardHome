@@ -5,7 +5,7 @@ import StatsConfig, { IStatsConfig } from 'Entities/StatsConfig';
 // All changes will be overwrited on commit.
 export default class StatsApi {
     static async stats(): Promise<IStats | Error> {
-        return await fetch(`/stats`, {
+        return await fetch(`/control/stats`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -23,7 +23,7 @@ export default class StatsApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/stats_config`, {
+        return await fetch(`/control/stats_config`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export default class StatsApi {
     }
 
     static async statsInfo(): Promise<IStatsConfig | Error> {
-        return await fetch(`/stats_info`, {
+        return await fetch(`/control/stats_info`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -51,7 +51,7 @@ export default class StatsApi {
     }
 
     static async statsReset(): Promise<number | Error> {
-        return await fetch(`/stats_reset`, {
+        return await fetch(`/control/stats_reset`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {

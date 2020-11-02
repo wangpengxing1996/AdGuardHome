@@ -27,12 +27,12 @@ export default class FilterRefreshRequest {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             whitelist: !this._whitelist ? true : typeof this._whitelist === 'boolean',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -41,23 +41,5 @@ export default class FilterRefreshRequest {
 
     update(props: IFilterRefreshRequest): FilterRefreshRequest {
         return new FilterRefreshRequest(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        whitelist: 'whitelist',
-        }
-;
-
-    mergeDeepWith(props: Partial<FilterRefreshRequest>): FilterRefreshRequest {
-        const updateData: Partial<IFilterRefreshRequest> = {};
-        Object.keys(props).forEach((key: keyof FilterRefreshRequest) => {
-            const updateKey = this.keys[key] as keyof IFilterRefreshRequest;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IFilterRefreshRequest, keyof IFilterRefreshRequest>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new FilterRefreshRequest({ ...this.serialize(), ...updateData });
     }
 }

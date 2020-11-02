@@ -10,7 +10,7 @@ export default class RewriteApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/rewrite/add`, {
+        return await fetch(`/control/rewrite/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export default class RewriteApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/rewrite/delete`, {
+        return await fetch(`/control/rewrite/delete`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export default class RewriteApi {
     }
 
     static async rewriteList(): Promise<IRewriteEntry[] | Error> {
-        return await fetch(`/rewrite/list`, {
+        return await fetch(`/control/rewrite/list`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {

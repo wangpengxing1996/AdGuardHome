@@ -14,7 +14,6 @@ const importConfig = () => {
             bind_port,
         };
     } catch (e) {
-        console.error(e);
         return {
             bind_host: ZERO_HOST,
             bind_port: DEFAULT_PORT,
@@ -27,7 +26,7 @@ const getDevServerConfig = () => {
     const { DEV_SERVER_PORT } = process.env;
 
     const devServerHost = host === ZERO_HOST ? LOCALHOST : host;
-    const devServerPort = DEV_SERVER_PORT || port + 8000;
+    const devServerPort = 3000 || port + 8000;
 
     return {
         host: devServerHost,

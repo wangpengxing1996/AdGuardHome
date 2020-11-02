@@ -28,12 +28,12 @@ export default class StatsConfig {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             interval: !this._interval ? true : typeof this._interval === 'number',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -42,23 +42,5 @@ export default class StatsConfig {
 
     update(props: IStatsConfig): StatsConfig {
         return new StatsConfig(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        interval: 'interval',
-        }
-;
-
-    mergeDeepWith(props: Partial<StatsConfig>): StatsConfig {
-        const updateData: Partial<IStatsConfig> = {};
-        Object.keys(props).forEach((key: keyof StatsConfig) => {
-            const updateKey = this.keys[key] as keyof IStatsConfig;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IStatsConfig, keyof IStatsConfig>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new StatsConfig({ ...this.serialize(), ...updateData });
     }
 }

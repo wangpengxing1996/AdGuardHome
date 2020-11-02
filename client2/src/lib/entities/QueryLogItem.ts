@@ -227,7 +227,7 @@ export default class QueryLogItem {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             answer: !this._answer ? true : this._answer.reduce((result, p) => result && p.validate().length === 0, true),
             original_answer: !this._original_answer ? true : this._original_answer.reduce((result, p) => result && p.validate().length === 0, true),
             upstream: !this._upstream ? true : typeof this._upstream === 'string' && !this._upstream ? true : this._upstream,
@@ -243,8 +243,8 @@ export default class QueryLogItem {
             time: !this._time ? true : typeof this._time === 'string' && !this._time ? true : this._time,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -253,36 +253,5 @@ export default class QueryLogItem {
 
     update(props: IQueryLogItem): QueryLogItem {
         return new QueryLogItem(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        answer: 'answer',
-        answerDnssec: 'answer_dnssec',
-        client: 'client',
-        clientProto: 'client_proto',
-        elapsedMs: 'elapsedMs',
-        filterId: 'filterId',
-        originalAnswer: 'original_answer',
-        question: 'question',
-        reason: 'reason',
-        rule: 'rule',
-        serviceName: 'service_name',
-        status: 'status',
-        time: 'time',
-        upstream: 'upstream',
-        }
-;
-
-    mergeDeepWith(props: Partial<QueryLogItem>): QueryLogItem {
-        const updateData: Partial<IQueryLogItem> = {};
-        Object.keys(props).forEach((key: keyof QueryLogItem) => {
-            const updateKey = this.keys[key] as keyof IQueryLogItem;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IQueryLogItem, keyof IQueryLogItem>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new QueryLogItem({ ...this.serialize(), ...updateData });
     }
 }

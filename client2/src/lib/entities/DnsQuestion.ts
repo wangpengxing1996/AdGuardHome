@@ -65,14 +65,14 @@ export default class DnsQuestion {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             class: !this._class ? true : typeof this._class === 'string' && !this._class ? true : this._class,
             host: !this._host ? true : typeof this._host === 'string' && !this._host ? true : this._host,
             type: !this._type ? true : typeof this._type === 'string' && !this._type ? true : this._type,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -81,25 +81,5 @@ export default class DnsQuestion {
 
     update(props: IDnsQuestion): DnsQuestion {
         return new DnsQuestion(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        class: 'class',
-        host: 'host',
-        type: 'type',
-        }
-;
-
-    mergeDeepWith(props: Partial<DnsQuestion>): DnsQuestion {
-        const updateData: Partial<IDnsQuestion> = {};
-        Object.keys(props).forEach((key: keyof DnsQuestion) => {
-            const updateKey = this.keys[key] as keyof IDnsQuestion;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IDnsQuestion, keyof IDnsQuestion>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new DnsQuestion({ ...this.serialize(), ...updateData });
     }
 }

@@ -68,15 +68,15 @@ export default class FilterStatus {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             enabled: !this._enabled ? true : typeof this._enabled === 'boolean',
             interval: !this._interval ? true : typeof this._interval === 'number',
             filters: !this._filters ? true : this._filters.reduce((result, p) => result && p.validate().length === 0, true),
             user_rules: !this._user_rules ? true : this._user_rules.reduce((result, p) => result && typeof p === 'string', true),
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -85,26 +85,5 @@ export default class FilterStatus {
 
     update(props: IFilterStatus): FilterStatus {
         return new FilterStatus(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        enabled: 'enabled',
-        filters: 'filters',
-        interval: 'interval',
-        userRules: 'user_rules',
-        }
-;
-
-    mergeDeepWith(props: Partial<FilterStatus>): FilterStatus {
-        const updateData: Partial<IFilterStatus> = {};
-        Object.keys(props).forEach((key: keyof FilterStatus) => {
-            const updateKey = this.keys[key] as keyof IFilterStatus;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IFilterStatus, keyof IFilterStatus>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new FilterStatus({ ...this.serialize(), ...updateData });
     }
 }

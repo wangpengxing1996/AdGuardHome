@@ -10,7 +10,7 @@ export default class TlsApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/tls/configure`, {
+        return await fetch(`/control/tls/configure`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export default class TlsApi {
     }
 
     static async tlsStatus(): Promise<ITlsConfig | Error> {
-        return await fetch(`/tls/status`, {
+        return await fetch(`/control/tls/status`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -44,7 +44,7 @@ export default class TlsApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/tls/validate`, {
+        return await fetch(`/control/tls/validate`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

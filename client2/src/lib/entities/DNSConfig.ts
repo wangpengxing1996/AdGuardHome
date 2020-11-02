@@ -217,7 +217,7 @@ export default class DNSConfig {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             bootstrap_dns: !this._bootstrap_dns ? true : this._bootstrap_dns.reduce((result, p) => result && typeof p === 'string', true),
             upstream_dns: !this._upstream_dns ? true : this._upstream_dns.reduce((result, p) => result && typeof p === 'string', true),
             upstream_dns_file: !this._upstream_dns_file ? true : typeof this._upstream_dns_file === 'string' && !this._upstream_dns_file ? true : this._upstream_dns_file,
@@ -234,8 +234,8 @@ export default class DNSConfig {
             cache_ttl_max: !this._cache_ttl_max ? true : typeof this._cache_ttl_max === 'number',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -244,37 +244,5 @@ export default class DNSConfig {
 
     update(props: IDNSConfig): DNSConfig {
         return new DNSConfig(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        blockingIpv4: 'blocking_ipv4',
-        blockingIpv6: 'blocking_ipv6',
-        blockingMode: 'blocking_mode',
-        bootstrapDns: 'bootstrap_dns',
-        cacheSize: 'cache_size',
-        cacheTtlMax: 'cache_ttl_max',
-        cacheTtlMin: 'cache_ttl_min',
-        dhcpAvailable: 'dhcp_available',
-        dnssecEnabled: 'dnssec_enabled',
-        ednsCsEnabled: 'edns_cs_enabled',
-        protectionEnabled: 'protection_enabled',
-        ratelimit: 'ratelimit',
-        upstreamDns: 'upstream_dns',
-        upstreamDnsFile: 'upstream_dns_file',
-        upstreamMode: 'upstream_mode',
-        }
-;
-
-    mergeDeepWith(props: Partial<DNSConfig>): DNSConfig {
-        const updateData: Partial<IDNSConfig> = {};
-        Object.keys(props).forEach((key: keyof DNSConfig) => {
-            const updateKey = this.keys[key] as keyof IDNSConfig;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IDNSConfig, keyof IDNSConfig>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new DNSConfig({ ...this.serialize(), ...updateData });
     }
 }

@@ -40,13 +40,13 @@ export default class FilterSetUrl {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             url: !this._url ? true : typeof this._url === 'string' && !this._url ? true : this._url,
             enabled: !this._enabled ? true : typeof this._enabled === 'boolean',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -55,24 +55,5 @@ export default class FilterSetUrl {
 
     update(props: IFilterSetUrl): FilterSetUrl {
         return new FilterSetUrl(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        enabled: 'enabled',
-        url: 'url',
-        }
-;
-
-    mergeDeepWith(props: Partial<FilterSetUrl>): FilterSetUrl {
-        const updateData: Partial<IFilterSetUrl> = {};
-        Object.keys(props).forEach((key: keyof FilterSetUrl) => {
-            const updateKey = this.keys[key] as keyof IFilterSetUrl;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IFilterSetUrl, keyof IFilterSetUrl>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new FilterSetUrl({ ...this.serialize(), ...updateData });
     }
 }

@@ -56,14 +56,14 @@ export default class CheckConfigResponse {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             dns: !this._dns ? true : this._dns.validate().length === 0,
             web: !this._web ? true : this._web.validate().length === 0,
             static_ip: !this._static_ip ? true : this._static_ip.validate().length === 0,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -72,25 +72,5 @@ export default class CheckConfigResponse {
 
     update(props: ICheckConfigResponse): CheckConfigResponse {
         return new CheckConfigResponse(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        dns: 'dns',
-        staticIp: 'static_ip',
-        web: 'web',
-        }
-;
-
-    mergeDeepWith(props: Partial<CheckConfigResponse>): CheckConfigResponse {
-        const updateData: Partial<ICheckConfigResponse> = {};
-        Object.keys(props).forEach((key: keyof CheckConfigResponse) => {
-            const updateKey = this.keys[key] as keyof ICheckConfigResponse;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<ICheckConfigResponse, keyof ICheckConfigResponse>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new CheckConfigResponse({ ...this.serialize(), ...updateData });
     }
 }

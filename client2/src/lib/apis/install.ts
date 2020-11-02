@@ -13,7 +13,7 @@ export default class InstallApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/install/check_config`, {
+        return await fetch(`/control/install/check_config`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ export default class InstallApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/install/configure`, {
+        return await fetch(`/control/install/configure`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export default class InstallApi {
     }
 
     static async installGetAddresses(): Promise<IAddressesInfo | Error> {
-        return await fetch(`/install/get_addresses`, {
+        return await fetch(`/control/install/get_addresses`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {

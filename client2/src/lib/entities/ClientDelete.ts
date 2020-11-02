@@ -27,12 +27,12 @@ export default class ClientDelete {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             name: !this._name ? true : typeof this._name === 'string' && !this._name ? true : this._name,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -41,23 +41,5 @@ export default class ClientDelete {
 
     update(props: IClientDelete): ClientDelete {
         return new ClientDelete(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        name: 'name',
-        }
-;
-
-    mergeDeepWith(props: Partial<ClientDelete>): ClientDelete {
-        const updateData: Partial<IClientDelete> = {};
-        Object.keys(props).forEach((key: keyof ClientDelete) => {
-            const updateKey = this.keys[key] as keyof IClientDelete;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IClientDelete, keyof IClientDelete>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new ClientDelete({ ...this.serialize(), ...updateData });
     }
 }

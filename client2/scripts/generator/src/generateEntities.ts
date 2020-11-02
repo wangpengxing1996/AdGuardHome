@@ -136,23 +136,18 @@ class EntitiesGenerator {
         // add server response interface to entityFile
         sortedSProps.forEach((sPropName) => {
             const [
-                pType, isArray, isClass, isImport,
+                pType, isArray, isClass, isImport, isAdditional
             ] = schemaParamParser(sProps[sPropName], this.openapi);
-
-            if (sPropName === 'auto_clients') {
-                console.log(pType, isArray, isClass, isImport)
-            }
-
-            if (pType === 'ClientsAutoArray') {
-                console.log(sPropName);
-            }
 
             if (isImport) {
                 importEntities.push({ type: pType, isClass });
             }
+            const propertyType = isAdditional
+                ? `{ [key: string]: ${isClass ? 'I' : ''}${pType}${isArray ? '[]' : ''} }`
+                : `${isClass ? 'I' : ''}${pType}${isArray ? '[]' : ''}`;
             entityInterface.addProperty({
                 name: sPropName,
-                type: `${isClass ? 'I' : ''}${pType}${isArray ? '[]' : ''}`,
+                type: propertyType,
                 hasQuestionToken: !(
                     (required && required.includes(sPropName)) || sProps[sPropName].required
                 ),
@@ -192,18 +187,23 @@ class EntitiesGenerator {
 
         // addProperties to class;
         sortedSProps.forEach((sPropName) => {
-            const [pType, isArray, isClass, isImport] = schemaParamParser(sProps[sPropName], this.openapi);
+            const [pType, isArray, isClass, isImport, isAdditional] = schemaParamParser(sProps[sPropName], this.openapi);
 
             const isRequred = (required && required.includes(sPropName))
                 || sProps[sPropName].required;
+
+            const propertyType = isAdditional
+                ? `{ [key: string]: ${pType}${isArray ? '[]' : ''}${isRequred ? '' : ' | undefined'} }`
+                : `${pType}${isArray ? '[]' : ''}${isRequred ? '' : ' | undefined'}`;
+
             entityClass.addProperty({
                 name: `_${sPropName}`,
                 isReadonly: true,
-                type: `${pType}${isArray ? '[]' : ''}${isRequred ? '' : ' | undefined'}`,
+                type: propertyType,
             });
             const getter = entityClass.addGetAccessor({
                 name: toCamel(sPropName),
-                returnType: `${pType}${isArray ? '[]' : ''}${isRequred ? '' : ' | undefined'}`,
+                returnType: propertyType,
                 statements: [`return this._${sPropName};`],
             });
             const { description, example, minItems, maxItems, maxLength, minLength, maximum, minimum } = sProps[sPropName];
@@ -321,7 +321,7 @@ class EntitiesGenerator {
         ctor.setBodyText((w) => {
             sortedSProps.forEach((sPropName) => {
                 const [
-                    pType, isArray, isClass,
+                    pType, isArray, isClass, , isAdditional
                 ] = schemaParamParser(sProps[sPropName], this.openapi);
                 const req = (required && required.includes(sPropName))
                     || sProps[sPropName].required;
@@ -332,15 +332,37 @@ class EntitiesGenerator {
                         w.writeLine(`if (props.${sPropName}) {`);
                     }
                 }
-                if (isArray && isClass) {
-                    w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = props.${sPropName}.map((p) => new ${pType}(p));`);
-                } else if (isClass) {
-                    w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = new ${pType}(props.${sPropName});`);
-                } else {
-                    if (pType === 'string' && !isArray) {
-                        w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = props.${sPropName}.trim();`);
+                if (isAdditional) {
+                    if (isArray && isClass) {
+                        w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = props.${sPropName}.map((p) => Object.keys(p).reduce((prev, key) => {
+                            return { ...prev, [key]: new ${pType}(p[key])};
+                        },{}))`);
+                    } else if (isClass) {
+                        w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = Object.keys(props.${sPropName}).reduce((prev, key) => {
+                            return { ...prev, [key]: new ${pType}(props.${sPropName}[key])};
+                        },{})`);
                     } else {
-                        w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = props.${sPropName};`);
+                        if (pType === 'string' && !isArray) {
+                            w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = Object.keys(props.${sPropName}).reduce((prev, key) => {
+                                return { ...prev, [key]: props.${sPropName}[key].trim()};
+                            },{})`);
+                        } else {
+                            w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = Object.keys(props.${sPropName}).reduce((prev, key) => {
+                                return { ...prev, [key]: props.${sPropName}[key]};
+                            },{})`);
+                        }
+                    }
+                } else {
+                    if (isArray && isClass) {
+                        w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = props.${sPropName}.map((p) => new ${pType}(p));`);
+                    } else if (isClass) {
+                        w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = new ${pType}(props.${sPropName});`);
+                    } else {
+                        if (pType === 'string' && !isArray) {
+                            w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = props.${sPropName}.trim();`);
+                        } else {
+                            w.writeLine(`${!req ? '    ' : ''}this._${sPropName} = props.${sPropName};`);
+                        }
                     }
                 }
                 if (!req) {
@@ -361,32 +383,53 @@ class EntitiesGenerator {
             sortedSProps.forEach((sPropName) => {
                 const req = (required && required.includes(sPropName))
                     || sProps[sPropName].required;
-                const [, isArray, isClass] = schemaParamParser(sProps[sPropName], this.openapi);
+                const [, isArray, isClass, , isAdditional] = schemaParamParser(sProps[sPropName], this.openapi);
                 if (!req) {
                     unReqFields.push(sPropName);
                     return;
                 }
-                if (isArray && isClass) {
-                    w.writeLine(`    ${sPropName}: this._${sPropName}.map((p) => p.serialize()),`);
-                } else if (isClass) {
-                    w.writeLine(`    ${sPropName}: this._${sPropName}.serialize(),`);
+                if (isAdditional) {
+                    if (isArray && isClass) {
+                        w.writeLine(`    ${sPropName}: this._${sPropName}.map((p) => Object.keys(p).reduce((prev, key) => ({ ...prev, [key]: p[key].serialize() }))),`);
+                    } else if (isClass) {
+                        w.writeLine(`    ${sPropName}: Object.keys(this._${sPropName}).reduce((prev, key) => ({ ...prev, [key]: this._${sPropName}[key].serialize() })),`);
+                    } else {
+                        w.writeLine(`    ${sPropName}: Object.keys(this._${sPropName}).reduce((prev, key) => ({ ...prev, [key]: this._${sPropName}[key] })),`);
+                    }
                 } else {
-                    w.writeLine(`    ${sPropName}: this._${sPropName},`);
-                    
+                    if (isArray && isClass) {
+                        w.writeLine(`    ${sPropName}: this._${sPropName}.map((p) => p.serialize()),`);
+                    } else if (isClass) {
+                        w.writeLine(`    ${sPropName}: this._${sPropName}.serialize(),`);
+                    } else {
+                        w.writeLine(`    ${sPropName}: this._${sPropName},`);
+                    }
                 }
+
             });
             w.writeLine('};');
             unReqFields.forEach((sPropName) => {
-                const [, isArray, isClass] = schemaParamParser(sProps[sPropName], this.openapi);
+                const [, isArray, isClass, , isAdditional] = schemaParamParser(sProps[sPropName], this.openapi);
                 w.writeLine(`if (typeof this._${sPropName} !== 'undefined') {`);
-                if (isArray && isClass) {
-                    w.writeLine(`    data.${sPropName} = this._${sPropName}.map((p) => p.serialize());`);
-                } else if (isClass) {
-                    w.writeLine(`    data.${sPropName} = this._${sPropName}.serialize();`);
+                if (isAdditional) {
+                    if (isArray && isClass) {
+                        w.writeLine(`    data.${sPropName} = this._${sPropName}.map((p) => Object.keys(p).reduce((prev, key) => ({ ...prev, [key]: p[key].serialize() }), {}));`);
+                    } else if (isClass) {
+                        w.writeLine(`    data.${sPropName} = Object.keys(this._${sPropName}).reduce((prev, key) => ({ ...prev, [key]: this._${sPropName}[key].serialize() }), {});`);
+                    } else {
+                        w.writeLine(`    data.${sPropName} = Object.keys(this._${sPropName}).reduce((prev, key) => ({ ...prev, [key]: this._${sPropName}[key] }), {});`);
+                    }
                 } else {
-                    w.writeLine(`    data.${sPropName} = this._${sPropName};`);
-                    
+                    if (isArray && isClass) {
+                        w.writeLine(`    data.${sPropName} = this._${sPropName}.map((p) => p.serialize());`);
+                    } else if (isClass) {
+                        w.writeLine(`    data.${sPropName} = this._${sPropName}.serialize();`);
+                    } else {
+                        w.writeLine(`    data.${sPropName} = this._${sPropName};`);
+                        
+                    }
                 }
+                
                 w.writeLine(`}`);
             });
             w.writeLine('return data;');
@@ -399,15 +442,18 @@ class EntitiesGenerator {
             returnType: `string[]`,
         })
         validate.setBodyText((w) => {
-            w.writeLine('const validateRequired = {');
+            w.writeLine('const validate = {');
             Object.keys(sProps || {}).forEach((sPropName) => {
-                const [pType, isArray, isClass] = schemaParamParser(sProps[sPropName], this.openapi);
+                const [pType, isArray, isClass, , isAdditional] = schemaParamParser(sProps[sPropName], this.openapi);
+
                 const { maxLength, minLength, maximum, minimum } = sProps[sPropName];
+
                 const isRequired = (required && required.includes(sPropName)) || sProps[sPropName].required;
                 const nonRequiredCall = isRequired ? `this._${sPropName}` : `!this._${sPropName} ? true : this._${sPropName}`;
+
                 if (isArray && isClass) {
                     w.writeLine(`    ${sPropName}: ${nonRequiredCall}.reduce((result, p) => result && p.validate().length === 0, true),`);
-                } else if (isClass) {
+                } else if (isClass && !isAdditional) {
                     w.writeLine(`    ${sPropName}: ${nonRequiredCall}.validate().length === 0,`);        
                 } else {
                     if (pType === 'string') {
@@ -439,8 +485,8 @@ class EntitiesGenerator {
             });
             w.writeLine('};');
             w.writeLine('const isError: string[] = [];')
-            w.writeLine('Object.keys(validateRequired).forEach((key) => {');
-            w.writeLine('    if (!(validateRequired as any)[key]) {');
+            w.writeLine('Object.keys(validate).forEach((key) => {');
+            w.writeLine('    if (!(validate as any)[key]) {');
             w.writeLine('        isError.push(key);');
             w.writeLine('    }');
             w.writeLine('});');
@@ -460,43 +506,6 @@ class EntitiesGenerator {
         });
         update.setBodyText((w) => { w.writeLine(`return new ${sName}(props);`); });
 
-
-        // add compare keys of method
-        const keys = entityClass.addProperty({
-            name: 'keys',
-            isReadonly: true,
-            type: '{ [key: string]: string }',
-        });
-        keys.setInitializer((w) => {
-            w.writeLine('{');
-            sortedSProps.forEach((sPropName) => {
-                w.writeLine(`${toCamel(sPropName)}: '${sPropName}',`);
-            });
-            w.writeLine('}');
-        });
-
-        // add mergeDeepWith method;
-        const mergeDeepWith = entityClass.addMethod({
-            isStatic: false,
-            name: 'mergeDeepWith',
-            returnType: `${sName}`,
-        });
-        mergeDeepWith.addParameter({
-            name: 'props',
-            type: `Partial<${sName}>`,
-        });
-        mergeDeepWith.setBodyText((w) => {
-            w.writeLine(`const updateData: Partial<I${sName}> = {};`);
-            w.writeLine(`Object.keys(props).forEach((key: keyof ${sName}) => {`);
-            w.writeLine(`    const updateKey = this.keys[key] as keyof I${sName};`);
-            w.writeLine('    if ((props[key] as any).serialize) {');
-            w.writeLine(`        (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<I${sName}, keyof I${sName}>;`);
-            w.writeLine('    } else {');
-            w.writeLine('        (updateData[updateKey] as any) = props[key];');
-            w.writeLine('    }');
-            w.writeLine('});');
-            w.writeLine(`return new ${sName}({ ...this.serialize(), ...updateData });`);
-        });
         this.entities.push(entityFile);
     };
 

@@ -27,12 +27,12 @@ export default class WhoisInfo {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             key: !this._key ? true : typeof this._key === 'string' && !this._key ? true : this._key,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -41,23 +41,5 @@ export default class WhoisInfo {
 
     update(props: IWhoisInfo): WhoisInfo {
         return new WhoisInfo(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        key: 'key',
-        }
-;
-
-    mergeDeepWith(props: Partial<WhoisInfo>): WhoisInfo {
-        const updateData: Partial<IWhoisInfo> = {};
-        Object.keys(props).forEach((key: keyof WhoisInfo) => {
-            const updateKey = this.keys[key] as keyof IWhoisInfo;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IWhoisInfo, keyof IWhoisInfo>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new WhoisInfo({ ...this.serialize(), ...updateData });
     }
 }

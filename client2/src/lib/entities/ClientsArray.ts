@@ -14,11 +14,11 @@ export default class ClientsArray {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -27,22 +27,5 @@ export default class ClientsArray {
 
     update(props: IClientsArray): ClientsArray {
         return new ClientsArray(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        }
-;
-
-    mergeDeepWith(props: Partial<ClientsArray>): ClientsArray {
-        const updateData: Partial<IClientsArray> = {};
-        Object.keys(props).forEach((key: keyof ClientsArray) => {
-            const updateKey = this.keys[key] as keyof IClientsArray;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IClientsArray, keyof IClientsArray>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new ClientsArray({ ...this.serialize(), ...updateData });
     }
 }

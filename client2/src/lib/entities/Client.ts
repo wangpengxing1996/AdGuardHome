@@ -149,7 +149,7 @@ export default class Client {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             name: !this._name ? true : typeof this._name === 'string' && !this._name ? true : this._name,
             ids: !this._ids ? true : this._ids.reduce((result, p) => result && typeof p === 'string', true),
             use_global_settings: !this._use_global_settings ? true : typeof this._use_global_settings === 'boolean',
@@ -162,8 +162,8 @@ export default class Client {
             upstreams: !this._upstreams ? true : this._upstreams.reduce((result, p) => result && typeof p === 'string', true),
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -172,32 +172,5 @@ export default class Client {
 
     update(props: IClient): Client {
         return new Client(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        blockedServices: 'blocked_services',
-        filteringEnabled: 'filtering_enabled',
-        ids: 'ids',
-        name: 'name',
-        parentalEnabled: 'parental_enabled',
-        safebrowsingEnabled: 'safebrowsing_enabled',
-        safesearchEnabled: 'safesearch_enabled',
-        upstreams: 'upstreams',
-        useGlobalBlockedServices: 'use_global_blocked_services',
-        useGlobalSettings: 'use_global_settings',
-        }
-;
-
-    mergeDeepWith(props: Partial<Client>): Client {
-        const updateData: Partial<IClient> = {};
-        Object.keys(props).forEach((key: keyof Client) => {
-            const updateKey = this.keys[key] as keyof IClient;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IClient, keyof IClient>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new Client({ ...this.serialize(), ...updateData });
     }
 }

@@ -27,12 +27,12 @@ export default class TopArrayEntry {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             domain_or_ip: !this._domain_or_ip ? true : typeof this._domain_or_ip === 'number',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -41,23 +41,5 @@ export default class TopArrayEntry {
 
     update(props: ITopArrayEntry): TopArrayEntry {
         return new TopArrayEntry(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        domainOrIp: 'domain_or_ip',
-        }
-;
-
-    mergeDeepWith(props: Partial<TopArrayEntry>): TopArrayEntry {
-        const updateData: Partial<ITopArrayEntry> = {};
-        Object.keys(props).forEach((key: keyof TopArrayEntry) => {
-            const updateKey = this.keys[key] as keyof ITopArrayEntry;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<ITopArrayEntry, keyof ITopArrayEntry>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new TopArrayEntry({ ...this.serialize(), ...updateData });
     }
 }

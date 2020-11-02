@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { FormikHelpers } from 'formik';
 
-import Store from 'Store';
+import Store from 'Store/installStore';
 import theme from 'Lib/theme';
 
 import s from './AdminInterface.module.pcss';
@@ -22,7 +22,8 @@ const AdminInterface: FC<AdminInterfaceProps> = observer(({
     values,
     setFieldValue,
 }) => {
-    const { ui: { intl } } = useContext(Store);
+    const { ui: { intl }, install: { addresses } } = useContext(Store);
+    console.log(addresses);
     return (
         <div className={s.content}>
             <div className={theme.typo.title}>
@@ -40,7 +41,6 @@ const AdminInterface: FC<AdminInterfaceProps> = observer(({
             <div>
                 <Group>
                     <Radio>
-                        
                     </Radio>
                 </Group>
 

@@ -2,7 +2,7 @@
 // All changes will be overwrited on commit.
 export default class SafesearchApi {
     static async safesearchDisable(): Promise<number | Error> {
-        return await fetch(`/safesearch/disable`, {
+        return await fetch(`/control/safesearch/disable`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -14,7 +14,7 @@ export default class SafesearchApi {
     }
 
     static async safesearchEnable(): Promise<number | Error> {
-        return await fetch(`/safesearch/enable`, {
+        return await fetch(`/control/safesearch/enable`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -26,7 +26,7 @@ export default class SafesearchApi {
     }
 
     static async safesearchStatus(): Promise<any | Error> {
-        return await fetch(`/safesearch/status`, {
+        return await fetch(`/control/safesearch/status`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {

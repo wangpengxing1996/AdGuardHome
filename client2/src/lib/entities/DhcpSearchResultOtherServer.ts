@@ -45,13 +45,13 @@ export default class DhcpSearchResultOtherServer {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             found: !this._found ? true : typeof this._found === 'string' && !this._found ? true : this._found,
             error: !this._error ? true : typeof this._error === 'string' && !this._error ? true : this._error,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -60,24 +60,5 @@ export default class DhcpSearchResultOtherServer {
 
     update(props: IDhcpSearchResultOtherServer): DhcpSearchResultOtherServer {
         return new DhcpSearchResultOtherServer(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        error: 'error',
-        found: 'found',
-        }
-;
-
-    mergeDeepWith(props: Partial<DhcpSearchResultOtherServer>): DhcpSearchResultOtherServer {
-        const updateData: Partial<IDhcpSearchResultOtherServer> = {};
-        Object.keys(props).forEach((key: keyof DhcpSearchResultOtherServer) => {
-            const updateKey = this.keys[key] as keyof IDhcpSearchResultOtherServer;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IDhcpSearchResultOtherServer, keyof IDhcpSearchResultOtherServer>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new DhcpSearchResultOtherServer({ ...this.serialize(), ...updateData });
     }
 }

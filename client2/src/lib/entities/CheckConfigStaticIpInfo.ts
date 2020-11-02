@@ -62,14 +62,14 @@ export default class CheckConfigStaticIpInfo {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             static: !this._static ? true : typeof this._static === 'string' && !this._static ? true : this._static,
             ip: !this._ip ? true : typeof this._ip === 'string' && !this._ip ? true : this._ip,
             error: !this._error ? true : typeof this._error === 'string' && !this._error ? true : this._error,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -78,25 +78,5 @@ export default class CheckConfigStaticIpInfo {
 
     update(props: ICheckConfigStaticIpInfo): CheckConfigStaticIpInfo {
         return new CheckConfigStaticIpInfo(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        error: 'error',
-        ip: 'ip',
-        static: 'static',
-        }
-;
-
-    mergeDeepWith(props: Partial<CheckConfigStaticIpInfo>): CheckConfigStaticIpInfo {
-        const updateData: Partial<ICheckConfigStaticIpInfo> = {};
-        Object.keys(props).forEach((key: keyof CheckConfigStaticIpInfo) => {
-            const updateKey = this.keys[key] as keyof ICheckConfigStaticIpInfo;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<ICheckConfigStaticIpInfo, keyof ICheckConfigStaticIpInfo>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new CheckConfigStaticIpInfo({ ...this.serialize(), ...updateData });
     }
 }

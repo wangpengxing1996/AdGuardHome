@@ -21,27 +21,29 @@ const TYPES = {
  * @param openApi: openapi object
  * @returns [propType - basicType or import one, isArray, isClass, isImport]
  */
-const schemaParamParser = (schemaProp: any, openApi: any): [string, boolean, boolean, boolean] => {
+const schemaParamParser = (schemaProp: any, openApi: any): [string, boolean, boolean, boolean, boolean] => {
     let type = '';
     let isImport = false;
     let isClass = false;
     let isArray = false;
+    let isAdditional = false;
 
-    if (schemaProp.$ref) {
-        const temp = schemaProp.$ref.split('/');
+    if (schemaProp.$ref || schemaProp.additionalProperties?.$ref) {
+        const temp = (schemaProp.$ref || schemaProp.additionalProperties?.$ref).split('/');
+
+        if (schemaProp.additionalProperties) {
+            isAdditional = true;
+        }
 
         type = `${temp[temp.length - 1]}`;
-        isImport = true;
 
         const cl = openApi ? openApi.components.schemas[temp[temp.length - 1]] : {};
         if (cl.type === 'object' && !cl.oneOf) {
             isClass = true;
+            isImport = true;
         } else if (cl.type === 'array') {
             const temp: any = schemaParamParser(cl.items, openApi);
             type = `${temp[0]}`;
-            if (schemaProp === 'clients') {
-                console.log(temp);
-            }
             isArray = true;
             isClass = isClass || temp[2];
             isImport = isImport || temp[3];
@@ -49,9 +51,6 @@ const schemaParamParser = (schemaProp: any, openApi: any): [string, boolean, boo
     } else if (schemaProp.type === 'array') {
         const temp: any = schemaParamParser(schemaProp.items, openApi);
         type = `${temp[0]}`;
-        if (schemaProp === 'clients') {
-            console.log(temp);
-        }
         isArray = true;
         isClass = isClass || temp[2];
         isImport = isImport || temp[3];
@@ -64,7 +63,7 @@ const schemaParamParser = (schemaProp: any, openApi: any): [string, boolean, boo
         // throw new Error('Failed to find entity type');
     }
 
-    return [type, isArray, isClass, isImport];
+    return [type, isArray, isClass, isImport, isAdditional];
 };
 
 export { TYPES, toCamel, capitalize, schemaParamParser };

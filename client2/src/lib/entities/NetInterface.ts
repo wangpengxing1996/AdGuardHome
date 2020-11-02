@@ -2,10 +2,9 @@
 // All changes will be overwrited on commit.
 export interface INetInterface {
     flags?: string;
-    gateway_ip?: string;
     hardware_address?: string;
-    ipv4_addresses?: string[];
-    ipv6_addresses?: string[];
+    ip_addresses?: string[];
+    mtu?: number;
     name?: string;
 }
 
@@ -20,12 +19,6 @@ export default class NetInterface {
         return this._flags;
     }
 
-    readonly _gateway_ip: string | undefined;
-
-    get gatewayIp(): string | undefined {
-        return this._gateway_ip;
-    }
-
     readonly _hardware_address: string | undefined;
 
     /**
@@ -36,16 +29,16 @@ export default class NetInterface {
         return this._hardware_address;
     }
 
-    readonly _ipv4_addresses: string[] | undefined;
+    readonly _ip_addresses: string[] | undefined;
 
-    get ipv4Addresses(): string[] | undefined {
-        return this._ipv4_addresses;
+    get ipAddresses(): string[] | undefined {
+        return this._ip_addresses;
     }
 
-    readonly _ipv6_addresses: string[] | undefined;
+    readonly _mtu: number | undefined;
 
-    get ipv6Addresses(): string[] | undefined {
-        return this._ipv6_addresses;
+    get mtu(): number | undefined {
+        return this._mtu;
     }
 
     readonly _name: string | undefined;
@@ -62,17 +55,14 @@ export default class NetInterface {
         if (typeof props.flags === 'string') {
             this._flags = props.flags.trim();
         }
-        if (typeof props.gateway_ip === 'string') {
-            this._gateway_ip = props.gateway_ip.trim();
-        }
         if (typeof props.hardware_address === 'string') {
             this._hardware_address = props.hardware_address.trim();
         }
-        if (props.ipv4_addresses) {
-            this._ipv4_addresses = props.ipv4_addresses;
+        if (props.ip_addresses) {
+            this._ip_addresses = props.ip_addresses;
         }
-        if (props.ipv6_addresses) {
-            this._ipv6_addresses = props.ipv6_addresses;
+        if (typeof props.mtu === 'number') {
+            this._mtu = props.mtu;
         }
         if (typeof props.name === 'string') {
             this._name = props.name.trim();
@@ -85,17 +75,14 @@ export default class NetInterface {
         if (typeof this._flags !== 'undefined') {
             data.flags = this._flags;
         }
-        if (typeof this._gateway_ip !== 'undefined') {
-            data.gateway_ip = this._gateway_ip;
-        }
         if (typeof this._hardware_address !== 'undefined') {
             data.hardware_address = this._hardware_address;
         }
-        if (typeof this._ipv4_addresses !== 'undefined') {
-            data.ipv4_addresses = this._ipv4_addresses;
+        if (typeof this._ip_addresses !== 'undefined') {
+            data.ip_addresses = this._ip_addresses;
         }
-        if (typeof this._ipv6_addresses !== 'undefined') {
-            data.ipv6_addresses = this._ipv6_addresses;
+        if (typeof this._mtu !== 'undefined') {
+            data.mtu = this._mtu;
         }
         if (typeof this._name !== 'undefined') {
             data.name = this._name;
@@ -104,17 +91,16 @@ export default class NetInterface {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             flags: !this._flags ? true : typeof this._flags === 'string' && !this._flags ? true : this._flags,
             hardware_address: !this._hardware_address ? true : typeof this._hardware_address === 'string' && !this._hardware_address ? true : this._hardware_address,
             name: !this._name ? true : typeof this._name === 'string' && !this._name ? true : this._name,
-            ipv4_addresses: !this._ipv4_addresses ? true : this._ipv4_addresses.reduce((result, p) => result && typeof p === 'string', true),
-            ipv6_addresses: !this._ipv6_addresses ? true : this._ipv6_addresses.reduce((result, p) => result && typeof p === 'string', true),
-            gateway_ip: !this._gateway_ip ? true : typeof this._gateway_ip === 'string' && !this._gateway_ip ? true : this._gateway_ip,
+            ip_addresses: !this._ip_addresses ? true : this._ip_addresses.reduce((result, p) => result && typeof p === 'string', true),
+            mtu: !this._mtu ? true : typeof this._mtu === 'number',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -123,28 +109,5 @@ export default class NetInterface {
 
     update(props: INetInterface): NetInterface {
         return new NetInterface(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        flags: 'flags',
-        gatewayIp: 'gateway_ip',
-        hardwareAddress: 'hardware_address',
-        ipv4Addresses: 'ipv4_addresses',
-        ipv6Addresses: 'ipv6_addresses',
-        name: 'name',
-        }
-;
-
-    mergeDeepWith(props: Partial<NetInterface>): NetInterface {
-        const updateData: Partial<INetInterface> = {};
-        Object.keys(props).forEach((key: keyof NetInterface) => {
-            const updateKey = this.keys[key] as keyof INetInterface;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<INetInterface, keyof INetInterface>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new NetInterface({ ...this.serialize(), ...updateData });
     }
 }

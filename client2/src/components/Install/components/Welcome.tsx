@@ -2,7 +2,7 @@ import React, { FC, useContext } from 'react';
 import { Button } from 'antd';
 import { observer } from 'mobx-react-lite';
 
-import Store from 'Store';
+import Store from 'Store/installStore';
 import Icon from 'Common/ui/Icon';
 import theme from 'Lib/theme';
 

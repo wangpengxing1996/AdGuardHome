@@ -46,13 +46,13 @@ export default class QueryLog {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             oldest: !this._oldest ? true : typeof this._oldest === 'string' && !this._oldest ? true : this._oldest,
             data: !this._data ? true : this._data.reduce((result, p) => result && p.validate().length === 0, true),
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -61,24 +61,5 @@ export default class QueryLog {
 
     update(props: IQueryLog): QueryLog {
         return new QueryLog(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        data: 'data',
-        oldest: 'oldest',
-        }
-;
-
-    mergeDeepWith(props: Partial<QueryLog>): QueryLog {
-        const updateData: Partial<IQueryLog> = {};
-        Object.keys(props).forEach((key: keyof QueryLog) => {
-            const updateKey = this.keys[key] as keyof IQueryLog;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IQueryLog, keyof IQueryLog>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new QueryLog({ ...this.serialize(), ...updateData });
     }
 }

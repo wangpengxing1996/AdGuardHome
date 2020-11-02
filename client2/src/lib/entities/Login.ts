@@ -42,13 +42,13 @@ export default class Login {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             username: !this._username ? true : typeof this._username === 'string' && !this._username ? true : this._username,
             password: !this._password ? true : typeof this._password === 'string' && !this._password ? true : this._password,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -57,24 +57,5 @@ export default class Login {
 
     update(props: ILogin): Login {
         return new Login(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        password: 'password',
-        username: 'username',
-        }
-;
-
-    mergeDeepWith(props: Partial<Login>): Login {
-        const updateData: Partial<ILogin> = {};
-        Object.keys(props).forEach((key: keyof Login) => {
-            const updateKey = this.keys[key] as keyof ILogin;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<ILogin, keyof ILogin>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new Login({ ...this.serialize(), ...updateData });
     }
 }

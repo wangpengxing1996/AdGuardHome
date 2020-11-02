@@ -31,12 +31,12 @@ export default class RemoveUrlRequest {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             url: !this._url ? true : typeof this._url === 'string' && !this._url ? true : this._url,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -45,23 +45,5 @@ export default class RemoveUrlRequest {
 
     update(props: IRemoveUrlRequest): RemoveUrlRequest {
         return new RemoveUrlRequest(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        url: 'url',
-        }
-;
-
-    mergeDeepWith(props: Partial<RemoveUrlRequest>): RemoveUrlRequest {
-        const updateData: Partial<IRemoveUrlRequest> = {};
-        Object.keys(props).forEach((key: keyof RemoveUrlRequest) => {
-            const updateKey = this.keys[key] as keyof IRemoveUrlRequest;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IRemoveUrlRequest, keyof IRemoveUrlRequest>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new RemoveUrlRequest({ ...this.serialize(), ...updateData });
     }
 }

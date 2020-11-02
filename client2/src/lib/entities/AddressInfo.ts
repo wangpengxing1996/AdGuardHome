@@ -48,13 +48,13 @@ export default class AddressInfo {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             ip: !this._ip ? true : typeof this._ip === 'string' && !this._ip ? true : this._ip,
             port: !this._port ? true : typeof this._port === 'number',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -63,24 +63,5 @@ export default class AddressInfo {
 
     update(props: IAddressInfo): AddressInfo {
         return new AddressInfo(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        ip: 'ip',
-        port: 'port',
-        }
-;
-
-    mergeDeepWith(props: Partial<AddressInfo>): AddressInfo {
-        const updateData: Partial<IAddressInfo> = {};
-        Object.keys(props).forEach((key: keyof AddressInfo) => {
-            const updateKey = this.keys[key] as keyof IAddressInfo;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IAddressInfo, keyof IAddressInfo>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new AddressInfo({ ...this.serialize(), ...updateData });
     }
 }

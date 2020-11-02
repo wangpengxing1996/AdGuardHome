@@ -14,11 +14,11 @@ export default class BlockedServicesArray {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -27,22 +27,5 @@ export default class BlockedServicesArray {
 
     update(props: IBlockedServicesArray): BlockedServicesArray {
         return new BlockedServicesArray(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        }
-;
-
-    mergeDeepWith(props: Partial<BlockedServicesArray>): BlockedServicesArray {
-        const updateData: Partial<IBlockedServicesArray> = {};
-        Object.keys(props).forEach((key: keyof BlockedServicesArray) => {
-            const updateKey = this.keys[key] as keyof IBlockedServicesArray;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IBlockedServicesArray, keyof IBlockedServicesArray>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new BlockedServicesArray({ ...this.serialize(), ...updateData });
     }
 }

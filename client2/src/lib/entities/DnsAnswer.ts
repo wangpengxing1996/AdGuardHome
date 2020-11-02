@@ -65,14 +65,14 @@ export default class DnsAnswer {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             ttl: !this._ttl ? true : typeof this._ttl === 'number',
             type: !this._type ? true : typeof this._type === 'string' && !this._type ? true : this._type,
             value: !this._value ? true : typeof this._value === 'string' && !this._value ? true : this._value,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -81,25 +81,5 @@ export default class DnsAnswer {
 
     update(props: IDnsAnswer): DnsAnswer {
         return new DnsAnswer(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        ttl: 'ttl',
-        type: 'type',
-        value: 'value',
-        }
-;
-
-    mergeDeepWith(props: Partial<DnsAnswer>): DnsAnswer {
-        const updateData: Partial<IDnsAnswer> = {};
-        Object.keys(props).forEach((key: keyof DnsAnswer) => {
-            const updateKey = this.keys[key] as keyof IDnsAnswer;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IDnsAnswer, keyof IDnsAnswer>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new DnsAnswer({ ...this.serialize(), ...updateData });
     }
 }

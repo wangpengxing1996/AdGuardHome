@@ -28,12 +28,12 @@ export default class GetVersionRequest {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             recheck_now: !this._recheck_now ? true : typeof this._recheck_now === 'boolean',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -42,23 +42,5 @@ export default class GetVersionRequest {
 
     update(props: IGetVersionRequest): GetVersionRequest {
         return new GetVersionRequest(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        recheckNow: 'recheck_now',
-        }
-;
-
-    mergeDeepWith(props: Partial<GetVersionRequest>): GetVersionRequest {
-        const updateData: Partial<IGetVersionRequest> = {};
-        Object.keys(props).forEach((key: keyof GetVersionRequest) => {
-            const updateKey = this.keys[key] as keyof IGetVersionRequest;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IGetVersionRequest, keyof IGetVersionRequest>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new GetVersionRequest({ ...this.serialize(), ...updateData });
     }
 }

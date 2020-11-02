@@ -359,7 +359,7 @@ export default class TlsConfig {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             enabled: !this._enabled ? true : typeof this._enabled === 'boolean',
             server_name: !this._server_name ? true : typeof this._server_name === 'string' && !this._server_name ? true : this._server_name,
             force_https: !this._force_https ? true : typeof this._force_https === 'boolean',
@@ -383,8 +383,8 @@ export default class TlsConfig {
             valid_pair: !this._valid_pair ? true : typeof this._valid_pair === 'boolean',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -393,43 +393,5 @@ export default class TlsConfig {
 
     update(props: ITlsConfig): TlsConfig {
         return new TlsConfig(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        certificateChain: 'certificate_chain',
-        certificatePath: 'certificate_path',
-        dnsNames: 'dns_names',
-        enabled: 'enabled',
-        forceHttps: 'force_https',
-        issuer: 'issuer',
-        keyType: 'key_type',
-        notAfter: 'not_after',
-        notBefore: 'not_before',
-        portDnsOverQuic: 'port_dns_over_quic',
-        portDnsOverTls: 'port_dns_over_tls',
-        portHttps: 'port_https',
-        privateKey: 'private_key',
-        privateKeyPath: 'private_key_path',
-        serverName: 'server_name',
-        subject: 'subject',
-        validCert: 'valid_cert',
-        validChain: 'valid_chain',
-        validKey: 'valid_key',
-        validPair: 'valid_pair',
-        warningValidation: 'warning_validation',
-        }
-;
-
-    mergeDeepWith(props: Partial<TlsConfig>): TlsConfig {
-        const updateData: Partial<ITlsConfig> = {};
-        Object.keys(props).forEach((key: keyof TlsConfig) => {
-            const updateKey = this.keys[key] as keyof ITlsConfig;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<ITlsConfig, keyof ITlsConfig>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new TlsConfig({ ...this.serialize(), ...updateData });
     }
 }

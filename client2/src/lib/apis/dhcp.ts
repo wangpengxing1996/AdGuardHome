@@ -7,7 +7,7 @@ import DhcpStatus, { IDhcpStatus } from 'Entities/DhcpStatus';
 // All changes will be overwrited on commit.
 export default class DhcpApi {
     static async checkActiveDhcp(): Promise<IDhcpSearchResult | Error> {
-        return await fetch(`/dhcp/find_active_dhcp`, {
+        return await fetch(`/control/dhcp/find_active_dhcp`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -25,7 +25,7 @@ export default class DhcpApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/dhcp/add_static_lease`, {
+        return await fetch(`/control/dhcp/add_static_lease`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export default class DhcpApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/dhcp/remove_static_lease`, {
+        return await fetch(`/control/dhcp/remove_static_lease`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export default class DhcpApi {
     }
 
     static async dhcpReset(): Promise<number | Error> {
-        return await fetch(`/dhcp/reset`, {
+        return await fetch(`/control/dhcp/reset`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -81,7 +81,7 @@ export default class DhcpApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/dhcp/set_config`, {
+        return await fetch(`/control/dhcp/set_config`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ export default class DhcpApi {
     }
 
     static async dhcpStatus(): Promise<IDhcpStatus | Error> {
-        return await fetch(`/dhcp/status`, {
+        return await fetch(`/control/dhcp/status`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {

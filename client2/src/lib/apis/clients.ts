@@ -15,7 +15,7 @@ export default class ClientsApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/clients/add`, {
+        return await fetch(`/control/clients/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export default class ClientsApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/clients/delete`, {
+        return await fetch(`/control/clients/delete`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export default class ClientsApi {
         const queryParams = {
             ip0: ip0,
         }
-        return await fetch(`/clients/find?${qs.stringify(queryParams, { arrayFormat: 'comma' })}`, {
+        return await fetch(`/control/clients/find?${qs.stringify(queryParams, { arrayFormat: 'comma' })}`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -68,7 +68,7 @@ export default class ClientsApi {
     }
 
     static async clientsStatus(): Promise<IClients | Error> {
-        return await fetch(`/clients`, {
+        return await fetch(`/control/clients`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -86,7 +86,7 @@ export default class ClientsApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/clients/update`, {
+        return await fetch(`/control/clients/update`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

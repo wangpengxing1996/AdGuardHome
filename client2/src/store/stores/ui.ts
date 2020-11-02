@@ -3,7 +3,7 @@ import { makeAutoObservable, observable } from 'mobx';
 import Translator, { DEFAULT_LOCALE, messages, Locale, reactFormater } from 'Localization';
 import { Store } from 'Store';
 
-export class UI {
+export default class UI {
     rootStore: Store;
 
     currentLang = DEFAULT_LOCALE;

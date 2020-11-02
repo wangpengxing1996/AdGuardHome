@@ -226,7 +226,7 @@ export default class Stats {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             time_units: !this._time_units ? true : typeof this._time_units === 'string' && !this._time_units ? true : this._time_units,
             num_dns_queries: !this._num_dns_queries ? true : typeof this._num_dns_queries === 'number',
             num_blocked_filtering: !this._num_blocked_filtering ? true : typeof this._num_blocked_filtering === 'number',
@@ -243,8 +243,8 @@ export default class Stats {
             replaced_parental: !this._replaced_parental ? true : this._replaced_parental.reduce((result, p) => result && typeof p === 'number', true),
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -253,36 +253,5 @@ export default class Stats {
 
     update(props: IStats): Stats {
         return new Stats(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        avgProcessingTime: 'avg_processing_time',
-        blockedFiltering: 'blocked_filtering',
-        dnsQueries: 'dns_queries',
-        numBlockedFiltering: 'num_blocked_filtering',
-        numDnsQueries: 'num_dns_queries',
-        numReplacedParental: 'num_replaced_parental',
-        numReplacedSafebrowsing: 'num_replaced_safebrowsing',
-        numReplacedSafesearch: 'num_replaced_safesearch',
-        replacedParental: 'replaced_parental',
-        replacedSafebrowsing: 'replaced_safebrowsing',
-        timeUnits: 'time_units',
-        topBlockedDomains: 'top_blocked_domains',
-        topClients: 'top_clients',
-        topQueriedDomains: 'top_queried_domains',
-        }
-;
-
-    mergeDeepWith(props: Partial<Stats>): Stats {
-        const updateData: Partial<IStats> = {};
-        Object.keys(props).forEach((key: keyof Stats) => {
-            const updateKey = this.keys[key] as keyof IStats;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IStats, keyof IStats>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new Stats({ ...this.serialize(), ...updateData });
     }
 }

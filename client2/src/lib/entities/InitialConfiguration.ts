@@ -76,15 +76,15 @@ export default class InitialConfiguration {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             dns: !this._dns ? true : this._dns.validate().length === 0,
             web: !this._web ? true : this._web.validate().length === 0,
             username: !this._username ? true : typeof this._username === 'string' && !this._username ? true : this._username,
             password: !this._password ? true : typeof this._password === 'string' && !this._password ? true : this._password,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -93,26 +93,5 @@ export default class InitialConfiguration {
 
     update(props: IInitialConfiguration): InitialConfiguration {
         return new InitialConfiguration(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        dns: 'dns',
-        password: 'password',
-        username: 'username',
-        web: 'web',
-        }
-;
-
-    mergeDeepWith(props: Partial<InitialConfiguration>): InitialConfiguration {
-        const updateData: Partial<IInitialConfiguration> = {};
-        Object.keys(props).forEach((key: keyof InitialConfiguration) => {
-            const updateKey = this.keys[key] as keyof IInitialConfiguration;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IInitialConfiguration, keyof IInitialConfiguration>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new InitialConfiguration({ ...this.serialize(), ...updateData });
     }
 }

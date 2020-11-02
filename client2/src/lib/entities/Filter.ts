@@ -112,7 +112,7 @@ export default class Filter {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             enabled: typeof this._enabled === 'boolean',
             id: typeof this._id === 'number',
             lastUpdated: typeof this._lastUpdated === 'string' && !this._lastUpdated ? true : this._lastUpdated,
@@ -121,8 +121,8 @@ export default class Filter {
             url: typeof this._url === 'string' && !this._url ? true : this._url,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -131,28 +131,5 @@ export default class Filter {
 
     update(props: IFilter): Filter {
         return new Filter(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        enabled: 'enabled',
-        id: 'id',
-        lastUpdated: 'lastUpdated',
-        name: 'name',
-        rulesCount: 'rulesCount',
-        url: 'url',
-        }
-;
-
-    mergeDeepWith(props: Partial<Filter>): Filter {
-        const updateData: Partial<IFilter> = {};
-        Object.keys(props).forEach((key: keyof Filter) => {
-            const updateKey = this.keys[key] as keyof IFilter;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IFilter, keyof IFilter>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new Filter({ ...this.serialize(), ...updateData });
     }
 }

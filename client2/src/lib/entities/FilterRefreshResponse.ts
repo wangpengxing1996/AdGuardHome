@@ -27,12 +27,12 @@ export default class FilterRefreshResponse {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             updated: !this._updated ? true : typeof this._updated === 'number',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -41,23 +41,5 @@ export default class FilterRefreshResponse {
 
     update(props: IFilterRefreshResponse): FilterRefreshResponse {
         return new FilterRefreshResponse(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        updated: 'updated',
-        }
-;
-
-    mergeDeepWith(props: Partial<FilterRefreshResponse>): FilterRefreshResponse {
-        const updateData: Partial<IFilterRefreshResponse> = {};
-        Object.keys(props).forEach((key: keyof FilterRefreshResponse) => {
-            const updateKey = this.keys[key] as keyof IFilterRefreshResponse;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IFilterRefreshResponse, keyof IFilterRefreshResponse>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new FilterRefreshResponse({ ...this.serialize(), ...updateData });
     }
 }

@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { FormikHelpers } from 'formik';
 
-import Store from 'Store';
+import Store from 'Store/installStore';
 import theme from 'Lib/theme';
 
 import { FormValues } from '../Install';

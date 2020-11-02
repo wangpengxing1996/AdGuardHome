@@ -45,13 +45,13 @@ export default class DhcpSearchResultStaticIP {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             static: !this._static ? true : typeof this._static === 'string' && !this._static ? true : this._static,
             ip: !this._ip ? true : typeof this._ip === 'string' && !this._ip ? true : this._ip,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -60,24 +60,5 @@ export default class DhcpSearchResultStaticIP {
 
     update(props: IDhcpSearchResultStaticIP): DhcpSearchResultStaticIP {
         return new DhcpSearchResultStaticIP(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        ip: 'ip',
-        static: 'static',
-        }
-;
-
-    mergeDeepWith(props: Partial<DhcpSearchResultStaticIP>): DhcpSearchResultStaticIP {
-        const updateData: Partial<IDhcpSearchResultStaticIP> = {};
-        Object.keys(props).forEach((key: keyof DhcpSearchResultStaticIP) => {
-            const updateKey = this.keys[key] as keyof IDhcpSearchResultStaticIP;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IDhcpSearchResultStaticIP, keyof IDhcpSearchResultStaticIP>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new DhcpSearchResultStaticIP({ ...this.serialize(), ...updateData });
     }
 }

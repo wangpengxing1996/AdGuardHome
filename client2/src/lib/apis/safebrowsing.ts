@@ -2,7 +2,7 @@
 // All changes will be overwrited on commit.
 export default class SafebrowsingApi {
     static async safebrowsingDisable(): Promise<number | Error> {
-        return await fetch(`/safebrowsing/disable`, {
+        return await fetch(`/control/safebrowsing/disable`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -14,7 +14,7 @@ export default class SafebrowsingApi {
     }
 
     static async safebrowsingEnable(): Promise<number | Error> {
-        return await fetch(`/safebrowsing/enable`, {
+        return await fetch(`/control/safebrowsing/enable`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -26,7 +26,7 @@ export default class SafebrowsingApi {
     }
 
     static async safebrowsingStatus(): Promise<any | Error> {
-        return await fetch(`/safebrowsing/status`, {
+        return await fetch(`/control/safebrowsing/status`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {

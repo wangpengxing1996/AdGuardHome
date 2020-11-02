@@ -48,13 +48,13 @@ export default class UpstreamsConfig {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             bootstrap_dns: this._bootstrap_dns.reduce((result, p) => result && typeof p === 'string', true),
             upstream_dns: this._upstream_dns.reduce((result, p) => result && typeof p === 'string', true),
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -63,24 +63,5 @@ export default class UpstreamsConfig {
 
     update(props: IUpstreamsConfig): UpstreamsConfig {
         return new UpstreamsConfig(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        bootstrapDns: 'bootstrap_dns',
-        upstreamDns: 'upstream_dns',
-        }
-;
-
-    mergeDeepWith(props: Partial<UpstreamsConfig>): UpstreamsConfig {
-        const updateData: Partial<IUpstreamsConfig> = {};
-        Object.keys(props).forEach((key: keyof UpstreamsConfig) => {
-            const updateKey = this.keys[key] as keyof IUpstreamsConfig;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IUpstreamsConfig, keyof IUpstreamsConfig>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new UpstreamsConfig({ ...this.serialize(), ...updateData });
     }
 }

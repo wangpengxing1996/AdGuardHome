@@ -50,7 +50,7 @@ class ApiGenerator {
     constructor(openapi: Record<string, any>) {
         this.openapi = openapi;
         this.paths = openapi.paths;
-        this.serverUrl = ''; // DEVENV ? '' : openapi.servers[0].url;
+        this.serverUrl = openapi.servers[0].url;
 
         Object.keys(this.paths).forEach((pathKey) => {
             Object.keys(this.paths[pathKey]).forEach((method) => {
@@ -117,7 +117,7 @@ class ApiGenerator {
             const queryParams: any[] = []; // { name, type }
             const bodyParam: any[] = []; // { name, type }
 
-            let hasResponseBodyType: /* boolean | ReturnType<schemaParamParser> */ false | [string, boolean, boolean, boolean] = false;
+            let hasResponseBodyType: /* boolean | ReturnType<schemaParamParser> */ false | [string, boolean, boolean, boolean, boolean] = false;
             let contentType = '';
             if (parameters) {
                 parameters.forEach((p: any) => {
@@ -174,9 +174,7 @@ class ApiGenerator {
                     const { schema, examples } = content['*/*'] || content['application/json'];
 
                     if (!schema) {
-                        console.log(operation, examples)
-                        return;
-                        // process.exit(0);
+                        process.exit(0);
                     }
 
                     const propType = schemaParamParser(schema, this.openapi);

@@ -1,11 +1,15 @@
 import { createContext } from 'react';
+import Install from './stores/Install';
 import UI from './stores/UI';
 
 export class Store {
     ui: UI;
 
+    install: Install;
+
     constructor() {
         this.ui = new UI(this);
+        this.install = new Install(this);
     }
 }
 

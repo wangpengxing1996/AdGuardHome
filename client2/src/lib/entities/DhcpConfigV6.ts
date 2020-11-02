@@ -40,13 +40,13 @@ export default class DhcpConfigV6 {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             range_start: !this._range_start ? true : typeof this._range_start === 'string' && !this._range_start ? true : this._range_start,
             lease_duration: !this._lease_duration ? true : typeof this._lease_duration === 'number',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -55,24 +55,5 @@ export default class DhcpConfigV6 {
 
     update(props: IDhcpConfigV6): DhcpConfigV6 {
         return new DhcpConfigV6(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        leaseDuration: 'lease_duration',
-        rangeStart: 'range_start',
-        }
-;
-
-    mergeDeepWith(props: Partial<DhcpConfigV6>): DhcpConfigV6 {
-        const updateData: Partial<IDhcpConfigV6> = {};
-        Object.keys(props).forEach((key: keyof DhcpConfigV6) => {
-            const updateKey = this.keys[key] as keyof IDhcpConfigV6;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IDhcpConfigV6, keyof IDhcpConfigV6>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new DhcpConfigV6({ ...this.serialize(), ...updateData });
     }
 }

@@ -78,15 +78,15 @@ export default class VersionInfo {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             new_version: !this._new_version ? true : typeof this._new_version === 'string' && !this._new_version ? true : this._new_version,
             announcement: !this._announcement ? true : typeof this._announcement === 'string' && !this._announcement ? true : this._announcement,
             announcement_url: !this._announcement_url ? true : typeof this._announcement_url === 'string' && !this._announcement_url ? true : this._announcement_url,
             can_autoupdate: !this._can_autoupdate ? true : typeof this._can_autoupdate === 'boolean',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -95,26 +95,5 @@ export default class VersionInfo {
 
     update(props: IVersionInfo): VersionInfo {
         return new VersionInfo(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        announcement: 'announcement',
-        announcementUrl: 'announcement_url',
-        canAutoupdate: 'can_autoupdate',
-        newVersion: 'new_version',
-        }
-;
-
-    mergeDeepWith(props: Partial<VersionInfo>): VersionInfo {
-        const updateData: Partial<IVersionInfo> = {};
-        Object.keys(props).forEach((key: keyof VersionInfo) => {
-            const updateKey = this.keys[key] as keyof IVersionInfo;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IVersionInfo, keyof IVersionInfo>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new VersionInfo({ ...this.serialize(), ...updateData });
     }
 }

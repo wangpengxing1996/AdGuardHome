@@ -43,13 +43,13 @@ export default class Clients {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             clients: !this._clients ? true : this._clients.reduce((result, p) => result && p.validate().length === 0, true),
             auto_clients: !this._auto_clients ? true : this._auto_clients.reduce((result, p) => result && p.validate().length === 0, true),
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -58,24 +58,5 @@ export default class Clients {
 
     update(props: IClients): Clients {
         return new Clients(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        autoClients: 'auto_clients',
-        clients: 'clients',
-        }
-;
-
-    mergeDeepWith(props: Partial<Clients>): Clients {
-        const updateData: Partial<IClients> = {};
-        Object.keys(props).forEach((key: keyof Clients) => {
-            const updateKey = this.keys[key] as keyof IClients;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IClients, keyof IClients>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new Clients({ ...this.serialize(), ...updateData });
     }
 }

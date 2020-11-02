@@ -13,8 +13,6 @@
     "resolveJsonModule": true,
     "baseUrl": "src",
     "paths": {
-      "Actions": ["store/actions"],
-      "Actions/*": ["store/actions/*"],
       "Apis/*": ["lib/apis/*"],
       "Common": ["components/common/index"],
       "Common/*": ["components/common/*"],
@@ -24,9 +22,9 @@
       "Hooks": ["lib/hooks"],
       "Lib/*": ["lib/*"],
       "Localization": ["localization/index"],
-      "Reducers/*": ["store/reducers/*"],
       "Routes": ["lib/routes"],
-      "Store": ["store/store"]
+      "Store": ["store/store"],
+      "Store/*": ["store/*"]
     },
     "types": [
       "react",

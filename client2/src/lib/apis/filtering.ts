@@ -18,7 +18,7 @@ export default class FilteringApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/filtering/add_url`, {
+        return await fetch(`/control/filtering/add_url`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export default class FilteringApi {
         const queryParams = {
             name: name,
         }
-        return await fetch(`/filtering/check_host?${qs.stringify(queryParams, { arrayFormat: 'comma' })}`, {
+        return await fetch(`/control/filtering/check_host?${qs.stringify(queryParams, { arrayFormat: 'comma' })}`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -55,7 +55,7 @@ export default class FilteringApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/filtering/config`, {
+        return await fetch(`/control/filtering/config`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export default class FilteringApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/filtering/refresh`, {
+        return await fetch(`/control/filtering/refresh`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export default class FilteringApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/filtering/remove_url`, {
+        return await fetch(`/control/filtering/remove_url`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ export default class FilteringApi {
 
     static async filteringSetRules(data: string): Promise<number | Error> {
         const params =  String(data);
-        return await fetch(`/filtering/set_rules`, {
+        return await fetch(`/control/filtering/set_rules`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/plain',
@@ -138,7 +138,7 @@ export default class FilteringApi {
         if (haveError.length > 0) {
             return Promise.resolve(haveError);
         }
-        return await fetch(`/filtering/set_url`, {
+        return await fetch(`/control/filtering/set_url`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ export default class FilteringApi {
     }
 
     static async filteringStatus(): Promise<IFilterStatus | Error> {
-        return await fetch(`/filtering/status`, {
+        return await fetch(`/control/filtering/status`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {

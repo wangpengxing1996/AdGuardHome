@@ -142,7 +142,7 @@ export default class ServerStatus {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             dns_address: typeof this._dns_address === 'string' && !this._dns_address ? true : this._dns_address,
             dns_port: this._dns_port >= 1 && this._dns_port <= 65535,
             protection_enabled: typeof this._protection_enabled === 'boolean',
@@ -153,8 +153,8 @@ export default class ServerStatus {
             language: typeof this._language === 'string' && !this._language ? true : this._language,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -163,30 +163,5 @@ export default class ServerStatus {
 
     update(props: IServerStatus): ServerStatus {
         return new ServerStatus(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        dhcpAvailable: 'dhcp_available',
-        dnsAddress: 'dns_address',
-        dnsPort: 'dns_port',
-        language: 'language',
-        protectionEnabled: 'protection_enabled',
-        querylogEnabled: 'querylog_enabled',
-        running: 'running',
-        version: 'version',
-        }
-;
-
-    mergeDeepWith(props: Partial<ServerStatus>): ServerStatus {
-        const updateData: Partial<IServerStatus> = {};
-        Object.keys(props).forEach((key: keyof ServerStatus) => {
-            const updateKey = this.keys[key] as keyof IServerStatus;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IServerStatus, keyof IServerStatus>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new ServerStatus({ ...this.serialize(), ...updateData });
     }
 }

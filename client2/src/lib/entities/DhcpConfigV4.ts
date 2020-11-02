@@ -95,7 +95,7 @@ export default class DhcpConfigV4 {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             gateway_ip: !this._gateway_ip ? true : typeof this._gateway_ip === 'string' && !this._gateway_ip ? true : this._gateway_ip,
             subnet_mask: !this._subnet_mask ? true : typeof this._subnet_mask === 'string' && !this._subnet_mask ? true : this._subnet_mask,
             range_start: !this._range_start ? true : typeof this._range_start === 'string' && !this._range_start ? true : this._range_start,
@@ -103,8 +103,8 @@ export default class DhcpConfigV4 {
             lease_duration: !this._lease_duration ? true : typeof this._lease_duration === 'number',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -113,27 +113,5 @@ export default class DhcpConfigV4 {
 
     update(props: IDhcpConfigV4): DhcpConfigV4 {
         return new DhcpConfigV4(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        gatewayIp: 'gateway_ip',
-        leaseDuration: 'lease_duration',
-        rangeEnd: 'range_end',
-        rangeStart: 'range_start',
-        subnetMask: 'subnet_mask',
-        }
-;
-
-    mergeDeepWith(props: Partial<DhcpConfigV4>): DhcpConfigV4 {
-        const updateData: Partial<IDhcpConfigV4> = {};
-        Object.keys(props).forEach((key: keyof DhcpConfigV4) => {
-            const updateKey = this.keys[key] as keyof IDhcpConfigV4;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IDhcpConfigV4, keyof IDhcpConfigV4>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new DhcpConfigV4({ ...this.serialize(), ...updateData });
     }
 }

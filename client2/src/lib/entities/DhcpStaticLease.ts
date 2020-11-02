@@ -65,14 +65,14 @@ export default class DhcpStaticLease {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             mac: typeof this._mac === 'string' && !this._mac ? true : this._mac,
             ip: typeof this._ip === 'string' && !this._ip ? true : this._ip,
             hostname: typeof this._hostname === 'string' && !this._hostname ? true : this._hostname,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -81,25 +81,5 @@ export default class DhcpStaticLease {
 
     update(props: IDhcpStaticLease): DhcpStaticLease {
         return new DhcpStaticLease(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        hostname: 'hostname',
-        ip: 'ip',
-        mac: 'mac',
-        }
-;
-
-    mergeDeepWith(props: Partial<DhcpStaticLease>): DhcpStaticLease {
-        const updateData: Partial<IDhcpStaticLease> = {};
-        Object.keys(props).forEach((key: keyof DhcpStaticLease) => {
-            const updateKey = this.keys[key] as keyof IDhcpStaticLease;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IDhcpStaticLease, keyof IDhcpStaticLease>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new DhcpStaticLease({ ...this.serialize(), ...updateData });
     }
 }

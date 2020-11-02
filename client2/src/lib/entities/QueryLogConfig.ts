@@ -56,14 +56,14 @@ export default class QueryLogConfig {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             enabled: !this._enabled ? true : typeof this._enabled === 'boolean',
             interval: !this._interval ? true : typeof this._interval === 'number',
             anonymize_client_ip: !this._anonymize_client_ip ? true : typeof this._anonymize_client_ip === 'boolean',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -72,25 +72,5 @@ export default class QueryLogConfig {
 
     update(props: IQueryLogConfig): QueryLogConfig {
         return new QueryLogConfig(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        anonymizeClientIp: 'anonymize_client_ip',
-        enabled: 'enabled',
-        interval: 'interval',
-        }
-;
-
-    mergeDeepWith(props: Partial<QueryLogConfig>): QueryLogConfig {
-        const updateData: Partial<IQueryLogConfig> = {};
-        Object.keys(props).forEach((key: keyof QueryLogConfig) => {
-            const updateKey = this.keys[key] as keyof IQueryLogConfig;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IQueryLogConfig, keyof IQueryLogConfig>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new QueryLogConfig({ ...this.serialize(), ...updateData });
     }
 }

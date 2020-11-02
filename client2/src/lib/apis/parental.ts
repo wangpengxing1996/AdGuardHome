@@ -2,7 +2,7 @@
 // All changes will be overwrited on commit.
 export default class ParentalApi {
     static async parentalDisable(): Promise<number | Error> {
-        return await fetch(`/parental/disable`, {
+        return await fetch(`/control/parental/disable`, {
             method: 'POST',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -15,7 +15,7 @@ export default class ParentalApi {
 
     static async parentalEnable(data: string): Promise<number | Error> {
         const params =  String(data);
-        return await fetch(`/parental/enable`, {
+        return await fetch(`/control/parental/enable`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/plain',
@@ -31,7 +31,7 @@ export default class ParentalApi {
     }
 
     static async parentalStatus(): Promise<any | Error> {
-        return await fetch(`/parental/status`, {
+        return await fetch(`/control/parental/status`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {

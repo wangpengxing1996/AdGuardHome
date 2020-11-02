@@ -65,14 +65,14 @@ export default class ClientAuto {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             ip: !this._ip ? true : typeof this._ip === 'string' && !this._ip ? true : this._ip,
             name: !this._name ? true : typeof this._name === 'string' && !this._name ? true : this._name,
             source: !this._source ? true : typeof this._source === 'string' && !this._source ? true : this._source,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -81,25 +81,5 @@ export default class ClientAuto {
 
     update(props: IClientAuto): ClientAuto {
         return new ClientAuto(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        ip: 'ip',
-        name: 'name',
-        source: 'source',
-        }
-;
-
-    mergeDeepWith(props: Partial<ClientAuto>): ClientAuto {
-        const updateData: Partial<IClientAuto> = {};
-        Object.keys(props).forEach((key: keyof ClientAuto) => {
-            const updateKey = this.keys[key] as keyof IClientAuto;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IClientAuto, keyof IClientAuto>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new ClientAuto({ ...this.serialize(), ...updateData });
     }
 }

@@ -27,12 +27,12 @@ export default class ProfileInfo {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             name: !this._name ? true : typeof this._name === 'string' && !this._name ? true : this._name,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -41,23 +41,5 @@ export default class ProfileInfo {
 
     update(props: IProfileInfo): ProfileInfo {
         return new ProfileInfo(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        name: 'name',
-        }
-;
-
-    mergeDeepWith(props: Partial<ProfileInfo>): ProfileInfo {
-        const updateData: Partial<IProfileInfo> = {};
-        Object.keys(props).forEach((key: keyof ProfileInfo) => {
-            const updateKey = this.keys[key] as keyof IProfileInfo;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IProfileInfo, keyof IProfileInfo>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new ProfileInfo({ ...this.serialize(), ...updateData });
     }
 }

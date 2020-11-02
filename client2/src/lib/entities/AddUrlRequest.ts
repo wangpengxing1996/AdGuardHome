@@ -44,13 +44,13 @@ export default class AddUrlRequest {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             name: !this._name ? true : typeof this._name === 'string' && !this._name ? true : this._name,
             url: !this._url ? true : typeof this._url === 'string' && !this._url ? true : this._url,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -59,24 +59,5 @@ export default class AddUrlRequest {
 
     update(props: IAddUrlRequest): AddUrlRequest {
         return new AddUrlRequest(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        name: 'name',
-        url: 'url',
-        }
-;
-
-    mergeDeepWith(props: Partial<AddUrlRequest>): AddUrlRequest {
-        const updateData: Partial<IAddUrlRequest> = {};
-        Object.keys(props).forEach((key: keyof AddUrlRequest) => {
-            const updateKey = this.keys[key] as keyof IAddUrlRequest;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IAddUrlRequest, keyof IAddUrlRequest>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new AddUrlRequest({ ...this.serialize(), ...updateData });
     }
 }

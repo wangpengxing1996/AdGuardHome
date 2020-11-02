@@ -10,9 +10,9 @@ const baseConfig = require('./webpack.config.base');
 const target = getDevServerConfig();
 
 const options = {
-    target: `${target.host}:${target.port}`, // target host
+    target: `http://${target.host}:${target.port}`, // target host
     changeOrigin: true, // needed for virtual hosted sites
-  };
+};
 const apiProxy = proxy.createProxyMiddleware(options);
 
 module.exports = merge(baseConfig, {
@@ -25,7 +25,7 @@ module.exports = merge(baseConfig, {
         noEmitOnErrors: true,
     },
     devServer: {
-        port: 3000,
+        port: 4000,
         historyApiFallback: true,
         before: (app) => {
             app.use('/control', apiProxy);
@@ -105,6 +105,7 @@ module.exports = merge(baseConfig, {
     plugins: [
         new Webpack.DefinePlugin({
             DEV: true,
+            'process.env.DEV_SERVER_PORT': JSON.stringify(3000),
         }),
         new Webpack.HotModuleReplacementPlugin(),
         new Webpack.ProgressPlugin(),

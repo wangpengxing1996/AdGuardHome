@@ -2,7 +2,7 @@
 // All changes will be overwrited on commit.
 export default class BlockedServicesApi {
     static async blockedServicesList(): Promise<string[] | Error> {
-        return await fetch(`/blocked_services/list`, {
+        return await fetch(`/control/blocked_services/list`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
@@ -13,13 +13,13 @@ export default class BlockedServicesApi {
         })
     }
 
-    static async blockedServicesSet(string: string[]): Promise<number | Error> {
-        return await fetch(`/blocked_services/set`, {
+    static async blockedServicesSet(data: string[]): Promise<number | Error> {
+        return await fetch(`/control/blocked_services/set`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(string),
+            body: JSON.stringify(data),
         }).then(async (res) => {
             if (res.status === 200) {
                 return res.status;

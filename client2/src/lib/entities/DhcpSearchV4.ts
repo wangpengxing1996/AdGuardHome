@@ -43,13 +43,13 @@ export default class DhcpSearchV4 {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             other_server: !this._other_server ? true : this._other_server.validate().length === 0,
             static_ip: !this._static_ip ? true : this._static_ip.validate().length === 0,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -58,24 +58,5 @@ export default class DhcpSearchV4 {
 
     update(props: IDhcpSearchV4): DhcpSearchV4 {
         return new DhcpSearchV4(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        otherServer: 'other_server',
-        staticIp: 'static_ip',
-        }
-;
-
-    mergeDeepWith(props: Partial<DhcpSearchV4>): DhcpSearchV4 {
-        const updateData: Partial<IDhcpSearchV4> = {};
-        Object.keys(props).forEach((key: keyof DhcpSearchV4) => {
-            const updateKey = this.keys[key] as keyof IDhcpSearchV4;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IDhcpSearchV4, keyof IDhcpSearchV4>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new DhcpSearchV4({ ...this.serialize(), ...updateData });
     }
 }

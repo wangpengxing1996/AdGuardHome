@@ -40,13 +40,13 @@ export default class CheckConfigResponseInfo {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             status: !this._status ? true : typeof this._status === 'string' && !this._status ? true : this._status,
             can_autofix: !this._can_autofix ? true : typeof this._can_autofix === 'boolean',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -55,24 +55,5 @@ export default class CheckConfigResponseInfo {
 
     update(props: ICheckConfigResponseInfo): CheckConfigResponseInfo {
         return new CheckConfigResponseInfo(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        canAutofix: 'can_autofix',
-        status: 'status',
-        }
-;
-
-    mergeDeepWith(props: Partial<CheckConfigResponseInfo>): CheckConfigResponseInfo {
-        const updateData: Partial<ICheckConfigResponseInfo> = {};
-        Object.keys(props).forEach((key: keyof CheckConfigResponseInfo) => {
-            const updateKey = this.keys[key] as keyof ICheckConfigResponseInfo;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<ICheckConfigResponseInfo, keyof ICheckConfigResponseInfo>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new CheckConfigResponseInfo({ ...this.serialize(), ...updateData });
     }
 }

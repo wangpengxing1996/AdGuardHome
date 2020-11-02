@@ -40,13 +40,13 @@ export default class FilterConfig {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             enabled: !this._enabled ? true : typeof this._enabled === 'boolean',
             interval: !this._interval ? true : typeof this._interval === 'number',
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -55,24 +55,5 @@ export default class FilterConfig {
 
     update(props: IFilterConfig): FilterConfig {
         return new FilterConfig(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        enabled: 'enabled',
-        interval: 'interval',
-        }
-;
-
-    mergeDeepWith(props: Partial<FilterConfig>): FilterConfig {
-        const updateData: Partial<IFilterConfig> = {};
-        Object.keys(props).forEach((key: keyof FilterConfig) => {
-            const updateKey = this.keys[key] as keyof IFilterConfig;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IFilterConfig, keyof IFilterConfig>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new FilterConfig({ ...this.serialize(), ...updateData });
     }
 }

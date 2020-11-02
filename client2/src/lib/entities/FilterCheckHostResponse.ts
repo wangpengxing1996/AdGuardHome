@@ -100,7 +100,7 @@ export default class FilterCheckHostResponse {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             reason: !this._reason ? true : typeof this._reason === 'string' && !this._reason ? true : this._reason,
             filter_id: !this._filter_id ? true : typeof this._filter_id === 'number',
             rule: !this._rule ? true : typeof this._rule === 'string' && !this._rule ? true : this._rule,
@@ -109,8 +109,8 @@ export default class FilterCheckHostResponse {
             ip_addrs: !this._ip_addrs ? true : this._ip_addrs.reduce((result, p) => result && typeof p === 'string', true),
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -119,28 +119,5 @@ export default class FilterCheckHostResponse {
 
     update(props: IFilterCheckHostResponse): FilterCheckHostResponse {
         return new FilterCheckHostResponse(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        cname: 'cname',
-        filterId: 'filter_id',
-        ipAddrs: 'ip_addrs',
-        reason: 'reason',
-        rule: 'rule',
-        serviceName: 'service_name',
-        }
-;
-
-    mergeDeepWith(props: Partial<FilterCheckHostResponse>): FilterCheckHostResponse {
-        const updateData: Partial<IFilterCheckHostResponse> = {};
-        Object.keys(props).forEach((key: keyof FilterCheckHostResponse) => {
-            const updateKey = this.keys[key] as keyof IFilterCheckHostResponse;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IFilterCheckHostResponse, keyof IFilterCheckHostResponse>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new FilterCheckHostResponse({ ...this.serialize(), ...updateData });
     }
 }

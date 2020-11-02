@@ -14,11 +14,11 @@ export default class ClientsFindEntry {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -27,22 +27,5 @@ export default class ClientsFindEntry {
 
     update(props: IClientsFindEntry): ClientsFindEntry {
         return new ClientsFindEntry(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        }
-;
-
-    mergeDeepWith(props: Partial<ClientsFindEntry>): ClientsFindEntry {
-        const updateData: Partial<IClientsFindEntry> = {};
-        Object.keys(props).forEach((key: keyof ClientsFindEntry) => {
-            const updateKey = this.keys[key] as keyof IClientsFindEntry;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IClientsFindEntry, keyof IClientsFindEntry>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new ClientsFindEntry({ ...this.serialize(), ...updateData });
     }
 }

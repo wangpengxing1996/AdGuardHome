@@ -192,7 +192,7 @@ export default class ClientFindSubEntry {
     }
 
     validate(): string[] {
-        const validateRequired = {
+        const validate = {
             name: !this._name ? true : typeof this._name === 'string' && !this._name ? true : this._name,
             ids: !this._ids ? true : this._ids.reduce((result, p) => result && typeof p === 'string', true),
             use_global_settings: !this._use_global_settings ? true : typeof this._use_global_settings === 'boolean',
@@ -208,8 +208,8 @@ export default class ClientFindSubEntry {
             disallowed_rule: !this._disallowed_rule ? true : typeof this._disallowed_rule === 'string' && !this._disallowed_rule ? true : this._disallowed_rule,
         };
         const isError: string[] = [];
-        Object.keys(validateRequired).forEach((key) => {
-            if (!(validateRequired as any)[key]) {
+        Object.keys(validate).forEach((key) => {
+            if (!(validate as any)[key]) {
                 isError.push(key);
             }
         });
@@ -218,35 +218,5 @@ export default class ClientFindSubEntry {
 
     update(props: IClientFindSubEntry): ClientFindSubEntry {
         return new ClientFindSubEntry(props);
-    }
-
-    readonly keys: { [key: string]: string } = {
-        blockedServices: 'blocked_services',
-        disallowed: 'disallowed',
-        disallowedRule: 'disallowed_rule',
-        filteringEnabled: 'filtering_enabled',
-        ids: 'ids',
-        name: 'name',
-        parentalEnabled: 'parental_enabled',
-        safebrowsingEnabled: 'safebrowsing_enabled',
-        safesearchEnabled: 'safesearch_enabled',
-        upstreams: 'upstreams',
-        useGlobalBlockedServices: 'use_global_blocked_services',
-        useGlobalSettings: 'use_global_settings',
-        whoisInfo: 'whois_info',
-        }
-;
-
-    mergeDeepWith(props: Partial<ClientFindSubEntry>): ClientFindSubEntry {
-        const updateData: Partial<IClientFindSubEntry> = {};
-        Object.keys(props).forEach((key: keyof ClientFindSubEntry) => {
-            const updateKey = this.keys[key] as keyof IClientFindSubEntry;
-            if ((props[key] as any).serialize) {
-                (updateData[updateKey] as any) = (props[key] as any).serialize() as Pick<IClientFindSubEntry, keyof IClientFindSubEntry>;
-            } else {
-                (updateData[updateKey] as any) = props[key];
-            }
-        });
-        return new ClientFindSubEntry({ ...this.serialize(), ...updateData });
     }
 }

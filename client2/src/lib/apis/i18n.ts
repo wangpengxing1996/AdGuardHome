@@ -3,7 +3,7 @@
 export default class I18nApi {
     static async changeLanguage(data: string): Promise<number | Error> {
         const params =  String(data);
-        return await fetch(`/i18n/change_language`, {
+        return await fetch(`/control/i18n/change_language`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/plain',
@@ -19,7 +19,7 @@ export default class I18nApi {
     }
 
     static async currentLanguage(): Promise<number | Error> {
-        return await fetch(`/i18n/current_language`, {
+        return await fetch(`/control/i18n/current_language`, {
             method: 'GET',
         }).then(async (res) => {
             if (res.status === 200) {
