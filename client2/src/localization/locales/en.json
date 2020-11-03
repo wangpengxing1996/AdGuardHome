@@ -11,5 +11,9 @@
     "admin_interface_where_interface": "Where can I open Admin interface",
     "admin_interface_where_interface_desc": "Set what kind of networks will be able to access to Admin interface. For example: if you choose a local   interface only, then Admin inteface will be accessed by this local device only ",
     "admin_interface_port": "Where can I open Admin interface",
-    "admin_interface_port_desc": "Set what kind of networks will be able to access to Admin interface. For example: if you choose a local   interface only, then Admin inteface will be accessed by this local device only "
+    "admin_interface_port_desc": "Set what kind of networks will be able to access to Admin interface. For example: if you choose a local   interface only, then Admin inteface will be accessed by this local device only ",
+    "install_all_networks": "All networks",
+    "install_all_networks_description": "All available web interfaces",
+    "install_choose_networks": "Choose manually",
+    "install_choose_networks_desc": "For advanced users"
 }

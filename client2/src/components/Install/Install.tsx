@@ -5,6 +5,12 @@ import { observer } from 'mobx-react-lite';
 
 import { IInitialConfiguration } from 'Entities/InitialConfiguration';
 import Icons from 'Lib/theme/Icons';
+import {
+    DEFAULT_DNS_ADDRESS,
+    DEFAULT_DNS_PORT,
+    DEFAULT_IP_ADDRESS,
+    DEFAULT_IP_PORT,
+} from 'Consts/install';
 
 import s from './Install.module.pcss';
 import Stepper from './components/Stepper';
@@ -18,6 +24,16 @@ export type FormValues = IInitialConfiguration & { step: number };
 const InstallForm: FC = observer(() => {
     const initialValues: FormValues = {
         step: 0,
+        web: {
+            ip: DEFAULT_IP_ADDRESS,
+            port: DEFAULT_IP_PORT,
+        },
+        dns: {
+            ip: DEFAULT_DNS_ADDRESS,
+            port: DEFAULT_DNS_PORT,
+        },
+        password: '',
+        username: '',
     };
 
     return (
