@@ -21,9 +21,9 @@ import (
 )
 
 type firstRunData struct {
-	WebPort    int                    `json:"web_port"`
-	DNSPort    int                    `json:"dns_port"`
-	Interfaces map[string]interface{} `json:"interfaces"`
+	WebPort    int                `json:"web_port"`
+	DNSPort    int                `json:"dns_port"`
+	Interfaces []netInterfaceJSON `json:"interfaces"`
 }
 
 type netInterfaceJSON struct {
@@ -46,7 +46,7 @@ func (web *Web) handleInstallGetAddresses(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	data.Interfaces = make(map[string]interface{})
+	data.Interfaces = make([]netInterfaceJSON, 0)
 	for _, iface := range ifaces {
 		ifaceJSON := netInterfaceJSON{
 			Name:         iface.Name,
@@ -55,7 +55,7 @@ func (web *Web) handleInstallGetAddresses(w http.ResponseWriter, r *http.Request
 			Addresses:    iface.Addresses,
 			Flags:        iface.Flags,
 		}
-		data.Interfaces[iface.Name] = ifaceJSON
+		data.Interfaces = append(data.Interfaces, ifaceJSON)
 	}
 
 	w.Header().Set("Content-Type", "application/json")

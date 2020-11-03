@@ -1715,6 +1715,10 @@ components:
         AddressesInfo:
             type: object
             description: AdGuard Home addresses configuration
+            required: 
+                - dns_port
+                - web_port
+                - interfaces
             properties:
                 dns_port:
                     type: integer
@@ -1725,9 +1729,9 @@ components:
                     format: int32
                     example: 80
                 interfaces:
-                    type: object
+                    type: array
                     description: Network interfaces dictionary (key is the interface name)
-                    additionalProperties:
+                    items:
                         $ref: "#/components/schemas/NetInterface"
         ProfileInfo:
             type: object
@@ -1927,6 +1931,10 @@ components:
                     example: false
         CheckConfigResponse:
             type: object
+            required: 
+                - dns
+                - web
+                - static_ip
             properties:
                 dns:
                     $ref: "#/components/schemas/CheckConfigResponseInfo"
@@ -1936,26 +1944,38 @@ components:
                     $ref: "#/components/schemas/CheckConfigStaticIpInfo"
         CheckConfigResponseInfo:
             type: object
+            required: 
+                - status
+                - can_autofix
             properties:
                 status:
                     type: string
+                    default: ""
                     example: ""
                 can_autofix:
                     type: boolean
                     example: false
+        CheckConfigStaticIpInfoStatic:
+            type: string
+            example: no
+            enum: 
+                - yes
+                - no
+                - error
+            description: "Can be: yes, no, error"
         CheckConfigStaticIpInfo:
             type: object
             properties:
                 static:
-                    type: string
-                    example: no
-                    description: "Can be: yes, no, error"
+                    $ref: "#/components/schemas/CheckConfigStaticIpInfoStatic"
                 ip:
                     type: string
+                    default: ""
                     example: 192.168.1.1
                     description: Current dynamic IP address. Set if static=no
                 error:
                     type: string
+                    default: ""
                     example: ""
                     description: Error text. Set if static=error
         InitialConfiguration:
