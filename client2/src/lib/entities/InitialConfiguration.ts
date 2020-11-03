@@ -91,7 +91,7 @@ export default class InitialConfiguration {
         return isError;
     }
 
-    update(props: IInitialConfiguration): InitialConfiguration {
-        return new InitialConfiguration(props);
+    update(props: Partial<IInitialConfiguration>): InitialConfiguration {
+        return new InitialConfiguration({ ...this.serialize(), ...props });
     }
 }

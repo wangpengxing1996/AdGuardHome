@@ -40,7 +40,7 @@ export default class GetVersionRequest {
         return isError;
     }
 
-    update(props: IGetVersionRequest): GetVersionRequest {
-        return new GetVersionRequest(props);
+    update(props: Partial<IGetVersionRequest>): GetVersionRequest {
+        return new GetVersionRequest({ ...this.serialize(), ...props });
     }
 }

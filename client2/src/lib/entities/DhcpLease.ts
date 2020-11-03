@@ -97,7 +97,7 @@ export default class DhcpLease {
         return isError;
     }
 
-    update(props: IDhcpLease): DhcpLease {
-        return new DhcpLease(props);
+    update(props: Partial<IDhcpLease>): DhcpLease {
+        return new DhcpLease({ ...this.serialize(), ...props });
     }
 }

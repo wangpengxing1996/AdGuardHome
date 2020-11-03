@@ -43,7 +43,7 @@ export default class RemoveUrlRequest {
         return isError;
     }
 
-    update(props: IRemoveUrlRequest): RemoveUrlRequest {
-        return new RemoveUrlRequest(props);
+    update(props: Partial<IRemoveUrlRequest>): RemoveUrlRequest {
+        return new RemoveUrlRequest({ ...this.serialize(), ...props });
     }
 }

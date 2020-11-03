@@ -25,7 +25,7 @@ export default class UpstreamsConfigResponse {
         return isError;
     }
 
-    update(props: IUpstreamsConfigResponse): UpstreamsConfigResponse {
-        return new UpstreamsConfigResponse(props);
+    update(props: Partial<IUpstreamsConfigResponse>): UpstreamsConfigResponse {
+        return new UpstreamsConfigResponse({ ...this.serialize(), ...props });
     }
 }

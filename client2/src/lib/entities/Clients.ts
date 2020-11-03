@@ -56,7 +56,7 @@ export default class Clients {
         return isError;
     }
 
-    update(props: IClients): Clients {
-        return new Clients(props);
+    update(props: Partial<IClients>): Clients {
+        return new Clients({ ...this.serialize(), ...props });
     }
 }

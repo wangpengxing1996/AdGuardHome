@@ -79,7 +79,7 @@ export default class ClientAuto {
         return isError;
     }
 
-    update(props: IClientAuto): ClientAuto {
-        return new ClientAuto(props);
+    update(props: Partial<IClientAuto>): ClientAuto {
+        return new ClientAuto({ ...this.serialize(), ...props });
     }
 }

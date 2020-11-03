@@ -93,7 +93,7 @@ export default class VersionInfo {
         return isError;
     }
 
-    update(props: IVersionInfo): VersionInfo {
-        return new VersionInfo(props);
+    update(props: Partial<IVersionInfo>): VersionInfo {
+        return new VersionInfo({ ...this.serialize(), ...props });
     }
 }

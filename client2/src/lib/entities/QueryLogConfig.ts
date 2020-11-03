@@ -70,7 +70,7 @@ export default class QueryLogConfig {
         return isError;
     }
 
-    update(props: IQueryLogConfig): QueryLogConfig {
-        return new QueryLogConfig(props);
+    update(props: Partial<IQueryLogConfig>): QueryLogConfig {
+        return new QueryLogConfig({ ...this.serialize(), ...props });
     }
 }

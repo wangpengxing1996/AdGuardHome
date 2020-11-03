@@ -61,7 +61,7 @@ export default class RewriteEntry {
         return isError;
     }
 
-    update(props: IRewriteEntry): RewriteEntry {
-        return new RewriteEntry(props);
+    update(props: Partial<IRewriteEntry>): RewriteEntry {
+        return new RewriteEntry({ ...this.serialize(), ...props });
     }
 }

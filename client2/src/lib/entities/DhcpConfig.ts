@@ -84,7 +84,7 @@ export default class DhcpConfig {
         return isError;
     }
 
-    update(props: IDhcpConfig): DhcpConfig {
-        return new DhcpConfig(props);
+    update(props: Partial<IDhcpConfig>): DhcpConfig {
+        return new DhcpConfig({ ...this.serialize(), ...props });
     }
 }

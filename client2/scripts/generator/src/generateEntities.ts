@@ -71,7 +71,7 @@ class EntitiesGenerator {
         const { enum: enumMembers } = this.schemas[sName];
         entityFile.addEnum({
             name: sName,
-            members: enumMembers.map((e: any) => ({ name: e, value: e })),
+            members: enumMembers.map((e: string) => ({ name: e.toUpperCase(), value: e })),
             isExported: true,
         });
 
@@ -502,9 +502,9 @@ class EntitiesGenerator {
         });
         update.addParameter({
             name: 'props',
-            type: `I${sName}`,
+            type: `Partial<I${sName}>`,
         });
-        update.setBodyText((w) => { w.writeLine(`return new ${sName}(props);`); });
+        update.setBodyText((w) => { w.writeLine(`return new ${sName}({ ...this.serialize(), ...props });`); });
 
         this.entities.push(entityFile);
     };

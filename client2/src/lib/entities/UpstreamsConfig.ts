@@ -61,7 +61,7 @@ export default class UpstreamsConfig {
         return isError;
     }
 
-    update(props: IUpstreamsConfig): UpstreamsConfig {
-        return new UpstreamsConfig(props);
+    update(props: Partial<IUpstreamsConfig>): UpstreamsConfig {
+        return new UpstreamsConfig({ ...this.serialize(), ...props });
     }
 }

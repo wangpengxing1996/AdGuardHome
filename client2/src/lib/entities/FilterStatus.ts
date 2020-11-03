@@ -83,7 +83,7 @@ export default class FilterStatus {
         return isError;
     }
 
-    update(props: IFilterStatus): FilterStatus {
-        return new FilterStatus(props);
+    update(props: Partial<IFilterStatus>): FilterStatus {
+        return new FilterStatus({ ...this.serialize(), ...props });
     }
 }

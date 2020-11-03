@@ -107,7 +107,7 @@ export default class NetInterface {
         return isError;
     }
 
-    update(props: INetInterface): NetInterface {
-        return new NetInterface(props);
+    update(props: Partial<INetInterface>): NetInterface {
+        return new NetInterface({ ...this.serialize(), ...props });
     }
 }

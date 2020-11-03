@@ -251,7 +251,7 @@ export default class Stats {
         return isError;
     }
 
-    update(props: IStats): Stats {
-        return new Stats(props);
+    update(props: Partial<IStats>): Stats {
+        return new Stats({ ...this.serialize(), ...props });
     }
 }

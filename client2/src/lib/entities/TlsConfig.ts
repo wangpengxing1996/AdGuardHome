@@ -391,7 +391,7 @@ export default class TlsConfig {
         return isError;
     }
 
-    update(props: ITlsConfig): TlsConfig {
-        return new TlsConfig(props);
+    update(props: Partial<ITlsConfig>): TlsConfig {
+        return new TlsConfig({ ...this.serialize(), ...props });
     }
 }

@@ -216,7 +216,7 @@ export default class ClientFindSubEntry {
         return isError;
     }
 
-    update(props: IClientFindSubEntry): ClientFindSubEntry {
-        return new ClientFindSubEntry(props);
+    update(props: Partial<IClientFindSubEntry>): ClientFindSubEntry {
+        return new ClientFindSubEntry({ ...this.serialize(), ...props });
     }
 }

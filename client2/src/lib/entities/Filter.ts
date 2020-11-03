@@ -129,7 +129,7 @@ export default class Filter {
         return isError;
     }
 
-    update(props: IFilter): Filter {
-        return new Filter(props);
+    update(props: Partial<IFilter>): Filter {
+        return new Filter({ ...this.serialize(), ...props });
     }
 }

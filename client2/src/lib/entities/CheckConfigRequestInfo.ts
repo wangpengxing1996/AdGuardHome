@@ -75,7 +75,7 @@ export default class CheckConfigRequestInfo {
         return isError;
     }
 
-    update(props: ICheckConfigRequestInfo): CheckConfigRequestInfo {
-        return new CheckConfigRequestInfo(props);
+    update(props: Partial<ICheckConfigRequestInfo>): CheckConfigRequestInfo {
+        return new CheckConfigRequestInfo({ ...this.serialize(), ...props });
     }
 }

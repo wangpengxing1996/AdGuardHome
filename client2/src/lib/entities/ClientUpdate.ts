@@ -55,7 +55,7 @@ export default class ClientUpdate {
         return isError;
     }
 
-    update(props: IClientUpdate): ClientUpdate {
-        return new ClientUpdate(props);
+    update(props: Partial<IClientUpdate>): ClientUpdate {
+        return new ClientUpdate({ ...this.serialize(), ...props });
     }
 }

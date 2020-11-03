@@ -59,7 +59,7 @@ export default class QueryLog {
         return isError;
     }
 
-    update(props: IQueryLog): QueryLog {
-        return new QueryLog(props);
+    update(props: Partial<IQueryLog>): QueryLog {
+        return new QueryLog({ ...this.serialize(), ...props });
     }
 }

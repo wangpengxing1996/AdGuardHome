@@ -61,7 +61,7 @@ export default class AddressInfo {
         return isError;
     }
 
-    update(props: IAddressInfo): AddressInfo {
-        return new AddressInfo(props);
+    update(props: Partial<IAddressInfo>): AddressInfo {
+        return new AddressInfo({ ...this.serialize(), ...props });
     }
 }

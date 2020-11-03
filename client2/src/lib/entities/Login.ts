@@ -55,7 +55,7 @@ export default class Login {
         return isError;
     }
 
-    update(props: ILogin): Login {
-        return new Login(props);
+    update(props: Partial<ILogin>): Login {
+        return new Login({ ...this.serialize(), ...props });
     }
 }

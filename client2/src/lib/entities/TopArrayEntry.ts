@@ -39,7 +39,7 @@ export default class TopArrayEntry {
         return isError;
     }
 
-    update(props: ITopArrayEntry): TopArrayEntry {
-        return new TopArrayEntry(props);
+    update(props: Partial<ITopArrayEntry>): TopArrayEntry {
+        return new TopArrayEntry({ ...this.serialize(), ...props });
     }
 }

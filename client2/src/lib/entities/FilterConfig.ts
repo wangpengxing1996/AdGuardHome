@@ -53,7 +53,7 @@ export default class FilterConfig {
         return isError;
     }
 
-    update(props: IFilterConfig): FilterConfig {
-        return new FilterConfig(props);
+    update(props: Partial<IFilterConfig>): FilterConfig {
+        return new FilterConfig({ ...this.serialize(), ...props });
     }
 }

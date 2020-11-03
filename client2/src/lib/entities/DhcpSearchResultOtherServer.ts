@@ -58,7 +58,7 @@ export default class DhcpSearchResultOtherServer {
         return isError;
     }
 
-    update(props: IDhcpSearchResultOtherServer): DhcpSearchResultOtherServer {
-        return new DhcpSearchResultOtherServer(props);
+    update(props: Partial<IDhcpSearchResultOtherServer>): DhcpSearchResultOtherServer {
+        return new DhcpSearchResultOtherServer({ ...this.serialize(), ...props });
     }
 }

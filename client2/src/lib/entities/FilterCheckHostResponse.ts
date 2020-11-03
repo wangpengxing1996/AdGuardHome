@@ -117,7 +117,7 @@ export default class FilterCheckHostResponse {
         return isError;
     }
 
-    update(props: IFilterCheckHostResponse): FilterCheckHostResponse {
-        return new FilterCheckHostResponse(props);
+    update(props: Partial<IFilterCheckHostResponse>): FilterCheckHostResponse {
+        return new FilterCheckHostResponse({ ...this.serialize(), ...props });
     }
 }

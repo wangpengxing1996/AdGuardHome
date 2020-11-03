@@ -39,7 +39,7 @@ export default class WhoisInfo {
         return isError;
     }
 
-    update(props: IWhoisInfo): WhoisInfo {
-        return new WhoisInfo(props);
+    update(props: Partial<IWhoisInfo>): WhoisInfo {
+        return new WhoisInfo({ ...this.serialize(), ...props });
     }
 }

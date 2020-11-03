@@ -53,7 +53,7 @@ export default class DhcpConfigV6 {
         return isError;
     }
 
-    update(props: IDhcpConfigV6): DhcpConfigV6 {
-        return new DhcpConfigV6(props);
+    update(props: Partial<IDhcpConfigV6>): DhcpConfigV6 {
+        return new DhcpConfigV6({ ...this.serialize(), ...props });
     }
 }

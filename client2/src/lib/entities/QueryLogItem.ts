@@ -251,7 +251,7 @@ export default class QueryLogItem {
         return isError;
     }
 
-    update(props: IQueryLogItem): QueryLogItem {
-        return new QueryLogItem(props);
+    update(props: Partial<IQueryLogItem>): QueryLogItem {
+        return new QueryLogItem({ ...this.serialize(), ...props });
     }
 }

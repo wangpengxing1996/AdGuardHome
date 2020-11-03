@@ -242,7 +242,7 @@ export default class DNSConfig {
         return isError;
     }
 
-    update(props: IDNSConfig): DNSConfig {
-        return new DNSConfig(props);
+    update(props: Partial<IDNSConfig>): DNSConfig {
+        return new DNSConfig({ ...this.serialize(), ...props });
     }
 }

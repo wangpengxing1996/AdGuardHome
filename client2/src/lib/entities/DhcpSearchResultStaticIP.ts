@@ -58,7 +58,7 @@ export default class DhcpSearchResultStaticIP {
         return isError;
     }
 
-    update(props: IDhcpSearchResultStaticIP): DhcpSearchResultStaticIP {
-        return new DhcpSearchResultStaticIP(props);
+    update(props: Partial<IDhcpSearchResultStaticIP>): DhcpSearchResultStaticIP {
+        return new DhcpSearchResultStaticIP({ ...this.serialize(), ...props });
     }
 }

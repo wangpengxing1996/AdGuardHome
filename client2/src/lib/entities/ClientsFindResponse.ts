@@ -25,7 +25,7 @@ export default class ClientsFindResponse {
         return isError;
     }
 
-    update(props: IClientsFindResponse): ClientsFindResponse {
-        return new ClientsFindResponse(props);
+    update(props: Partial<IClientsFindResponse>): ClientsFindResponse {
+        return new ClientsFindResponse({ ...this.serialize(), ...props });
     }
 }

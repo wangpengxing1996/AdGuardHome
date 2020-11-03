@@ -25,7 +25,7 @@ export default class BlockedServicesArray {
         return isError;
     }
 
-    update(props: IBlockedServicesArray): BlockedServicesArray {
-        return new BlockedServicesArray(props);
+    update(props: Partial<IBlockedServicesArray>): BlockedServicesArray {
+        return new BlockedServicesArray({ ...this.serialize(), ...props });
     }
 }

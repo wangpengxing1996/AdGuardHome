@@ -79,7 +79,7 @@ export default class DnsQuestion {
         return isError;
     }
 
-    update(props: IDnsQuestion): DnsQuestion {
-        return new DnsQuestion(props);
+    update(props: Partial<IDnsQuestion>): DnsQuestion {
+        return new DnsQuestion({ ...this.serialize(), ...props });
     }
 }

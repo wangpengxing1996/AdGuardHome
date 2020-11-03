@@ -110,7 +110,7 @@ export default class DhcpStatus {
         return isError;
     }
 
-    update(props: IDhcpStatus): DhcpStatus {
-        return new DhcpStatus(props);
+    update(props: Partial<IDhcpStatus>): DhcpStatus {
+        return new DhcpStatus({ ...this.serialize(), ...props });
     }
 }

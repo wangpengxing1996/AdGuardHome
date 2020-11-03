@@ -39,7 +39,7 @@ export default class FilterRefreshResponse {
         return isError;
     }
 
-    update(props: IFilterRefreshResponse): FilterRefreshResponse {
-        return new FilterRefreshResponse(props);
+    update(props: Partial<IFilterRefreshResponse>): FilterRefreshResponse {
+        return new FilterRefreshResponse({ ...this.serialize(), ...props });
     }
 }

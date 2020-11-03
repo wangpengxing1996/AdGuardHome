@@ -170,7 +170,7 @@ export default class Client {
         return isError;
     }
 
-    update(props: IClient): Client {
-        return new Client(props);
+    update(props: Partial<IClient>): Client {
+        return new Client({ ...this.serialize(), ...props });
     }
 }

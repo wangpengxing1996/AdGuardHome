@@ -39,7 +39,7 @@ export default class ClientDelete {
         return isError;
     }
 
-    update(props: IClientDelete): ClientDelete {
-        return new ClientDelete(props);
+    update(props: Partial<IClientDelete>): ClientDelete {
+        return new ClientDelete({ ...this.serialize(), ...props });
     }
 }

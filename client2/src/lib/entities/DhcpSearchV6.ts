@@ -41,7 +41,7 @@ export default class DhcpSearchV6 {
         return isError;
     }
 
-    update(props: IDhcpSearchV6): DhcpSearchV6 {
-        return new DhcpSearchV6(props);
+    update(props: Partial<IDhcpSearchV6>): DhcpSearchV6 {
+        return new DhcpSearchV6({ ...this.serialize(), ...props });
     }
 }

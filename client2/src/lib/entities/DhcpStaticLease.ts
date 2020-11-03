@@ -79,7 +79,7 @@ export default class DhcpStaticLease {
         return isError;
     }
 
-    update(props: IDhcpStaticLease): DhcpStaticLease {
-        return new DhcpStaticLease(props);
+    update(props: Partial<IDhcpStaticLease>): DhcpStaticLease {
+        return new DhcpStaticLease({ ...this.serialize(), ...props });
     }
 }

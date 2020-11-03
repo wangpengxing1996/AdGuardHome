@@ -38,6 +38,11 @@ const schemaParamParser = (schemaProp: any, openApi: any): [string, boolean, boo
         type = `${temp[temp.length - 1]}`;
 
         const cl = openApi ? openApi.components.schemas[temp[temp.length - 1]] : {};
+
+        if (cl.type === 'string' && cl.enum) {
+            isImport = true;
+        }
+
         if (cl.type === 'object' && !cl.oneOf) {
             isClass = true;
             isImport = true;

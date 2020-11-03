@@ -57,7 +57,7 @@ export default class AddUrlRequest {
         return isError;
     }
 
-    update(props: IAddUrlRequest): AddUrlRequest {
-        return new AddUrlRequest(props);
+    update(props: Partial<IAddUrlRequest>): AddUrlRequest {
+        return new AddUrlRequest({ ...this.serialize(), ...props });
     }
 }

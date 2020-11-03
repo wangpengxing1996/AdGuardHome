@@ -39,7 +39,7 @@ export default class ProfileInfo {
         return isError;
     }
 
-    update(props: IProfileInfo): ProfileInfo {
-        return new ProfileInfo(props);
+    update(props: Partial<IProfileInfo>): ProfileInfo {
+        return new ProfileInfo({ ...this.serialize(), ...props });
     }
 }

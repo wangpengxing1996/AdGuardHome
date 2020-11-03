@@ -40,7 +40,7 @@ export default class StatsConfig {
         return isError;
     }
 
-    update(props: IStatsConfig): StatsConfig {
-        return new StatsConfig(props);
+    update(props: Partial<IStatsConfig>): StatsConfig {
+        return new StatsConfig({ ...this.serialize(), ...props });
     }
 }

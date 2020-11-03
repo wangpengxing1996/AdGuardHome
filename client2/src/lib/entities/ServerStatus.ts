@@ -161,7 +161,7 @@ export default class ServerStatus {
         return isError;
     }
 
-    update(props: IServerStatus): ServerStatus {
-        return new ServerStatus(props);
+    update(props: Partial<IServerStatus>): ServerStatus {
+        return new ServerStatus({ ...this.serialize(), ...props });
     }
 }

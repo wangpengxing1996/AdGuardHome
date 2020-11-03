@@ -53,7 +53,7 @@ export default class FilterSetUrl {
         return isError;
     }
 
-    update(props: IFilterSetUrl): FilterSetUrl {
-        return new FilterSetUrl(props);
+    update(props: Partial<IFilterSetUrl>): FilterSetUrl {
+        return new FilterSetUrl({ ...this.serialize(), ...props });
     }
 }

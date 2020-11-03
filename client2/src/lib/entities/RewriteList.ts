@@ -25,7 +25,7 @@ export default class RewriteList {
         return isError;
     }
 
-    update(props: IRewriteList): RewriteList {
-        return new RewriteList(props);
+    update(props: Partial<IRewriteList>): RewriteList {
+        return new RewriteList({ ...this.serialize(), ...props });
     }
 }

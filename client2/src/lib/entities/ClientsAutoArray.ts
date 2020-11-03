@@ -25,7 +25,7 @@ export default class ClientsAutoArray {
         return isError;
     }
 
-    update(props: IClientsAutoArray): ClientsAutoArray {
-        return new ClientsAutoArray(props);
+    update(props: Partial<IClientsAutoArray>): ClientsAutoArray {
+        return new ClientsAutoArray({ ...this.serialize(), ...props });
     }
 }

@@ -79,7 +79,7 @@ export default class DnsAnswer {
         return isError;
     }
 
-    update(props: IDnsAnswer): DnsAnswer {
-        return new DnsAnswer(props);
+    update(props: Partial<IDnsAnswer>): DnsAnswer {
+        return new DnsAnswer({ ...this.serialize(), ...props });
     }
 }

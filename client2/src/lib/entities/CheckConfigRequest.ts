@@ -69,7 +69,7 @@ export default class CheckConfigRequest {
         return isError;
     }
 
-    update(props: ICheckConfigRequest): CheckConfigRequest {
-        return new CheckConfigRequest(props);
+    update(props: Partial<ICheckConfigRequest>): CheckConfigRequest {
+        return new CheckConfigRequest({ ...this.serialize(), ...props });
     }
 }

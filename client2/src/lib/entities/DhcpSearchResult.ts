@@ -56,7 +56,7 @@ export default class DhcpSearchResult {
         return isError;
     }
 
-    update(props: IDhcpSearchResult): DhcpSearchResult {
-        return new DhcpSearchResult(props);
+    update(props: Partial<IDhcpSearchResult>): DhcpSearchResult {
+        return new DhcpSearchResult({ ...this.serialize(), ...props });
     }
 }
