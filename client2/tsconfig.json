@@ -20,6 +20,7 @@
       "Consts/*": ["lib/consts/*"],
       "Entities/*": ["lib/entities/*"],
       "Hooks": ["lib/hooks"],
+      "Helpers/*": ["lib/helpers/*"],
       "Lib/*": ["lib/*"],
       "Localization": ["localization/index"],
       "Routes": ["lib/routes"],

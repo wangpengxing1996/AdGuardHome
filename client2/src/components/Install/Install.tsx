@@ -12,10 +12,13 @@ import {
     DEFAULT_IP_PORT,
 } from 'Consts/install';
 
-import s from './Install.module.pcss';
+import AdminInterface from './components/AdminInterface';
+import Auth from './components/Auth';
+import DnsServer from './components/DnsServer';
 import Stepper from './components/Stepper';
 import Welcome from './components/Welcome';
-import AdminInterface from './components/AdminInterface';
+
+import s from './Install.module.pcss';
 
 const { Content } = Layout;
 
@@ -49,6 +52,12 @@ const InstallForm: FC = observer(() => {
                     )}
                     {values.step === 1 && (
                         <AdminInterface values={values} setFieldValue={setFieldValue} />
+                    )}
+                    {values.step === 2 && (
+                        <Auth values={values} setFieldValue={setFieldValue} />
+                    )}
+                    {values.step === 3 && (
+                        <DnsServer values={values} setFieldValue={setFieldValue} />
                     )}
                 </form>
             )}
