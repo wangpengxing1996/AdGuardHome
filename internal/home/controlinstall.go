@@ -46,7 +46,7 @@ func (web *Web) handleInstallGetAddresses(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	data.Interfaces = make([]netInterfaceJSON, 0)
+	data.Interfaces = make([]netInterfaceJSON, 0, len(ifaces))
 	for _, iface := range ifaces {
 		ifaceJSON := netInterfaceJSON{
 			Name:         iface.Name,
