@@ -72,30 +72,30 @@ const Interfaces = () => {
         (store) => store.form[FORM_NAME.DHCP_INTERFACES]?.values?.interface_name,
     );
 
+    if (processingInterfaces || !interfaces) {
+        return null;
+    }
+
     const interfaceValue = interface_name && interfaces[interface_name];
 
-    return !processingInterfaces
-            && interfaces
-            && <>
-                <div className="row dhcp__interfaces">
-                    <div className="col col__dhcp">
-                        <Field
-                                name="interface_name"
-                                component={renderSelectField}
-                                className="form-control custom-select pl-4 col-md"
-                                validate={[validateRequiredValue]}
-                                label='dhcp_interface_select'
-                        >
-                            <option value='' disabled={enabled}>
-                                {t('dhcp_interface_select')}
-                            </option>
-                            {renderInterfaces(interfaces)}
-                        </Field>
-                    </div>
-                    {interfaceValue
-                    && renderInterfaceValues(interfaceValue)}
-                </div>
-            </>;
+    return <div className="row dhcp__interfaces">
+        <div className="col col__dhcp">
+            <Field
+                    name="interface_name"
+                    component={renderSelectField}
+                    className="form-control custom-select pl-4 col-md"
+                    validate={[validateRequiredValue]}
+                    label='dhcp_interface_select'
+            >
+                <option value='' disabled={enabled}>
+                    {t('dhcp_interface_select')}
+                </option>
+                {renderInterfaces(interfaces)}
+            </Field>
+        </div>
+        {interfaceValue
+        && renderInterfaceValues(interfaceValue)}
+    </div>;
 };
 
 renderInterfaceValues.propTypes = {
