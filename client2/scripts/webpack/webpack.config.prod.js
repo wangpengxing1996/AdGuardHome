@@ -7,13 +7,11 @@ const TerserJSPlugin = require('terser-webpack-plugin');
 const Webpack = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 
-console.log(path.resolve(__dirname, '../../../build/static'))
-
 module.exports = merge(baseConfig, {
     mode: 'production',
     devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, '../../../build/static'),
+        path: path.resolve(__dirname, '../../../build2/static'),
         filename: '[name].bundle.[hash:5].js',
         publicPath: '/static/'
     },
@@ -87,7 +85,7 @@ module.exports = merge(baseConfig, {
             DEV: false,
         }),
         new MiniCssExtractPlugin({
-            filename: 'bundle.[hash:5].css',
+            filename: '[name].[hash:5].css',
         }),
     ]
 });

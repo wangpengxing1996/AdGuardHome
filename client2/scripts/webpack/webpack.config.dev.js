@@ -18,7 +18,7 @@ const apiProxy = proxy.createProxyMiddleware(options);
 module.exports = merge(baseConfig, {
     mode: 'development',
     output: {
-        path: path.resolve(__dirname, '../../build'),
+        path: path.resolve(__dirname, '../../build2'),
         filename: '[name].bundle.js',
     },
     optimization: {
