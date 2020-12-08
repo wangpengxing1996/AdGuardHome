@@ -16,7 +16,6 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "yarn lint"
         }
     },
     "license": "ISC",

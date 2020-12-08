@@ -7,6 +7,7 @@
 /AdGuardHome.log
 /data/
 /build/
+/build2/
 /dist/
 /client/node_modules/
 /client2/node_modules/
