@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/AdguardTeam/AdGuardHome/internal/aghio"
+	"github.com/NYTimes/gziphandler"
 
 	"github.com/AdguardTeam/golibs/log"
 )
@@ -33,6 +34,19 @@ func limitRequestBody(h http.Handler) (limited http.Handler) {
 		r.Body, err = aghio.LimitReadCloser(r.Body, RequestBodySizeLimit)
 		if err != nil {
 			log.Error("limitRequestBody: %s", err)
+
+			return
+		}
+
+		h.ServeHTTP(w, r)
+	})
+}
+
+// wrapIndexBeta returns handler that deals with new client.
+func (web *Web) wrapIndexBeta(h http.Handler) (wrapped http.Handler) {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/" {
+			postInstallHandler(optionalAuthHandler(gziphandler.GzipHandler(http.FileServer(web.boxBeta)))).ServeHTTP(w, r)
 
 			return
 		}
