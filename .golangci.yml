@@ -16,7 +16,9 @@
   - 'util/pprof.go'
   - '.*_test.go'
   - 'client/.*'
+  - 'client2/.*'
   - 'build/.*'
+  - 'build2/.*'
   - 'dist/.*'
 
 # all available settings of specific linters

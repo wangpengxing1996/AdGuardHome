@@ -129,13 +129,16 @@ build: client_with_deps
 
 client:
 	npm --prefix client run build-prod
+	yarn --cwd client2 build
 
 client_with_deps:
 	npm --prefix client ci
 	npm --prefix client run build-prod
+	yarn --cwd client2 build
 
 client-watch:
 	npm --prefix client run watch
+	yarn --cwd client2 start
 
 docker:
 	DOCKER_CLI_EXPERIMENTAL=enabled \
@@ -156,6 +159,7 @@ lint: lint-js lint-go
 lint-js: dependencies
 	@echo Running js linter
 	npm --prefix client run lint
+#	yarn --cwd client2 lint
 
 lint-go:
 	@echo Running go linter
