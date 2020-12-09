@@ -13,7 +13,7 @@ module.exports = merge(baseConfig, {
     output: {
         path: path.resolve(__dirname, '../../../build2/static'),
         filename: '[name].bundle.[hash:5].js',
-        publicPath: '/static/'
+        publicPath: '/'
     },
     optimization: {
         minimizer: [new TerserJSPlugin({terserOptions: {
