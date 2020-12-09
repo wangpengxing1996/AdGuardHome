@@ -66,10 +66,10 @@ type Web struct {
 	httpServer  *http.Server // HTTP module
 	httpsServer HTTPSServer  // HTTPS module
 
-	// box is the box for client's static files.
-	box packr.Box
-	// boxBeta is the box for new client's static files.
-	boxBeta packr.Box
+	// handlerBeta is the handler for new client.
+	handlerBeta http.Handler
+	// installerBeta is the pre-install handler for new client.
+	installerBeta http.Handler
 
 	// httpServerBeta is a server for new client.
 	httpServerBeta *http.Server
@@ -83,18 +83,18 @@ func CreateWeb(conf *webConfig) *Web {
 	w.conf = conf
 
 	// Initialize and run the admin Web interface
-	w.box = packr.NewBox("../../build/static")
-	if conf.BetaBindPort != 0 {
-		w.boxBeta = packr.NewBox("../../build2/static")
-	}
+	box := packr.NewBox("../../build/static")
+	boxBeta := packr.NewBox("../../build2/static")
 
 	// if not configured, redirect / to /install.html, otherwise redirect /install.html to /
-	Context.mux.Handle("/", withMiddlewares(http.FileServer(w.box), gziphandler.GzipHandler, optionalAuthHandler, postInstallHandler))
+	Context.mux.Handle("/", withMiddlewares(http.FileServer(box), gziphandler.GzipHandler, optionalAuthHandler, postInstallHandler))
+	w.handlerBeta = withMiddlewares(http.FileServer(boxBeta), gziphandler.GzipHandler, optionalAuthHandler, postInstallHandler)
 
 	// add handlers for /install paths, we only need them when we're not configured yet
 	if conf.firstRun {
 		log.Info("This is the first launch of AdGuard Home, redirecting everything to /install.html ")
-		Context.mux.Handle("/install.html", preInstallHandler(http.FileServer(w.box)))
+		Context.mux.Handle("/install.html", preInstallHandler(http.FileServer(box)))
+		w.installerBeta = preInstallHandler(http.FileServer(boxBeta))
 		w.registerInstallHandlers()
 	} else {
 		registerControlHandlers()

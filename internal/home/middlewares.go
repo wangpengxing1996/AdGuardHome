@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/AdguardTeam/AdGuardHome/internal/aghio"
-	"github.com/NYTimes/gziphandler"
 
 	"github.com/AdguardTeam/golibs/log"
 )
@@ -43,14 +42,16 @@ func limitRequestBody(h http.Handler) (limited http.Handler) {
 }
 
 // wrapIndexBeta returns handler that deals with new client.
-func (web *Web) wrapIndexBeta(h http.Handler) (wrapped http.Handler) {
+func (web *Web) wrapIndexBeta(http.Handler) (wrapped http.Handler) {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/" {
-			postInstallHandler(optionalAuthHandler(gziphandler.GzipHandler(http.FileServer(web.boxBeta)))).ServeHTTP(w, r)
-
-			return
+		h, pattern := Context.mux.Handler(r)
+		switch pattern {
+		case "/":
+			web.handlerBeta.ServeHTTP(w, r)
+		case "/install.html":
+			web.installerBeta.ServeHTTP(w, r)
+		default:
+			h.ServeHTTP(w, r)
 		}
-
-		h.ServeHTTP(w, r)
 	})
 }
