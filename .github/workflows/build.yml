@@ -38,6 +38,7 @@
       'uses': 'actions/setup-node@v1'
       'with':
         'node-version': '${{ env.NODE_VERSION }}'
+      'run': 'npm install -g yarn'
     - 'name': 'Set up Go modules cache'
       'uses': 'actions/cache@v2'
       'with':
@@ -78,6 +79,7 @@
       'uses': 'actions/setup-node@v1'
       'with':
         'node-version': '${{ env.NODE_VERSION }}'
+      'run' : 'npm install -g yarn' 
     - 'name': 'Set up Go modules cache'
       'uses': 'actions/cache@v2'
       'with':
