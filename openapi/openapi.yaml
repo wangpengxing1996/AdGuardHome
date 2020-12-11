@@ -1798,6 +1798,11 @@
     'NetInterface':
       'type': 'object'
       'description': 'Network interface info'
+      'required':
+        - 'flags'
+        - 'hardware_address'
+        - 'name'
+        - 'mtu'
       'properties':
         'flags':
           'type': 'string'
@@ -1817,6 +1822,9 @@
     'AddressInfo':
       'type': 'object'
       'description': 'Port information'
+      'required': 
+        - 'ip'
+        - 'port'
       'properties':
         'ip':
           'type': 'string'
@@ -2097,6 +2105,11 @@
       'type': 'object'
       'description': >
         AdGuard Home initial configuration for the first-install wizard.
+      'required': 
+        - 'dns'
+        - 'web'
+        - 'username'
+        - 'password'
       'properties':
         'dns':
           '$ref': '#/components/schemas/AddressInfo'
