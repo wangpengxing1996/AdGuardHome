@@ -176,6 +176,10 @@ func initConfig() {
 	config.DHCP.Conf4.LeaseDuration = 86400
 	config.DHCP.Conf4.ICMPTimeout = 1000
 	config.DHCP.Conf6.LeaseDuration = 86400
+
+	if updateChannel == "none" || updateChannel == "edge" {
+		config.BetaBindPort = 3001
+	}
 }
 
 // getConfigFilename returns path to the current config file
