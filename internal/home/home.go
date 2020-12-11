@@ -243,6 +243,9 @@ func setupConfig(args options) {
 	if len(args.pidFile) != 0 && writePIDFile(args.pidFile) {
 		Context.pidFileName = args.pidFile
 	}
+	if updateChannel == "none" || updateChannel == "edge" {
+		config.BetaBindPort = 3001
+	}
 }
 
 // run performs configurating and starts AdGuard Home.

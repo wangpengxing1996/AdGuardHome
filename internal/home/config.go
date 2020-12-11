@@ -119,7 +119,7 @@ type tlsConfigSettings struct {
 // initialize to default values, will be changed later when reading config or parsing command line
 var config = configuration{
 	BindPort:     3000,
-	BetaBindPort: 3001,
+	BetaBindPort: 0,
 	BindHost:     "0.0.0.0",
 	DNS: dnsConfig{
 		BindHost:      "0.0.0.0",

@@ -328,7 +328,9 @@ func (web *Web) handleInstallConfigure(w http.ResponseWriter, r *http.Request) {
 	Context.firstRun = false
 	config.BindHost = newSettings.Web.IP
 	config.BindPort = newSettings.Web.Port
-	config.BetaBindPort = newSettings.Web.Port + 1
+	if updateChannel == "none" || updateChannel == "edge" {
+		config.BetaBindPort = newSettings.Web.Port + 1
+	}
 	config.DNS.BindHost = newSettings.DNS.IP
 	config.DNS.Port = newSettings.DNS.Port
 
@@ -355,7 +357,9 @@ func (web *Web) handleInstallConfigure(w http.ResponseWriter, r *http.Request) {
 	web.conf.firstRun = false
 	web.conf.BindHost = newSettings.Web.IP
 	web.conf.BindPort = newSettings.Web.Port
-	web.conf.BetaBindPort = newSettings.Web.Port + 1
+	if updateChannel == "none" || updateChannel == "edge" {
+		web.conf.BetaBindPort = newSettings.Web.Port + 1
+	}
 
 	registerControlHandlers()
 
