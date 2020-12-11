@@ -18,7 +18,7 @@ export default class UpstreamsConfig {
     }
 
     static bootstrapDnsValidate(bootstrapDns: string[]): boolean {
-        return bootstrapDns.reduce((result, p) => result && (typeof p === 'string' && !!p.trim()), true);
+        return bootstrapDns.reduce<boolean>((result, p) => result && (typeof p === 'string' && !!p.trim()), true);
     }
 
     readonly _upstream_dns: string[];
@@ -33,7 +33,7 @@ export default class UpstreamsConfig {
     }
 
     static upstreamDnsValidate(upstreamDns: string[]): boolean {
-        return upstreamDns.reduce((result, p) => result && (typeof p === 'string' && !!p.trim()), true);
+        return upstreamDns.reduce<boolean>((result, p) => result && (typeof p === 'string' && !!p.trim()), true);
     }
 
     constructor(props: IUpstreamsConfig) {

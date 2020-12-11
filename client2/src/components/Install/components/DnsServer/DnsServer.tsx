@@ -40,7 +40,7 @@ const DnsServer: FC<DnsServerProps> = observer(({
 
     const getManualBlock = () => (
         <div className={s.manualOptions}>
-            {addresses.interfaces.map((a) => {
+            {addresses?.interfaces.map((a) => {
                 let name = '';
                 const type = chechNetworkType(a.name);
                 switch (type) {
@@ -78,7 +78,7 @@ const DnsServer: FC<DnsServerProps> = observer(({
     );
 
     return (
-        <div className={s.content}>
+        <div>
             <div className={theme.typo.title}>
                 {intl.getMessage('install_dns_server_title')}
             </div>

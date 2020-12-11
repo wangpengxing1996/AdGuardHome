@@ -40,7 +40,7 @@ const AdminInterface: FC<AdminInterfaceProps> = observer(({
 
     const getManualBlock = () => (
         <div className={s.manualOptions}>
-            {addresses.interfaces.map((a) => {
+            {addresses?.interfaces.map((a) => {
                 let name = '';
                 const type = chechNetworkType(a.name);
                 switch (type) {

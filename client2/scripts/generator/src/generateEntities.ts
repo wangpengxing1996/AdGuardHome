@@ -275,7 +275,7 @@ class EntitiesGenerator {
                             const nonRequiredCall = isRequired ? prop : `!${prop} ? true : ${prop}`;
                             if (pType === 'string') {
                                 if (isArray) {
-                                    w.write(`${nonRequiredCall}.reduce((result, p) => result && (typeof p === 'string' && !!p.trim()), true)`);
+                                    w.write(`${nonRequiredCall}.reduce<boolean>((result, p) => result && (typeof p === 'string' && !!p.trim()), true)`);
                                 } else {
                                     if (typeof minLength === 'number' && maxLength) {
                                         w.write(`(${nonRequiredCall}.length >${minLength > 0 ? '=' : ''} ${minLength}) && (${nonRequiredCall}.length <= ${maxLength})`);
@@ -286,7 +286,7 @@ class EntitiesGenerator {
                                 }
                             } else if (pType === 'number') {
                                 if (isArray) {
-                                    w.write(`${nonRequiredCall}.reduce((result, p) => result && typeof p === 'number', true)`);
+                                    w.write(`${nonRequiredCall}.reduce<boolean>((result, p) => result && typeof p === 'number', true)`);
                                 } else {
                                     if (typeof minimum === 'number' && maximum) {
                                         w.write(`${isRequired ? `${prop} >= ${minimum} && ${prop} <= ${maximum}` : `!${prop} ? true : ((${prop} >= ${minimum}) && (${prop} <= ${maximum}))`}`);
@@ -299,7 +299,7 @@ class EntitiesGenerator {
                                 w.write(`${isRequired ? `typeof ${prop} === 'boolean'` : `!${prop} ? true : typeof ${prop} === 'boolean'`}`);
                             } else if (isEnum) {
                                 if (isArray){
-                                    w.write(`${nonRequiredCall}.reduce((result, p) => result && Object.keys(${pType}).includes(${prop}), true)`);
+                                    w.write(`${nonRequiredCall}.reduce<boolean>((result, p) => result && Object.keys(${pType}).includes(${prop}), true)`);
                                 } else {
                                     w.write(`${isRequired ? `Object.keys(${pType}).includes(${prop})` : `!${prop} ? true : typeof ${prop} === 'boolean'`}`);
                                 }

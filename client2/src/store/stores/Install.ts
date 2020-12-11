@@ -8,10 +8,11 @@ import { Store } from 'Store';
 export default class Install {
     rootStore: Store;
 
-    addresses: AddressesInfo;
+    addresses: AddressesInfo | null;
 
     constructor(rootStore: Store) {
         this.rootStore = rootStore;
+        this.addresses = null;
         makeAutoObservable(this, {
             rootStore: false,
             getAddresses: flow,

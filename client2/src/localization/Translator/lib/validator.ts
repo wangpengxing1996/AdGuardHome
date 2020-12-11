@@ -33,7 +33,7 @@ const areAstStructuresSame = (baseAst: NODE[], targetAst: NODE[]) => {
             return false;
         }
 
-        if (targetNode.children) {
+        if (targetNode.children && baseNode.children) {
             const areChildrenSame = areAstStructuresSame(baseNode.children, targetNode.children);
             if (!areChildrenSame) {
                 return false;
