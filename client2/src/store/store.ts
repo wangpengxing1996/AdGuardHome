@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import UI from './stores/UI';
+import UI from './stores/ui';
 
 export class Store {
     ui: UI;

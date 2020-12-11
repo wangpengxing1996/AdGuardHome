@@ -63,6 +63,7 @@ export default class QueryLogItem {
 
     /**
      * Description: In case if there's a rule applied to this DNS request, this is ID of the filter that rule belongs to.
+     *
      * Example: 123123
      */
     get filterId(): number | undefined {

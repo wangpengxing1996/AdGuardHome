@@ -8,7 +8,7 @@ export default class UI {
 
     currentLang = DEFAULT_LOCALE;
 
-    intl = new Translator(Locale.en, messages, DEFAULT_LOCALE, reactFormater);
+    intl = new Translator<Locale>(Locale.en, messages, DEFAULT_LOCALE, reactFormater);
 
     constructor(rootStore: Store) {
         this.rootStore = rootStore;

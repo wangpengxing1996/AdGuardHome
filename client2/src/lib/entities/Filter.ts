@@ -81,6 +81,7 @@ export default class Filter {
     /**
      * Description: undefined
      * Example: https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt
+     *
      */
     get url(): string {
         return this._url;

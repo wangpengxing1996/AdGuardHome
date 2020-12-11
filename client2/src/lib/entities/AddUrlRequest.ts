@@ -3,6 +3,7 @@
 export interface IAddUrlRequest {
     name?: string;
     url?: string;
+    whitelist?: boolean;
 }
 
 export default class AddUrlRequest {
@@ -15,11 +16,18 @@ export default class AddUrlRequest {
     readonly _url: string | undefined;
 
     /**
-     * Description: URL or an absolute path to the file containing filtering rules
+     * Description: URL or an absolute path to the file containing filtering rules.
+     *
      * Example: https://filters.adtidy.org/windows/filters/15.txt
      */
     get url(): string | undefined {
         return this._url;
+    }
+
+    readonly _whitelist: boolean | undefined;
+
+    get whitelist(): boolean | undefined {
+        return this._whitelist;
     }
 
     constructor(props: IAddUrlRequest) {
@@ -28,6 +36,9 @@ export default class AddUrlRequest {
         }
         if (typeof props.url === 'string') {
             this._url = props.url.trim();
+        }
+        if (typeof props.whitelist === 'boolean') {
+            this._whitelist = props.whitelist;
         }
     }
 
@@ -40,6 +51,9 @@ export default class AddUrlRequest {
         if (typeof this._url !== 'undefined') {
             data.url = this._url;
         }
+        if (typeof this._whitelist !== 'undefined') {
+            data.whitelist = this._whitelist;
+        }
         return data;
     }
 
@@ -47,6 +61,7 @@ export default class AddUrlRequest {
         const validate = {
             name: !this._name ? true : typeof this._name === 'string' && !this._name ? true : this._name,
             url: !this._url ? true : typeof this._url === 'string' && !this._url ? true : this._url,
+            whitelist: !this._whitelist ? true : typeof this._whitelist === 'boolean',
         };
         const isError: string[] = [];
         Object.keys(validate).forEach((key) => {

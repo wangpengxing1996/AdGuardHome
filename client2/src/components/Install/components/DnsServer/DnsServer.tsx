@@ -32,7 +32,7 @@ const DnsServer: FC<DnsServerProps> = observer(({
     const radioValue = values.dns?.ip === DEFAULT_IP_ADDRESS
         ? NETWORK_OPTIONS.ALL : NETWORK_OPTIONS.CUSTOM;
 
-    const onSelectRadio = (v: string) => {
+    const onSelectRadio = (v: string | number) => {
         const value = v === NETWORK_OPTIONS.ALL
             ? DEFAULT_IP_ADDRESS : v;
         setFieldValue('dns.ip', value);
@@ -54,7 +54,7 @@ const DnsServer: FC<DnsServerProps> = observer(({
                         name = a.name;
                         break;
                 }
-                const currentIp = a.ipAddresses[0];
+                const currentIp = a.ipAddresses ? a.ipAddresses[0] : '';
                 const isChecked = values.dns.ip === currentIp;
                 return (
                     <div key={a.name} className={s.manualOption}>
@@ -62,7 +62,7 @@ const DnsServer: FC<DnsServerProps> = observer(({
                             <div>
                                 {name}
                             </div>
-                            {a.ipAddresses.map((ip) => (
+                            {a.ipAddresses?.map((ip) => (
                                 <div className={theme.typo.subtext} key={ip}>
                                     http://{ip}
                                 </div>

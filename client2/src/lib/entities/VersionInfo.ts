@@ -23,6 +23,7 @@ export default class VersionInfo {
     /**
      * Description: undefined
      * Example: https://github.com/AdguardTeam/AdGuardHome/releases/tag/v0.9
+     *
      */
     get announcementUrl(): string | undefined {
         return this._announcement_url;

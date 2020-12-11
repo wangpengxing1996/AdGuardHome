@@ -65,7 +65,7 @@ const format = <T = any | string>(ast: NODE[], values: AllowedValues<T>) => {
         if (isTextNode(currentNode)) {
             result.push(currentNode.value);
         } else if (isTagNode(currentNode)) {
-            const children = [...format(currentNode.children, values)].join('');
+            const children = [...format(currentNode.children ? currentNode.children : [], values)].join('');
             const value = values[currentNode.value];
             if (typeof value === 'string' || typeof value === 'number' || typeof value === 'function') {
                 if (isFunction(value)) {

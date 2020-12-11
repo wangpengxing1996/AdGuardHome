@@ -32,7 +32,7 @@ const AdminInterface: FC<AdminInterfaceProps> = observer(({
     const radioValue = values.web?.ip === DEFAULT_IP_ADDRESS
         ? NETWORK_OPTIONS.ALL : NETWORK_OPTIONS.CUSTOM;
 
-    const onSelectRadio = (v: string) => {
+    const onSelectRadio = (v: string | number) => {
         const value = v === NETWORK_OPTIONS.ALL
             ? DEFAULT_IP_ADDRESS : v;
         setFieldValue('web.ip', value);
@@ -51,10 +51,10 @@ const AdminInterface: FC<AdminInterfaceProps> = observer(({
                         name = `${intl.getMessage('localhost')} (${a.name}) `;
                         break;
                     default:
-                        name = a.name;
+                        name = a.name || '';
                         break;
                 }
-                const currentIp = a.ipAddresses[0];
+                const currentIp = a.ipAddresses ? a.ipAddresses[0] : '';
                 const isChecked = values.web.ip === currentIp;
                 return (
                     <div key={a.name} className={s.manualOption}>
@@ -62,7 +62,7 @@ const AdminInterface: FC<AdminInterfaceProps> = observer(({
                             <div>
                                 {name}
                             </div>
-                            {a.ipAddresses.map((ip) => (
+                            {a.ipAddresses?.map((ip) => (
                                 <div className={theme.typo.subtext} key={ip}>
                                     http://{ip}
                                 </div>

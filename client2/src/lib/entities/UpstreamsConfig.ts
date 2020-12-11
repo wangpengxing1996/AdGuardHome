@@ -9,7 +9,8 @@ export default class UpstreamsConfig {
     readonly _bootstrap_dns: string[];
 
     /**
-     * Description: Bootstrap servers, port is optional after colon. Empty value will reset it to default values
+     * Description: Bootstrap servers, port is optional after colon.  Empty value will reset it to default values.
+     *
      * Example: 8.8.8.8:53,1.1.1.1:53
      */
     get bootstrapDns(): string[] {
@@ -23,7 +24,8 @@ export default class UpstreamsConfig {
     readonly _upstream_dns: string[];
 
     /**
-     * Description: Upstream servers, port is optional after colon. Empty value will reset it to default values
+     * Description: Upstream servers, port is optional after colon.  Empty value will reset it to default values.
+     *
      * Example: tls://1.1.1.1,tls://1.0.0.1
      */
     get upstreamDns(): string[] {

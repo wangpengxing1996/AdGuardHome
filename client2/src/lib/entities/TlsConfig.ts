@@ -42,7 +42,8 @@ export default class TlsConfig {
     readonly _dns_names: string[] | undefined;
 
     /**
-     * Description: dns_names is the value of SubjectAltNames field of the first certificate in the chain
+     * Description: The value of SubjectAltNames field of the first certificate in the chain.
+     *
      * Example: *.example.org
      */
     get dnsNames(): string[] | undefined {
@@ -72,7 +73,7 @@ export default class TlsConfig {
     readonly _issuer: string | undefined;
 
     /**
-     * Description: issuer is the issuer of the first certificate in the chain
+     * Description: The issuer of the first certificate in the chain.
      * Example: CN=Let's Encrypt Authority X3,O=Let's Encrypt,C=US
      */
     get issuer(): string | undefined {
@@ -82,7 +83,7 @@ export default class TlsConfig {
     readonly _key_type: string | undefined;
 
     /**
-     * Description: key_type is either RSA or ECDSA
+     * Description: Key type.
      * Example: RSA
      */
     get keyType(): string | undefined {
@@ -92,7 +93,8 @@ export default class TlsConfig {
     readonly _not_after: string | undefined;
 
     /**
-     * Description: not_after is the NotAfter field of the first certificate in the chain
+     * Description: The NotAfter field of the first certificate in the chain.
+     *
      * Example: 2019-05-01T10:47:32Z
      */
     get notAfter(): string | undefined {
@@ -102,7 +104,8 @@ export default class TlsConfig {
     readonly _not_before: string | undefined;
 
     /**
-     * Description: not_before is the NotBefore field of the first certificate in the chain
+     * Description: The NotBefore field of the first certificate in the chain.
+     *
      * Example: 2019-01-31T10:47:32Z
      */
     get notBefore(): string | undefined {
@@ -166,7 +169,7 @@ export default class TlsConfig {
     readonly _subject: string | undefined;
 
     /**
-     * Description: subject is the subject of the first certificate in the chain
+     * Description: The subject of the first certificate in the chain.
      * Example: CN=example.org
      */
     get subject(): string | undefined {
@@ -176,7 +179,8 @@ export default class TlsConfig {
     readonly _valid_cert: boolean | undefined;
 
     /**
-     * Description: valid_cert is true if the specified certificates chain is a valid chain of X509 certificates
+     * Description: Set to true if the specified certificates chain is a valid chain of X509 certificates.
+     *
      * Example: true
      */
     get validCert(): boolean | undefined {
@@ -186,7 +190,8 @@ export default class TlsConfig {
     readonly _valid_chain: boolean | undefined;
 
     /**
-     * Description: valid_chain is true if the specified certificates chain is verified and issued by a known CA
+     * Description: Set to true if the specified certificates chain is verified and issued by a known CA.
+     *
      * Example: true
      */
     get validChain(): boolean | undefined {
@@ -196,7 +201,7 @@ export default class TlsConfig {
     readonly _valid_key: boolean | undefined;
 
     /**
-     * Description: valid_key is true if the key is a valid private key
+     * Description: Set to true if the key is a valid private key.
      * Example: true
      */
     get validKey(): boolean | undefined {
@@ -206,7 +211,8 @@ export default class TlsConfig {
     readonly _valid_pair: boolean | undefined;
 
     /**
-     * Description: valid_pair is true if both certificate and private key are correct
+     * Description: Set to true if both certificate and private key are correct.
+     *
      * Example: true
      */
     get validPair(): boolean | undefined {
@@ -216,7 +222,8 @@ export default class TlsConfig {
     readonly _warning_validation: string | undefined;
 
     /**
-     * Description: warning_validation is a validation warning message with the issue description
+     * Description: A validation warning message with the issue description.
+     *
      * Example: You have specified an empty certificate
      */
     get warningValidation(): string | undefined {

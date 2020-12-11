@@ -1,6 +1,6 @@
 import InstallApi from 'Apis/install';
 import AddressesInfo, { IAddressesInfo } from 'Entities/AddressesInfo';
-import { errorChecker } from 'Lib/helpers/apiHelpers';
+import { errorChecker } from 'Helpers/apiHelpers';
 import { flow, makeAutoObservable } from 'mobx';
 
 import { Store } from 'Store';

@@ -58,7 +58,7 @@ class Translator<Locale extends GenericLocales[keyof GenericLocales], Formater =
         number: number,
         params: AllowedValues<Formater> = {},
     ): string {
-        let locale: Locale = null;
+        let locale: Locale | null = null;
         if (this.messages[this._currentLocale][id]) {
             locale = this._currentLocale;
         } else if (this.messages[this.defaultLocale][id]) {

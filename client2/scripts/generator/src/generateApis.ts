@@ -149,7 +149,7 @@ class ApiGenerator {
                 const { $ref }: { $ref: string } = requestBody;
 
                 if (!content && $ref) {
-                    const name = $ref.split('/').pop();
+                    const name = $ref.split('/').pop() as string;
                     content = this.openapi.components.requestBodies[name].content;
                 }
                 
