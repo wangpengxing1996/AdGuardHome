@@ -159,7 +159,7 @@ lint: js-lint go-lint
 
 js-lint: dependencies
 	npm --prefix client run lint
-#	yarn --cwd client2 lint
+	yarn --cwd client2 lint
 
 go-install-tools:
 	env GO=$(GO) sh ./scripts/go-install-tools.sh
@@ -181,6 +181,7 @@ ci: client_with_deps
 
 dependencies:
 	npm --prefix client ci
+	yarn --cwd client2 install
 	$(GO) mod download
 
 clean:

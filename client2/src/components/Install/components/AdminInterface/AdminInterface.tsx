@@ -76,7 +76,6 @@ const AdminInterface: FC<AdminInterfaceProps> = observer(({
             })}
         </div>
     );
-    console.log(addresses, values);
 
     return (
         <div className={s.content}>
