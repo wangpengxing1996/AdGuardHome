@@ -68,6 +68,7 @@ export const normalizeLogs = (logs) => logs.map((log) => {
         time,
         filterId,
         rule,
+        rules,
         service_name,
         original_answer,
         upstream,
@@ -80,6 +81,15 @@ export const normalizeLogs = (logs) => logs.map((log) => {
         return `${type}: ${value} (ttl=${ttl})`;
     }) : []);
 
+    let newRules = rules;
+    /* TODO 'filterId' and 'rule' are deprecated, will be removed in 0.106 */
+    if (rule !== undefined && filterId !== undefined && rules !== undefined && rules.length === 0) {
+        newRules = {
+            filter_list_id: filterId,
+            text: rule,
+        };
+    }
+
     return {
         time,
         domain,
@@ -88,8 +98,10 @@ export const normalizeLogs = (logs) => logs.map((log) => {
         reason,
         client,
         client_proto,
+        /* TODO 'filterId' and 'rule' are deprecated, will be removed in 0.106 */
         filterId,
         rule,
+        rules: newRules,
         status,
         service_name,
         originalAnswer: original_answer,
@@ -714,6 +726,45 @@ export const getFilterName = (
     const filter = filters.find(matchIdPredicate) || whitelistFilters.find(matchIdPredicate);
 
     return resolveFilterName(filter);
+};
+
+/**
+ * @param {array} rules
+ * @param {array} filters
+ * @param {array} whitelistFilters
+ * @returns {string[]}
+ */
+export const getFilterNames = (rules, filters, whitelistFilters) => rules.map(
+    ({ filter_list_id }) => getFilterName(filters, whitelistFilters, filter_list_id),
+);
+
+/**
+ * @param {array} rules
+ * @returns {string[]}
+ */
+export const getRuleNames = (rules) => rules.map(({ text }) => text);
+
+const getFilterNameToRulesMap = (rules, filters, whitelistFilters) => rules.reduce(
+    (acc, { text, filter_list_id }) => {
+        const filterName = getFilterName(filters, whitelistFilters, filter_list_id);
+
+        acc[filterName] = (acc[filterName] || []).concat(text);
+        return acc;
+    }, {},
+);
+
+/**
+ * @param {array} rules
+ * @param {array} filters
+ * @param {array} whitelistFilters
+ * @returns {string}
+ */
+export const getRulesAndFilterNames = (rules, filters, whitelistFilters) => {
+    const filterNameToRulesMap = getFilterNameToRulesMap(rules, filters, whitelistFilters);
+
+    return Object.entries(filterNameToRulesMap).map(
+        ([filterName, filterRules]) => filterRules.concat(filterName).join('\n'),
+    ).join('\n\n');
 };
 
 /**
