@@ -74,7 +74,7 @@ const getTitle = () => {
     return <>
         <div>{t('check_reason', { reason })}</div>
         <div style={{ 'white-space': 'pre-line' }}>
-            {t('check_rule')}
+            {t('rule_label')}:
             &nbsp;
             {ruleAndFilterNames}
         </div>
