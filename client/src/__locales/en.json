@@ -530,7 +530,7 @@
     "check_ip": "IP addresses: {{ip}}",
     "check_cname": "CNAME: {{cname}}",
     "check_reason": "Reason: {{reason}}",
-    "check_rule": "Rule: {{rule}}",
+    "check_rule": "Rule:",
     "check_service": "Service name: {{service}}",
     "service_name": "Service name",
     "check_not_found": "Not found in your filter lists",

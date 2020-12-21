@@ -12,7 +12,7 @@ import {
     checkSafeSearch,
     checkSafeBrowsing,
     checkParental,
-    getRulesAndFilterNames,
+    getRulesToFilterList,
 } from '../../../helpers/helpers';
 import { BLOCK_ACTIONS, FILTERED, FILTERED_STATUS } from '../../../helpers/constants';
 import { toggleBlocking } from '../../../actions';
@@ -54,7 +54,7 @@ const getTitle = () => {
         return i18next.t('query_log_filtered', { filter: filterKey });
     };
 
-    const ruleAndFilterNames = getRulesAndFilterNames(rules, filters, whitelistFilters);
+    const ruleAndFilterNames = getRulesToFilterList(rules, filters, whitelistFilters);
 
     const REASON_TO_TITLE_MAP = {
         [FILTERED_STATUS.NOT_FILTERED_NOT_FOUND]: t('check_not_found'),
@@ -73,7 +73,11 @@ const getTitle = () => {
 
     return <>
         <div>{t('check_reason', { reason })}</div>
-        <div style={{ 'white-space': 'pre-line' }}>{t('check_rule', { rule: ruleAndFilterNames })}</div>
+        <div style={{ 'white-space': 'pre-line' }}>
+            {t('check_rule')}
+            &nbsp;
+            {ruleAndFilterNames}
+        </div>
     </>;
 };
 

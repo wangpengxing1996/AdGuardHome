@@ -7,6 +7,7 @@ import i18n from 'i18next';
 import uniqBy from 'lodash/uniqBy';
 import ipaddr from 'ipaddr.js';
 import queryString from 'query-string';
+import React from 'react';
 import { getTrackerData } from './trackers/trackers';
 
 import {
@@ -744,7 +745,13 @@ export const getFilterNames = (rules, filters, whitelistFilters) => rules.map(
  */
 export const getRuleNames = (rules) => rules.map(({ text }) => text);
 
-const getFilterNameToRulesMap = (rules, filters, whitelistFilters) => rules.reduce(
+/**
+ * @param {array} rules
+ * @param {array} filters
+ * @param {array} whitelistFilters
+ * @returns {object}
+ */
+export const getFilterNameToRulesMap = (rules, filters, whitelistFilters) => rules.reduce(
     (acc, { text, filter_list_id }) => {
         const filterName = getFilterName(filters, whitelistFilters, filter_list_id);
 
@@ -757,8 +764,27 @@ const getFilterNameToRulesMap = (rules, filters, whitelistFilters) => rules.redu
  * @param {array} rules
  * @param {array} filters
  * @param {array} whitelistFilters
- * @returns {string}
+ * @returns {JSX}
  */
+export const getRulesToFilterList = (rules, filters, whitelistFilters) => {
+    const filterNameToRulesMap = getFilterNameToRulesMap(rules, filters, whitelistFilters);
+
+    return <dl className="filteringRules">
+        {Object.entries(filterNameToRulesMap).reduce(
+            (acc, [filterName, rulesArr]) => acc
+                .concat(rulesArr.map((rule, idx) => <dd key={idx} className="filteringRules__rule font-monospace">{rule}</dd>))
+                .concat(<dt className="filteringRules__filter">{filterName}</dt>),
+            [],
+        )}
+</dl>;
+};
+
+/**
+* @param {array} rules
+* @param {array} filters
+* @param {array} whitelistFilters
+* @returns {string}
+*/
 export const getRulesAndFilterNames = (rules, filters, whitelistFilters) => {
     const filterNameToRulesMap = getFilterNameToRulesMap(rules, filters, whitelistFilters);
 

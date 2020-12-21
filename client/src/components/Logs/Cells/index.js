@@ -6,11 +6,11 @@ import propTypes from 'prop-types';
 import {
     captitalizeWords,
     checkFiltered,
+    getRulesToFilterList,
     formatDateTime,
     formatElapsedMs,
     formatTime,
     getBlockingClientName,
-    getRulesAndFilterNames,
     getServiceName,
     processContent,
 } from '../../../helpers/helpers';
@@ -170,7 +170,7 @@ const Row = memo(({
             install_settings_dns: upstream,
             elapsed: formattedElapsedMs,
             rule_label: rules.length > 0
-                    && getRulesAndFilterNames(rules, filters, whitelistFilters),
+                    && getRulesToFilterList(rules, filters, whitelistFilters),
             response_table_header: response?.join('\n'),
             response_code: status,
             client_details: 'title',

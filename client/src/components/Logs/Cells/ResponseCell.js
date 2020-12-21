@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import React from 'react';
 import propTypes from 'prop-types';
 import {
+    getRulesToFilterList,
     formatElapsedMs,
     getFilterNames,
-    getRulesAndFilterNames,
     getServiceName,
 } from '../../../helpers/helpers';
 import { FILTERED_STATUS, FILTERED_STATUS_TO_META_MAP } from '../../../helpers/constants';
@@ -51,6 +51,8 @@ const ResponseCell = ({
         })}</div>;
     };
 
+    const rulesList = getRulesToFilterList(rules, filters, whitelistFilters);
+
     const COMMON_CONTENT = {
         encryption_status: boldStatusLabel,
         install_settings_dns: upstream,
@@ -60,7 +62,7 @@ const ResponseCell = ({
             ? { service_name: getServiceName(service_name) }
             : { }
         ),
-        rule_label: <div style={{ 'white-space': 'pre-line' }}>{getRulesAndFilterNames(rules, filters, whitelistFilters)}</div>,
+        rule_label: rulesList,
         response_table_header: renderResponses(response),
         original_response: renderResponses(originalResponse),
     };
@@ -94,7 +96,7 @@ const ResponseCell = ({
                 className={classNames('icons mr-4 icon--24 icon--lightgray', { 'my-3': isDetailed })}
                 columnClass='grid grid--limited'
                 tooltipClass='px-5 pb-5 pt-4 mw-75 custom-tooltip__response-details'
-                contentItemClass='text-truncate remoteMe key-colon o-hidden'
+                contentItemClass='text-truncate key-colon o-hidden'
                 xlinkHref='question'
                 title='response_details'
                 content={content}
