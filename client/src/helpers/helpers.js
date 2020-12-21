@@ -778,7 +778,7 @@ export const getRulesToFilterList = (rules, filters, whitelistFilters, classes =
         {Object.entries(filterNameToRulesMap).reduce(
             (acc, [filterName, rulesArr]) => acc
                 .concat(rulesArr.map((rule, i) => <dd key={i} className={classes.rule}>{rule}</dd>))
-                .concat(<dt className={classes.filter}>{filterName}</dt>),
+                .concat(<dt className={classes.filter} key={classes.filter}>{filterName}</dt>),
             [],
         )}
 </dl>;
