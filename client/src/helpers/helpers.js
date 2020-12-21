@@ -764,16 +764,21 @@ export const getFilterNameToRulesMap = (rules, filters, whitelistFilters) => rul
  * @param {array} rules
  * @param {array} filters
  * @param {array} whitelistFilters
+ * @param {object} classes
  * @returns {JSX}
  */
-export const getRulesToFilterList = (rules, filters, whitelistFilters) => {
+export const getRulesToFilterList = (rules, filters, whitelistFilters, classes = {
+    list: 'filteringRules',
+    rule: 'filteringRules__rule font-monospace',
+    filter: 'filteringRules__filter',
+}) => {
     const filterNameToRulesMap = getFilterNameToRulesMap(rules, filters, whitelistFilters);
 
-    return <dl className="filteringRules">
+    return <dl className={classes.list}>
         {Object.entries(filterNameToRulesMap).reduce(
             (acc, [filterName, rulesArr]) => acc
-                .concat(rulesArr.map((rule, idx) => <dd key={idx} className="filteringRules__rule font-monospace">{rule}</dd>))
-                .concat(<dt className="filteringRules__filter">{filterName}</dt>),
+                .concat(rulesArr.map((rule, i) => <dd key={i} className={classes.rule}>{rule}</dd>))
+                .concat(<dt className={classes.filter}>{filterName}</dt>),
             [],
         )}
 </dl>;
