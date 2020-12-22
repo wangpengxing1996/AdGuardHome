@@ -17,6 +17,7 @@ import Auth from './components/Auth';
 import DnsServer from './components/DnsServer';
 import Stepper from './components/Stepper';
 import Welcome from './components/Welcome';
+import ConfigureDevices from './components/ConfigureDevices';
 
 import s from './Install.module.pcss';
 
@@ -26,7 +27,7 @@ export type FormValues = IInitialConfiguration & { step: number };
 
 const InstallForm: FC = observer(() => {
     const initialValues: FormValues = {
-        step: 0,
+        step: 4,
         web: {
             ip: DEFAULT_IP_ADDRESS,
             port: DEFAULT_IP_PORT,
@@ -58,6 +59,9 @@ const InstallForm: FC = observer(() => {
                     )}
                     {values.step === 3 && (
                         <DnsServer values={values} setFieldValue={setFieldValue} />
+                    )}
+                    {values.step === 4 && (
+                        <ConfigureDevices values={values} setFieldValue={setFieldValue} />
                     )}
                 </form>
             )}
