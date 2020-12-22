@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGenHTTPSAnswer_andSVCB(t *testing.T) {
+func TestGenAnswerHTTPS_andSVCB(t *testing.T) {
 	// Preconditions.
 
 	s := &Server{
@@ -139,14 +139,14 @@ func TestGenHTTPSAnswer_andSVCB(t *testing.T) {
 				want := &dns.HTTPS{SVCB: *tc.want}
 				want.Hdr.Rrtype = dns.TypeHTTPS
 
-				got := s.genHTTPSAnswer(req, tc.svcb)
+				got := s.genAnswerHTTPS(req, tc.svcb)
 				assert.Equal(t, want, got)
 			})
 		})
 
 		t.Run("svcb", func(t *testing.T) {
 			t.Run(tc.name, func(t *testing.T) {
-				got := s.genSVCBAnswer(req, tc.svcb)
+				got := s.genAnswerSVCB(req, tc.svcb)
 				assert.Equal(t, tc.want, got)
 			})
 		})

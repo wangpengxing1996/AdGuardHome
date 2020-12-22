@@ -93,13 +93,13 @@ func (s *Server) genServerFailure(request *dns.Msg) *dns.Msg {
 
 func (s *Server) genARecord(request *dns.Msg, ip net.IP) *dns.Msg {
 	resp := s.makeResponse(request)
-	resp.Answer = append(resp.Answer, s.genAAnswer(request, ip))
+	resp.Answer = append(resp.Answer, s.genAnswerA(request, ip))
 	return resp
 }
 
 func (s *Server) genAAAARecord(request *dns.Msg, ip net.IP) *dns.Msg {
 	resp := s.makeResponse(request)
-	resp.Answer = append(resp.Answer, s.genAAAAAnswer(request, ip))
+	resp.Answer = append(resp.Answer, s.genAnswerAAAA(request, ip))
 	return resp
 }
 
@@ -112,28 +112,28 @@ func (s *Server) hdr(req *dns.Msg, rrType rules.RRType) (h dns.RR_Header) {
 	}
 }
 
-func (s *Server) genAAnswer(req *dns.Msg, ip net.IP) (ans *dns.A) {
+func (s *Server) genAnswerA(req *dns.Msg, ip net.IP) (ans *dns.A) {
 	return &dns.A{
 		Hdr: s.hdr(req, dns.TypeA),
 		A:   ip,
 	}
 }
 
-func (s *Server) genAAAAAnswer(req *dns.Msg, ip net.IP) (ans *dns.AAAA) {
+func (s *Server) genAnswerAAAA(req *dns.Msg, ip net.IP) (ans *dns.AAAA) {
 	return &dns.AAAA{
 		Hdr:  s.hdr(req, dns.TypeAAAA),
 		AAAA: ip,
 	}
 }
 
-func (s *Server) genCNAMEAnswer(req *dns.Msg, cname string) (ans *dns.CNAME) {
+func (s *Server) genAnswerCNAME(req *dns.Msg, cname string) (ans *dns.CNAME) {
 	return &dns.CNAME{
 		Hdr:    s.hdr(req, dns.TypeCNAME),
 		Target: dns.Fqdn(cname),
 	}
 }
 
-func (s *Server) genMXAnswer(req *dns.Msg, mx *rules.DNSMX) (ans *dns.MX) {
+func (s *Server) genAnswerMX(req *dns.Msg, mx *rules.DNSMX) (ans *dns.MX) {
 	return &dns.MX{
 		Hdr:        s.hdr(req, dns.TypePTR),
 		Preference: mx.Preference,
@@ -141,14 +141,14 @@ func (s *Server) genMXAnswer(req *dns.Msg, mx *rules.DNSMX) (ans *dns.MX) {
 	}
 }
 
-func (s *Server) genPTRAnswer(req *dns.Msg, ptr string) (ans *dns.PTR) {
+func (s *Server) genAnswerPTR(req *dns.Msg, ptr string) (ans *dns.PTR) {
 	return &dns.PTR{
 		Hdr: s.hdr(req, dns.TypePTR),
 		Ptr: ptr,
 	}
 }
 
-func (s *Server) genTXTAnswer(req *dns.Msg, strs []string) (ans *dns.TXT) {
+func (s *Server) genAnswerTXT(req *dns.Msg, strs []string) (ans *dns.TXT) {
 	return &dns.TXT{
 		Hdr: s.hdr(req, dns.TypeTXT),
 		Txt: strs,

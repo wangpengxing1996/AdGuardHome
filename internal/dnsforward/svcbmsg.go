@@ -10,13 +10,13 @@ import (
 	"github.com/miekg/dns"
 )
 
-// genHTTPSAnswer returns a properly initialized HTTPS resource record.
+// genAnswerHTTPS returns a properly initialized HTTPS resource record.
 //
-// See the comment on genSVCBAnswer for a list of current restrictions on
+// See the comment on genAnswerSVCB for a list of current restrictions on
 // parameter values.
-func (s *Server) genHTTPSAnswer(req *dns.Msg, svcb *rules.DNSSVCB) (ans *dns.HTTPS) {
+func (s *Server) genAnswerHTTPS(req *dns.Msg, svcb *rules.DNSSVCB) (ans *dns.HTTPS) {
 	ans = &dns.HTTPS{
-		SVCB: *s.genSVCBAnswer(req, svcb),
+		SVCB: *s.genAnswerSVCB(req, svcb),
 	}
 
 	ans.Hdr.Rrtype = dns.TypeHTTPS
@@ -121,7 +121,7 @@ var svcbKeyHandlers = map[string]svcbKeyHandler{
 	},
 }
 
-// genSVCBAnswer returns a properly initialized SVCB resource record.
+// genAnswerSVCB returns a properly initialized SVCB resource record.
 //
 // Currently, there are several restrictions on how the parameters are parsed.
 // Firstly, the parsing of non-contiguous values isn't supported.  Secondly, the
@@ -133,7 +133,7 @@ var svcbKeyHandlers = map[string]svcbKeyHandler{
 //   ipv4hint="127.0.0.1,127.0.0.2" // Unsupported.
 //
 // TODO(a.garipov): Support all of these.
-func (s *Server) genSVCBAnswer(req *dns.Msg, svcb *rules.DNSSVCB) (ans *dns.SVCB) {
+func (s *Server) genAnswerSVCB(req *dns.Msg, svcb *rules.DNSSVCB) (ans *dns.SVCB) {
 	ans = &dns.SVCB{
 		Hdr:      s.hdr(req, dns.TypeSVCB),
 		Priority: svcb.Priority,

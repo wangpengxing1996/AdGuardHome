@@ -27,10 +27,10 @@ func (s *Server) filterDNSRewriteResponse(req *dns.Msg, rr rules.RRType, v rules
 		}
 
 		if rr == dns.TypeA {
-			return s.genAAnswer(req, ip.To4()), nil
+			return s.genAnswerA(req, ip.To4()), nil
 		}
 
-		return s.genAAAAAnswer(req, ip), nil
+		return s.genAnswerAAAA(req, ip), nil
 	case dns.TypePTR,
 		dns.TypeTXT:
 		str, ok := v.(string)
@@ -39,17 +39,17 @@ func (s *Server) filterDNSRewriteResponse(req *dns.Msg, rr rules.RRType, v rules
 		}
 
 		if rr == dns.TypeTXT {
-			return s.genTXTAnswer(req, []string{str}), nil
+			return s.genAnswerTXT(req, []string{str}), nil
 		}
 
-		return s.genPTRAnswer(req, str), nil
+		return s.genAnswerPTR(req, str), nil
 	case dns.TypeMX:
 		mx, ok := v.(*rules.DNSMX)
 		if !ok {
 			return nil, fmt.Errorf("value for rr type %d has type %T, not *rules.DNSMX", rr, v)
 		}
 
-		return s.genMXAnswer(req, mx), nil
+		return s.genAnswerMX(req, mx), nil
 	case dns.TypeHTTPS,
 		dns.TypeSVCB:
 		svcb, ok := v.(*rules.DNSSVCB)
@@ -58,10 +58,10 @@ func (s *Server) filterDNSRewriteResponse(req *dns.Msg, rr rules.RRType, v rules
 		}
 
 		if rr == dns.TypeHTTPS {
-			return s.genHTTPSAnswer(req, svcb), nil
+			return s.genAnswerHTTPS(req, svcb), nil
 		}
 
-		return s.genSVCBAnswer(req, svcb), nil
+		return s.genAnswerSVCB(req, svcb), nil
 	default:
 		log.Debug("don't know how to handle dns rr type %d, skipping", rr)
 
