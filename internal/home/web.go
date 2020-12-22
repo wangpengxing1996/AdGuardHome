@@ -31,7 +31,7 @@ const (
 
 type webConfig struct {
 	firstRun     bool
-	BindHost     string
+	BindHost     []string
 	BindPort     int
 	BetaBindPort int
 	PortHTTPS    int
@@ -112,9 +112,11 @@ func WebCheckPortAvailable(port int) bool {
 		alreadyRunning = true
 	}
 	if !alreadyRunning {
-		err := util.CheckPortAvailable(config.BindHost, port)
-		if err != nil {
-			return false
+		for _, host := range config.BindHost {
+			err := util.CheckPortAvailable(host, port)
+			if err != nil {
+				return false
+			}
 		}
 	}
 	return true
@@ -154,6 +156,7 @@ func (web *Web) Start() {
 	// for https, we have a separate goroutine loop
 	go web.tlsServerLoop()
 
+	var err error
 	// this loop is used as an ability to change listening host and/or port
 	for !web.httpsServer.shutdown {
 		printHTTPAddresses("http")
@@ -162,7 +165,7 @@ func (web *Web) Start() {
 		// we need to have new instance, because after Shutdown() the Server is not usable
 		web.httpServer = &http.Server{
 			ErrorLog:          log.StdLog("web: http", log.DEBUG),
-			Addr:              net.JoinHostPort(web.conf.BindHost, strconv.Itoa(web.conf.BindPort)),
+			Addr:              net.JoinHostPort(web.conf.BindHost[0], strconv.Itoa(web.conf.BindPort)),
 			Handler:           withMiddlewares(Context.mux, limitRequestBody),
 			ReadTimeout:       web.conf.ReadTimeout,
 			ReadHeaderTimeout: web.conf.ReadHeaderTimeout,
@@ -175,24 +178,38 @@ func (web *Web) Start() {
 		if web.conf.BetaBindPort != 0 {
 			web.httpServerBeta = &http.Server{
 				ErrorLog:          log.StdLog("web: http", log.DEBUG),
-				Addr:              net.JoinHostPort(web.conf.BindHost, strconv.Itoa(web.conf.BetaBindPort)),
 				Handler:           withMiddlewares(Context.mux, limitRequestBody, web.wrapIndexBeta),
 				ReadTimeout:       web.conf.ReadTimeout,
 				ReadHeaderTimeout: web.conf.ReadHeaderTimeout,
 				WriteTimeout:      web.conf.WriteTimeout,
 			}
-			go func() {
-				errs <- web.httpServerBeta.ListenAndServe()
-			}()
+			err = web.startListeners(web.httpServerBeta, errs)
+			if err != nil {
+				cleanupAlways()
+				log.Fatal(err)
+			}
 		}
 
-		err := <-errs
+		err = <-errs
 		if err != http.ErrServerClosed {
 			cleanupAlways()
 			log.Fatal(err)
 		}
 		// We use ErrServerClosed as a sign that we need to rebind on new address, so go back to the start of the loop
 	}
+}
+
+func (web *Web) startListeners(srv *http.Server, errs chan error) (err error) {
+	for _, addr := range web.conf.BindHost {
+		l, err := net.Listen("tcp", net.JoinHostPort(addr, strconv.Itoa(web.conf.BetaBindPort)))
+		if err != nil {
+			return err
+		}
+		go func(l net.Listener) {
+			errs <- srv.Serve(l)
+		}(l)
+	}
+	return err
 }
 
 // Close - stop HTTP server, possibly waiting for all active connections to be closed
@@ -234,7 +251,7 @@ func (web *Web) tlsServerLoop() {
 		web.httpsServer.cond.L.Unlock()
 
 		// prepare HTTPS server
-		address := net.JoinHostPort(web.conf.BindHost, strconv.Itoa(web.conf.PortHTTPS))
+		address := net.JoinHostPort(web.conf.BindHost[0], strconv.Itoa(web.conf.PortHTTPS))
 		web.httpsServer.server = &http.Server{
 			ErrorLog: log.StdLog("web: https", log.DEBUG),
 			Addr:     address,
@@ -251,6 +268,15 @@ func (web *Web) tlsServerLoop() {
 		}
 
 		printHTTPAddresses("https")
+
+		// errs := make(chan error, 1)
+		// err := startListenersTLS(web.httpsServer.server, errs, web.conf.PortHTTPS)
+		// if err != http.ErrServerClosed {
+		// 	cleanupAlways()
+		// 	log.Fatal(err)
+		// }
+
+		// err = <-errs
 		err := web.httpsServer.server.ListenAndServeTLS("", "")
 		if err != http.ErrServerClosed {
 			cleanupAlways()

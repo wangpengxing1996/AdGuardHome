@@ -234,7 +234,7 @@ func setupConfig(args options) {
 	}
 
 	// override bind host/port from the console
-	if args.bindHost != "" {
+	if len(args.bindHost) != 0 {
 		config.BindHost = args.bindHost
 	}
 	if args.bindPort != 0 {
@@ -609,14 +609,14 @@ func printHTTPAddresses(proto string) {
 		} else {
 			log.Printf("Go to https://%s:%s", tlsConf.ServerName, port)
 		}
-	} else if config.BindHost == "0.0.0.0" {
+	} else if len(config.BindHost) > 0 && config.BindHost[0] == "0.0.0.0" {
 		log.Println("AdGuard Home is available on the following addresses:")
 		ifaces, err := util.GetValidNetInterfacesForWeb()
 		if err != nil {
 			// That's weird, but we'll ignore it
-			log.Printf("Go to %s://%s", proto, net.JoinHostPort(config.BindHost, port))
+			log.Printf("Go to %s://%s", proto, net.JoinHostPort(config.BindHost[0], port))
 			if config.BetaBindPort != 0 {
-				log.Printf("Go to %s://%s (BETA)", proto, net.JoinHostPort(config.BindHost, strconv.Itoa(config.BetaBindPort)))
+				log.Printf("Go to %s://%s (BETA)", proto, net.JoinHostPort(config.BindHost[0], strconv.Itoa(config.BetaBindPort)))
 			}
 			return
 		}
@@ -630,9 +630,11 @@ func printHTTPAddresses(proto string) {
 			}
 		}
 	} else {
-		log.Printf("Go to %s://%s", proto, net.JoinHostPort(config.BindHost, port))
-		if config.BetaBindPort != 0 {
-			log.Printf("Go to %s://%s (BETA)", proto, net.JoinHostPort(config.BindHost, strconv.Itoa(config.BetaBindPort)))
+		for _, bh := range config.BindHost {
+			log.Printf("Go to %s://%s", proto, net.JoinHostPort(bh, port))
+			if config.BetaBindPort != 0 {
+				log.Printf("Go to %s://%s (BETA)", proto, net.JoinHostPort(bh, strconv.Itoa(config.BetaBindPort)))
+			}
 		}
 	}
 }

@@ -8,15 +8,15 @@ import (
 
 // options passed from command-line arguments
 type options struct {
-	verbose        bool   // is verbose logging enabled
-	configFilename string // path to the config file
-	workDir        string // path to the working directory where we will store the filters data and the querylog
-	bindHost       string // host address to bind HTTP server on
-	bindPort       int    // port to serve HTTP pages on
-	logFile        string // Path to the log file. If empty, write to stdout. If "syslog", writes to syslog
-	pidFile        string // File name to save PID to
-	checkConfig    bool   // Check configuration and exit
-	disableUpdate  bool   // If set, don't check for updates
+	verbose        bool     // is verbose logging enabled
+	configFilename string   // path to the config file
+	workDir        string   // path to the working directory where we will store the filters data and the querylog
+	bindHost       []string // host address to bind HTTP server on
+	bindPort       int      // port to serve HTTP pages on
+	logFile        string   // Path to the log file. If empty, write to stdout. If "syslog", writes to syslog
+	pidFile        string   // File name to save PID to
+	checkConfig    bool     // Check configuration and exit
+	disableUpdate  bool     // If set, don't check for updates
 
 	// service control action (see service.ControlAction array + "status" command)
 	serviceControlAction string
@@ -94,8 +94,8 @@ var workDirArg = arg{
 var hostArg = arg{
 	"Host address to bind HTTP server on",
 	"host", "h",
-	func(o options, v string) (options, error) { o.bindHost = v; return o, nil }, nil, nil,
-	func(o options) []string { return stringSliceOrNil(o.bindHost) },
+	func(o options, v string) (options, error) { o.bindHost = []string{v}; return o, nil }, nil, nil,
+	func(o options) []string { return o.bindHost },
 }
 
 var portArg = arg{

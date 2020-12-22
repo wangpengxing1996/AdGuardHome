@@ -260,14 +260,19 @@ func disableDNSStubListener() error {
 	return nil
 }
 
-type applyConfigReqEnt struct {
+type applyConfigReqWeb struct {
+	IP   []string `json:"ip"`
+	Port int      `json:"port"`
+}
+
+type applyConfigReqDNS struct {
 	IP   string `json:"ip"`
 	Port int    `json:"port"`
 }
 
 type applyConfigReq struct {
-	Web      applyConfigReqEnt `json:"web"`
-	DNS      applyConfigReqEnt `json:"dns"`
+	Web      applyConfigReqWeb `json:"web"`
+	DNS      applyConfigReqDNS `json:"dns"`
 	Username string            `json:"username"`
 	Password string            `json:"password"`
 }
@@ -276,6 +281,7 @@ type applyConfigReq struct {
 func copyInstallSettings(dst, src *configuration) {
 	dst.BindHost = src.BindHost
 	dst.BindPort = src.BindPort
+	dst.BetaBindPort = src.BetaBindPort
 	dst.DNS.BindHost = src.DNS.BindHost
 	dst.DNS.Port = src.DNS.Port
 }
@@ -294,19 +300,29 @@ func (web *Web) handleInstallConfigure(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	restartHTTP := true
-	if config.BindHost == newSettings.Web.IP && config.BindPort == newSettings.Web.Port {
-		// no need to rebind
-		restartHTTP = false
+	restartHTTP := false
+	if config.BindPort != newSettings.Web.Port {
+		restartHTTP = true
+	} else if len(config.BindHost) != len(newSettings.Web.IP) {
+		restartHTTP = true
+	} else {
+		for i, bh := range newSettings.Web.IP {
+			if config.BindHost[i] != bh {
+				restartHTTP = true
+				break
+			}
+		}
 	}
 
 	// validate that hosts and ports are bindable
 	if restartHTTP {
-		err = util.CheckPortAvailable(newSettings.Web.IP, newSettings.Web.Port)
-		if err != nil {
-			httpError(w, http.StatusBadRequest, "Impossible to listen on IP:port %s due to %s",
-				net.JoinHostPort(newSettings.Web.IP, strconv.Itoa(newSettings.Web.Port)), err)
-			return
+		for _, bh := range newSettings.Web.IP {
+			err = util.CheckPortAvailable(bh, newSettings.Web.Port)
+			if err != nil {
+				httpError(w, http.StatusBadRequest, "Impossible to listen on IP:port %s due to %s",
+					net.JoinHostPort(bh, strconv.Itoa(newSettings.Web.Port)), err)
+				return
+			}
 		}
 	}
 

@@ -1866,6 +1866,23 @@
             'type': 'string'
         'mtu':
           'type': 'integer'
+    'WebAddressInfo':
+      'type': 'object'
+      'description': 'Port information'
+      'required': 
+        - 'ip'
+        - 'port'
+      'properties':
+        'ip':
+          'type': 'array'
+          'items':
+            'type': 'string'
+          'example':
+          - '127.0.0.1'
+        'port':
+          'type': 'integer'
+          'format': 'int32'
+          'example': 53
     'AddressInfo':
       'type': 'object'
       'description': 'Port information'
@@ -2161,7 +2178,7 @@
         'dns':
           '$ref': '#/components/schemas/AddressInfo'
         'web':
-          '$ref': '#/components/schemas/AddressInfo'
+          '$ref': '#/components/schemas/WebAddressInfo'
         'username':
           'type': 'string'
           'description': 'Basic auth username'

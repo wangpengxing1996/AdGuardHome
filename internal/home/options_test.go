@@ -65,15 +65,21 @@ func TestParseWorkDir(t *testing.T) {
 }
 
 func TestParseBindHost(t *testing.T) {
-	if testParseOk(t).bindHost != "" {
-		t.Fatal("empty is no host")
+	for _, bh := range testParseOk(t).bindHost {
+		if bh != "" {
+			t.Fatal("empty is no host")
+		}
 	}
-	if testParseOk(t, "-h", "addr").bindHost != "addr" {
-		t.Fatal("-h is host")
+	for _, bh := range testParseOk(t, "-h", "addr").bindHost {
+		if bh != "addr" {
+			t.Fatal("-h is host")
+		}
 	}
 	testParseParamMissing(t, "-h")
-	if testParseOk(t, "--host", "addr").bindHost != "addr" {
-		t.Fatal("--host is host")
+	for _, bh := range testParseOk(t, "--host", "addr").bindHost {
+		if bh != "addr" {
+			t.Fatal("--host is host")
+		}
 	}
 	testParseParamMissing(t, "--host")
 }
@@ -204,7 +210,7 @@ func TestSerializeWorkDir(t *testing.T) {
 }
 
 func TestSerializeBindHost(t *testing.T) {
-	testSerialize(t, options{bindHost: "addr"}, "-h", "addr")
+	testSerialize(t, options{bindHost: []string{"addr"}}, "-h", "addr")
 }
 
 func TestSerializeBindPort(t *testing.T) {
