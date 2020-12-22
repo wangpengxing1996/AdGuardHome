@@ -15,15 +15,19 @@ and this project adheres to
 
 ### Added
 
-- Detecting of network interface configurated to have static IP address via
+- `$dnsrewrite` modifier for filters ([#2102]).
+- The host checking API and the query logs API can now return multiple matched
+  rules ([#2102]).
+- Detecting of network interface configured to have static IP address via
   `/etc/network/interfaces` ([#2302]).
-- DNSCrypt protocol support [#1361].
+- DNSCrypt protocol support ([#1361]).
 - A 5 second wait period until a DHCP server's network interface gets an IP
   address ([#2304]).
 - `$dnstype` modifier for filters ([#2337]).
 - HTTP API request body size limit ([#2305]).
 
 [#1361]: https://github.com/AdguardTeam/AdGuardHome/issues/1361
+[#2102]: https://github.com/AdguardTeam/AdGuardHome/issues/2102
 [#2302]: https://github.com/AdguardTeam/AdGuardHome/issues/2302
 [#2304]: https://github.com/AdguardTeam/AdGuardHome/issues/2304
 [#2305]: https://github.com/AdguardTeam/AdGuardHome/issues/2305
@@ -31,6 +35,9 @@ and this project adheres to
 
 ### Changed
 
+- When `dns.bogus_nxdomain` option is used, the server will now transform
+  responses if there is at least one bogus address instead of all of them
+  ([#2394]).  The new behavior is the same as in `dnsmasq`.
 - Post-updating relaunch possibility is now determined OS-dependently ([#2231],
   [#2391]).
 - Made the mobileconfig HTTP API more robust and predictable, add parameters and
@@ -47,20 +54,27 @@ and this project adheres to
 [#2343]: https://github.com/AdguardTeam/AdGuardHome/issues/2343
 [#2358]: https://github.com/AdguardTeam/AdGuardHome/issues/2358
 [#2391]: https://github.com/AdguardTeam/AdGuardHome/issues/2391
+[#2394]: https://github.com/AdguardTeam/AdGuardHome/issues/2394
 
 ### Fixed
 
+- Inability to set DNS cache TTL limits ([#2459]).
+- Possible freezes on slower machines ([#2225]).
 - A mitigation against records being shown in the wrong order on the query log
   page ([#2293]).
 - A JSON parsing error in query log ([#2345]).
 - Incorrect detection of the IPv6 address of an interface as well as another
   infinite loop in the `/dhcp/find_active_dhcp` HTTP API ([#2355]).
 
+[#2225]: https://github.com/AdguardTeam/AdGuardHome/issues/2225
 [#2293]: https://github.com/AdguardTeam/AdGuardHome/issues/2293
 [#2345]: https://github.com/AdguardTeam/AdGuardHome/issues/2345
 [#2355]: https://github.com/AdguardTeam/AdGuardHome/issues/2355
+[#2459]: https://github.com/AdguardTeam/AdGuardHome/issues/2459
 
+### Removed
 
+- Support for pre-v0.99.3 format of query logs ([#2102]).
 
 ## [v0.104.3] - 2020-11-19
 

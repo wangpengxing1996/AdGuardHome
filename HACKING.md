@@ -78,6 +78,14 @@ The rules are mostly sorted in the alphabetical order.
  *  Prefer constants to variables where possible.  Reduce global variables.  Use
     [constant errors] instead of `errors.New`.
 
+ *  Unused arguments in anonymous functions must be called `_`:
+
+    ```go
+    v.onSuccess = func(_ int, msg string) {
+            // …
+    }
+    ```
+
  *  Use linters.
 
  *  Use named returns to improve readability of function signatures.
@@ -106,7 +114,16 @@ The rules are mostly sorted in the alphabetical order.
     ```go
     // Foo implements the Fooer interface for *foo.
     func (f *foo) Foo() {
-        // …
+            // …
+    }
+    ```
+
+    When the implemented interface is unexported:
+
+    ```go
+    // Unwrap implements the hidden wrapper interface for *fooError.
+    func (err *fooError) Unwrap() (unwrapped error) {
+            // …
     }
     ```
 
@@ -146,16 +163,39 @@ The rules are mostly sorted in the alphabetical order.
 
 ##  Shell Scripting
 
- *  Avoid bashisms, prefer *POSIX* features only.
+ *  Avoid bashisms and GNUisms, prefer *POSIX* features only.
 
  *  Prefer `'raw strings'` to `"double quoted strings"` whenever possible.
 
  *  Put spaces within `$( cmd )`, `$(( expr ))`, and `{ cmd; }`.
 
+ *  Put utility flags in the ASCII order and **don't** group them together.  For
+    example, `ls -1 -A -q`.
+
+ *  `snake_case`, not `camelCase`.
+
  *  Use `set -e -f -u` and also `set -x` in verbose mode.
 
  *  Use the `"$var"` form instead of the `$var` form, unless word splitting is
     required.
+
+ *  When concatenating, always use the form with curly braces to prevent
+    accidental bad variable names.  That is, `"${var}_tmp.txt"` and **not**
+    `"$var_tmp.txt"`.  The latter will try to lookup variable `var_tmp`.
+
+ *  When concatenating, surround the whole string with quotes.  That is, use
+    this:
+
+    ```sh
+    dir="${TOP_DIR}/sub"
+    ```
+
+    And **not** this:
+
+    ```sh
+    # Bad!
+    dir="${TOP_DIR}"/sub
+    ```
 
 ##  Text, Including Comments
 

@@ -35,6 +35,7 @@ GPG_KEY := devteam@adguard.com
 GPG_KEY_PASSPHRASE :=
 GPG_CMD := gpg --detach-sig --default-key $(GPG_KEY) --pinentry-mode loopback --passphrase $(GPG_KEY_PASSPHRASE)
 VERBOSE := -v
+REBUILD_CLIENT = 1
 
 # See release target
 DIST_DIR=dist
@@ -66,7 +67,9 @@ endif
 
 # Version properties
 COMMIT=$(shell git rev-parse --short HEAD)
-TAG_NAME=$(shell git describe --abbrev=0)
+# TODO(a.garipov): The cut call is a temporary solution to trim
+# prerelease versions.  See the comment in .goreleaser.yml.
+TAG_NAME=$(shell git describe --abbrev=0 | cut -c 1-8)
 RELEASE_VERSION=$(TAG_NAME)
 SNAPSHOT_VERSION=$(RELEASE_VERSION)-SNAPSHOT-$(COMMIT)
 
@@ -122,7 +125,8 @@ all: build
 init:
 	git config core.hooksPath .githooks
 
-build: client_with_deps
+build:
+	test '$(REBUILD_CLIENT)' = '1' && $(MAKE) client_with_deps || exit 0
 	$(GO) mod download
 	PATH=$(GOPATH)/bin:$(PATH) $(GO) generate ./...
 	CGO_ENABLED=0 $(GO) build -ldflags="-s -w -X main.version=$(VERSION) -X main.channel=$(CHANNEL) -X main.goarm=$(GOARM)"
