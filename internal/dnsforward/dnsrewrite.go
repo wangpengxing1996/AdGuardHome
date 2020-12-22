@@ -13,13 +13,17 @@ import (
 )
 
 // filterDNSRewriteResponse handles a single DNS rewrite response entry.
-// It returns the constructed answer resource record.
+// It returns the properly constructed answer resource record.
 func (s *Server) filterDNSRewriteResponse(req *dns.Msg, rr rules.RRType, v rules.RRValue) (ans dns.RR, err error) {
+	// TODO(a.garipov): As more types are added, we will probably want to
+	// use a handler-oriented approach here.  So, think of a way to decouple
+	// the answer generation logic from the Server.
+
 	switch rr {
 	case dns.TypeA, dns.TypeAAAA:
 		ip, ok := v.(net.IP)
 		if !ok {
-			return nil, fmt.Errorf("value has type %T, not net.IP", v)
+			return nil, fmt.Errorf("value for rr type %d has type %T, not net.IP", rr, v)
 		}
 
 		if rr == dns.TypeA {
@@ -27,13 +31,37 @@ func (s *Server) filterDNSRewriteResponse(req *dns.Msg, rr rules.RRType, v rules
 		}
 
 		return s.genAAAAAnswer(req, ip), nil
-	case dns.TypeTXT:
+	case dns.TypePTR,
+		dns.TypeTXT:
 		str, ok := v.(string)
 		if !ok {
-			return nil, fmt.Errorf("value has type %T, not string", v)
+			return nil, fmt.Errorf("value for rr type %d has type %T, not string", rr, v)
 		}
 
-		return s.genTXTAnswer(req, []string{str}), nil
+		if rr == dns.TypeTXT {
+			return s.genTXTAnswer(req, []string{str}), nil
+		}
+
+		return s.genPTRAnswer(req, str), nil
+	case dns.TypeMX:
+		mx, ok := v.(*rules.DNSMX)
+		if !ok {
+			return nil, fmt.Errorf("value for rr type %d has type %T, not *rules.DNSMX", rr, v)
+		}
+
+		return s.genMXAnswer(req, mx), nil
+	case dns.TypeHTTPS,
+		dns.TypeSVCB:
+		svcb, ok := v.(*rules.DNSSVCB)
+		if !ok {
+			return nil, fmt.Errorf("value for rr type %d has type %T, not *rules.DNSSVCB", rr, v)
+		}
+
+		if rr == dns.TypeHTTPS {
+			return s.genHTTPSAnswer(req, svcb), nil
+		}
+
+		return s.genSVCBAnswer(req, svcb), nil
 	default:
 		log.Debug("don't know how to handle dns rr type %d, skipping", rr)
 
